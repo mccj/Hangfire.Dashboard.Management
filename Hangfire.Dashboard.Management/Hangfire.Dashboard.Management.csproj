@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;NET45</TargetFrameworks>
+    <Version>1.0.0-beta1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\**" />
+    <EmbeddedResource Remove="Pages\**" />
+    <None Remove="Pages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Content\cron.js" />
+    <None Remove="Content\management.js" />
+    <None Remove="Content\momentLocale.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Pages\JobDetailsPage.cs" />
+    <Compile Include="Pages\ManagementBasePage.cs" />
+    <Compile Include="Pages\ManagementPage.cs" />
+    <Compile Include="Pages\CornJobsPage.cs" />
+    <Compile Include="Pages\CustomSidebarMenu.cs" />
+    <Compile Include="Pages\SucceededJobs.cs" />
+    <Compile Include="Pages\RetriesPage.cs" />
+    <Compile Include="Pages\RecurringJobsPage.cs" />
+    <Compile Include="Pages\ManagementSidebarMenu.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Content\cron.js" />
+    <EmbeddedResource Include="Content\management.js" />
+    <EmbeddedResource Include="Content\momentLocale.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\CornJobsPage.cshtml" />
+    <None Include="Pages\CustomSidebarMenu.cshtml" />
+    <None Include="Pages\JobDetailsPage.cshtml" />
+    <None Include="Pages\ManagementBasePage.cshtml" />
+    <None Include="Pages\ManagementPage.cshtml" />
+    <None Include="Pages\RecurringJobsPage.cshtml" />
+    <None Include="Pages\RetriesPage.cshtml" />
+    <None Include="Pages\SucceededJobs.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.6.19" />
+    <PackageReference Include="CronExpressionDescriptor" Version="2.5.0" />
+    <PackageReference Include="ncrontab" Version="3.3.0" />
+    <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.0" />
+  </ItemGroup>
+</Project>

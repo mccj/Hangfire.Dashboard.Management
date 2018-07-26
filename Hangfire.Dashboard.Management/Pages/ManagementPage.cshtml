@@ -1,0 +1,24 @@
+@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
+@using System
+@using Hangfire.Dashboard
+@using Hangfire.Dashboard.Pages
+@inherits RazorPage
+@functions {
+    public const string Title = "Management";
+    public const string UrlRoute = "/management";
+}
+@{
+    Layout = new LayoutPage(Title);
+}
+<div class="row">
+    <div class="col-md-3">
+        @(Html.RenderPartial(new CustomSidebarMenu(ManagementSidebarMenu.Items)))
+    </div>
+    <div class="col-md-9">
+        <h1 class="page-header">
+            @(Title)
+        </h1>
+        @*@("Select the job type you would like enqueue from the menu.");*@
+        @("从菜单中选择你喜欢的工作内容");
+    </div>
+</div>

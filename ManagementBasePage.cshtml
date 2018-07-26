@@ -1,0 +1,234 @@
+@* Generator: Template TypeVisibility: public GeneratePrettyNames: True *@
+@using System
+@using System.Reflection
+@using Hangfire.Dashboard
+@using Hangfire.Dashboard.Pages
+@inherits RazorPage
+@{
+    Layout = new LayoutPage(pageTitle);
+}
+@functions {
+
+}
+@helper Panel(string id, string heading, string description, string content, string options, string buttons)
+    {
+        <div class="panel panel-info js-management" data-id="@(id)">
+            <div class="panel-heading">@(heading)</div>
+            <div class="panel-body">
+                <p>@(description)</p>
+            </div>
+            @if (!string.IsNullOrEmpty(content))
+            {
+                <div class="panel-body">
+
+                    <div class="well">@(Raw(content))</div>
+
+                    <div id="@(id)_error"></div>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(options))
+            {
+                <div class="panel-body">
+
+                    <div class="well">@(Raw(options))</div>
+
+                    <div id="@(id)_error"></div>
+                </div>
+            }
+            <div class="panel-footer clearfix">
+                @(Raw(buttons))
+                <div class="pull-right">
+                </div>
+            </div>
+        </div>
+}
+@helper CreateButtons(string url, string text, string loadingText, string id)
+    {
+        <div class="col-sm-2 pull-right commands-panel Enqueue">
+            <button class="js-management-input-commands btn btn-sm btn-success"
+                    data-url="@(Url.To(url))" data-loading-text="@(loadingText)" input-id="@(id)" input-type="Enqueue">
+                <span class="glyphicon glyphicon-play-circle"></span>
+                &nbsp;列队执行
+            </button>
+        </div>
+        <div class="col-sm-8 pull-right commands-panel ScheduleDateTime" style="display:none">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control date" placeholder="Enter a date" id="@(id)_sys_datetime">
+                <div class="input-group-btn ">
+                    <button class="btn btn-default btn-sm btn-primary js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleDateTime"
+                            data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        &nbsp;定时执行
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 pull-right commands-panel ScheduleTimeSpan" style="display:none">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control time" placeholder="Enter a time 00:00:00" id="@(id)_sys_timespan" data-inputmask="'mask':'99:99:99'" value="00:00:00">
+                <div class="input-group-btn ">
+                    <button class="btn btn-default btn-sm btn-info js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleTimeSpan"
+                            data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
+                        <span class="glyphicon glyphicon-time"></span>
+                        &nbsp;延时执行
+                    </button>
+                    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:5"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">5 秒</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:10"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">10 秒</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:15"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">15 秒</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:30"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">30 秒</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:1:0"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">60 秒</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 pull-right commands-panel CronExpression" style="display:none">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Enter a cron expression * * * * *" id="@(id)_sys_cron">
+                <div class="input-group-btn ">
+                    <button type="button" class="btn btn-default js-management-input-CronModal" input-id="@(id)"><span class="glyphicon glyphicon-wrench"></span></button>
+                    <button class="btn btn-default btn-sm btn-warning js-management-input-commands" type="button" input-id="@(id)" input-type="CronExpression"
+                            data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
+                        <span class="glyphicon glyphicon-repeat"></span>
+                        &nbsp;重复执行
+                    </button>
+                    <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Minutely())"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每分 (@(Cron.Minutely()))</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Hourly())"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每时 (@(Cron.Hourly()))</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Daily())"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每天 (@(Cron.Daily()))</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Weekly())"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每周 (@(Cron.Weekly()))</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Monthly())"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每月 (@(Cron.Monthly()))</a>
+                        </li>
+                        <li>
+                            <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Yearly())"
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每年 (@(Cron.Yearly()))</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    任务类型: <span class="@(id) commandsType">列队执行</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="Enqueue" data-id="@(id)">列队执行</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleDateTime" data-id="@(id)">定时执行</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleTimeSpan" data-id="@(id)">延时执行</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="CronExpression" data-id="@(id)">重复执行</a></li>
+                </ul>
+            </div>
+        </div>
+}
+@helper Input(string id, string css, string labelText, string placeholderText, string inputtype, object defaultValue = null)
+    {
+        <div class="form-group @css">
+            <label for="@(id)" class="control-label">@(labelText)</label>
+            <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)">
+        </div>
+}
+@helper InputDatebox(string id, string css, string labelText, string placeholderText, object defaultValue = null)
+    {
+        <div class="form-group @css">
+            <label for="@(id)" class="control-label">@(labelText)</label>
+            <div class='input-group date' id='@(id)_datetimepicker'>
+                <input type='text' class="form-control" placeholder="@(placeholderText)" value="@(defaultValue)" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+}
+@helper InputCheckbox(string id, string css, string labelText, string placeholderText)
+    {
+        <div class="form-group @css">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="@(id)">
+                    @(labelText)
+                </label>
+            </div>
+        </div>
+}
+@helper InputDataList(string id, string css, string labelText, string placeholderText, KeyValuePair<string, string>[] data, string defaultValue = null)
+    {
+        <div class="form-group @css">
+            <label for="@(id)" class="control-label">@(labelText)</label>
+            <select id="@(id)" class="form-control" placeholder="@(placeholderText)">
+                @foreach (var item in data)
+                {
+                    <option value="@item.Key" @(item.Key == defaultValue ? "selected=\"selected\"" : "")>@item.Value</option>
+                }
+            </select>
+        </div>
+}
+<div class="row">
+    <div class="col-md-3">
+        @(Html.RenderPartial(new CustomSidebarMenu(ManagementSidebarMenu.Items)))
+    </div>
+    <div class="col-md-9">
+        <h1 class="page-header">
+            @(pageHeader)
+        </h1>
+        @{
+            Content();
+        }
+    </div>
+
+    <div class="modal fade" id="cronModal" tabindex="-1" role="dialog" aria-labelledby="cronModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="cronModalLabel">Corn表达式生成器</h4>
+                </div>
+                <div class="modal-body">
+                    @(Html.RenderPartial(new CornJobsPage()))
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="connExpressionOk">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="@Url.To("/jsm")"></script>*@
