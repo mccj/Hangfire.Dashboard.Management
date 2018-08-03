@@ -82,7 +82,8 @@
                                 $this.button('reset');
                                 window.location.reload();
                             }).fail(function (xhr, status, error) {
-                                Hangfire.Management.alert(id, "There was an error. " + error);
+                                var errorMsg = xhr.getResponseHeader("errorMsg");
+                                Hangfire.Management.alert(id, errorMsg || "There was an error. " + error);
                                 $this.removeProp('disabled');
                                 $this.button('reset');
                             });

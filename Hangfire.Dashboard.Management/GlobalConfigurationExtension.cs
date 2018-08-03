@@ -247,7 +247,7 @@ namespace Hangfire.Dashboard.Management
                                     var timeZone = getValue($"{id}_sys_timeZone")?.FirstOrDefault() ?? "Utc";
                                     var displayName = getValue($"{id}_sys_displayName")?.FirstOrDefault();
 
-                                    var jobQueue = (queue?.Trim() ?? jobMetadata.Queue)?.ToLower();
+                                    var jobQueue = (queue?.Trim().Replace("-","_").Replace(" ", "_") ?? jobMetadata.Queue)?.ToLower();
                                     var jobTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZone?.Trim()) ?? TimeZoneInfo.Utc;
                                     var jobDisplayName = string.IsNullOrWhiteSpace(displayName) ? jobMetadata.DisplayName : displayName;
 
@@ -302,7 +302,7 @@ namespace Hangfire.Dashboard.Management
                         default:
                             {
                                 var queue = getValue($"{id}_sys_queue")?.FirstOrDefault();
-                                var jobQueue = (queue?.Trim() ?? jobMetadata.Queue)?.ToLower();
+                                var jobQueue = (queue?.Trim().Replace("-", "_").Replace(" ","_") ?? jobMetadata.Queue)?.ToLower();
                                 var jobId = client.Create(job, new States.EnqueuedState(jobQueue));
                                 return jobId != string.Empty;
                                 //break;

@@ -18,6 +18,11 @@ namespace Hangfire.Dashboard.Management.Test
         [DisableConcurrentExecution(90)]//禁用并行执行
         public void 商品收集RabbitMQ(PerformContext context = null)
         {
+            //Microsoft.AspNetCore.Http.HttpContext context; context.GetContext()
+
+
+            //System.Net.HttpListenerContext httpListenerContext;
+            //httpListenerContext.Response.StatusDescription;
             //throw new Exception("错误");
         }
     }
