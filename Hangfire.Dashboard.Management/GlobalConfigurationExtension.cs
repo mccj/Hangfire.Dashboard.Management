@@ -108,6 +108,7 @@ namespace Hangfire.Dashboard.Management
             }));
             var pages = options.GetPages();
             #region 任务
+            ManagementSidebarMenu.Items.Clear();
             foreach (var pageInfo in pages)
             {
                 //添加命令
@@ -160,35 +161,37 @@ namespace Hangfire.Dashboard.Management
             {
                 if (context.Request.Method == "POST")
                 {
-                    #region Owin模式
                     //Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
-                    //var environment = context.GetOwinEnvironment();
-                    //var _context = new Microsoft.Owin.OwinContext(environment);
-                    //var form = _context.Request.ReadFormSafeAsync().Result;
-                    #endregion Owin模式
-                    //通用模式
-                    var contextRequest = new HangfireDashboardRequest(context.Request);
-                    var getValue = new Func<string, IList<string>>(key =>
+                    var getFormValue = new Func<string, IList<string>>(key =>
                    {
                        ////Owin模式
-                       //return form.GetValues(key);
+                       //var environment = context.GetOwinEnvironment();
+                       //var _context = new Microsoft.Owin.OwinContext(environment);
+                       //var form = _context.Request.ReadFormSafeAsync().Result;
+                       //var r =  form.GetValues(_key);
                        ////aspnet模式
-                       //var r = Task.Run(() => context.Request.GetFormValuesAsync(key))?.Result;
+                       //var r = context.Request.GetFormValuesAsync(key)?.Result;
                        //return r.Select(f => string.IsNullOrWhiteSpace(f) ? null : f).ToArray();
                        //通用模式
-                       var r = Task.Run(() => contextRequest.GetFormValuesAsync(key))?.Result;
+                       IList<string> getValue(string _key)
+                       {
+#if NETFULL
+                           //Owin模式
+                           var environment = context.GetOwinEnvironment();
+                           var _context = new Microsoft.Owin.OwinContext(environment);
+                           var form = _context.Request?.ReadFormAsync()?.Result;
+                           return form?.GetValues(_key);
+#endif
+                           return context.Request.GetFormValuesAsync(_key)?.Result;
+                       }
+                       var r = getValue(key);
                        return r.Select(f => string.IsNullOrWhiteSpace(f) ? null : f).ToArray();
                    });
 
-                    var jobtype = getValue("type")?.FirstOrDefault();
-                    //var jobtype = Task.Run(() => context.Request.GetFormValuesAsync("type")).Result.FirstOrDefault();
-                    var id = getValue("id")?.FirstOrDefault();
-                    //var id = Task.Run(() => context.Request.GetFormValuesAsync("id")).Result.FirstOrDefault();
-                    //var queue = Task.Run(() => context.Request.GetFormValuesAsync($"{id}_sys_queue")).Result.FirstOrDefault();
+                    var jobtype = getFormValue("type")?.FirstOrDefault();
+                    var id = getFormValue("id")?.FirstOrDefault();
                     var jobMetadata = pages.SelectMany(f => f.Pages.SelectMany(ff => ff.Metadatas.Where(fff => fff.GetId() == id))).FirstOrDefault();
                     var par = new List<object>();
-                    //var schedule = Task.Run(() => context.Request.GetFormValuesAsync($"{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jobMetadata.Type.FullName))/*jobMetadata.DisplayName.Replace(" ", string.Empty)*/}_schedule")).Result.FirstOrDefault();
-                    //var cron = Task.Run(() => context.Request.GetFormValuesAsync($"{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jobMetadata.Type.FullName))/*jobMetadata.DisplayName.Replace(" ", string.Empty)*/}_cron")).Result.FirstOrDefault();
 
                     foreach (var parameterInfo in jobMetadata.Parameters)
                     {
@@ -204,8 +207,7 @@ namespace Hangfire.Dashboard.Management
                             variable = $"{variable}_datetimepicker";
                         }
 
-                        //var t = Task.Run(() => context.Request.GetFormValuesAsync(variable)).Result;
-                        var t = getValue(variable);
+                        var t = getFormValue(variable);
 
                         object item = null;
                         var formInput = t?.FirstOrDefault();
@@ -243,16 +245,16 @@ namespace Hangfire.Dashboard.Management
                                 var manager = new RecurringJobManager(context.Storage);
                                 try
                                 {
-                                    var queue = getValue($"{id}_sys_queue")?.FirstOrDefault();
-                                    var timeZone = getValue($"{id}_sys_timeZone")?.FirstOrDefault() ?? "Utc";
-                                    var displayName = getValue($"{id}_sys_displayName")?.FirstOrDefault();
+                                    var queue = getFormValue($"{id}_sys_queue")?.FirstOrDefault();
+                                    var timeZone = getFormValue($"{id}_sys_timeZone")?.FirstOrDefault() ?? "Utc";
+                                    var displayName = getFormValue($"{id}_sys_displayName")?.FirstOrDefault();
 
-                                    var jobQueue = (queue?.Trim().Replace("-","_").Replace(" ", "_") ?? jobMetadata.Queue)?.ToLower();
+                                    var jobQueue = (queue?.Trim().Replace("-", "_").Replace(" ", "_") ?? jobMetadata.Queue)?.ToLower();
                                     var jobTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZone?.Trim()) ?? TimeZoneInfo.Utc;
                                     var jobDisplayName = string.IsNullOrWhiteSpace(displayName) ? jobMetadata.DisplayName : displayName;
 
-                                    var schedule = getValue("schedule")?.FirstOrDefault();
-                                    var cron = getValue($"{id}_sys_cron")?.FirstOrDefault();
+                                    var schedule = getFormValue("schedule")?.FirstOrDefault();
+                                    var cron = getFormValue($"{id}_sys_cron")?.FirstOrDefault();
 
                                     if (string.IsNullOrWhiteSpace(schedule ?? cron)) { throw new Exception("请填写 Cron 表达式"); }
                                     manager.AddOrUpdate(jobDisplayName, job, schedule ?? cron, jobTimeZone, jobQueue);
@@ -266,7 +268,7 @@ namespace Hangfire.Dashboard.Management
                             }
                         case "ScheduleDateTime":
                             {
-                                var datetime = getValue($"{id}_sys_datetime")?.FirstOrDefault();
+                                var datetime = getFormValue($"{id}_sys_datetime")?.FirstOrDefault();
                                 if (string.IsNullOrWhiteSpace(datetime))
                                 {
                                     //context.Response.StatusCode = 400;
@@ -280,8 +282,8 @@ namespace Hangfire.Dashboard.Management
                             }
                         case "ScheduleTimeSpan":
                             {
-                                var schedule = getValue("schedule")?.FirstOrDefault();
-                                var timeSpan = getValue($"{id}_sys_timespan")?.FirstOrDefault();
+                                var schedule = getFormValue("schedule")?.FirstOrDefault();
+                                var timeSpan = getFormValue($"{id}_sys_timespan")?.FirstOrDefault();
                                 if (string.IsNullOrWhiteSpace(schedule ?? timeSpan)) { throw new Exception("请填写 延迟时间 表达式"); }
                                 var jobId = client.Create(job, new States.ScheduledState(TimeSpan.Parse(schedule ?? timeSpan)));//Queue
                                 return jobId != string.Empty;
@@ -301,8 +303,8 @@ namespace Hangfire.Dashboard.Management
                         case "Enqueue":
                         default:
                             {
-                                var queue = getValue($"{id}_sys_queue")?.FirstOrDefault();
-                                var jobQueue = (queue?.Trim().Replace("-", "_").Replace(" ","_") ?? jobMetadata.Queue)?.ToLower();
+                                var queue = getFormValue($"{id}_sys_queue")?.FirstOrDefault();
+                                var jobQueue = (queue?.Trim().Replace("-", "_").Replace(" ", "_") ?? jobMetadata.Queue)?.ToLower();
                                 var jobId = client.Create(job, new States.EnqueuedState(jobQueue));
                                 return jobId != string.Empty;
                                 //break;
@@ -501,66 +503,66 @@ namespace Hangfire.Dashboard.Management
         //    return this;
         //}
     }
-    /// <summary>
-    /// Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
-    /// </summary>
-    public class HangfireDashboardRequest : DashboardRequest
-    {
-        private readonly DashboardRequest _request = null;
-        /// <summary>
-        /// Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
-        /// </summary>
-        /// <param name="response"></param>
-        public HangfireDashboardRequest(DashboardRequest request)
-        {
-            _request = request;
-        }
-        public override string Method => _request.Method;
+    ///// <summary>
+    ///// Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
+    ///// </summary>
+    //public class HangfireDashboardRequest : DashboardRequest
+    //{
+    //    private readonly DashboardRequest _request = null;
+    //    /// <summary>
+    //    /// Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
+    //    /// </summary>
+    //    /// <param name="response"></param>
+    //    public HangfireDashboardRequest(DashboardRequest request)
+    //    {
+    //        _request = request;
+    //    }
+    //    public override string Method => _request.Method;
 
-        public override string Path => _request.Path;
+    //    public override string Path => _request.Path;
 
-        public override string PathBase => _request.PathBase;
+    //    public override string PathBase => _request.PathBase;
 
-        public override string LocalIpAddress => _request.LocalIpAddress;
+    //    public override string LocalIpAddress => _request.LocalIpAddress;
 
-        public override string RemoteIpAddress => _request.RemoteIpAddress;
+    //    public override string RemoteIpAddress => _request.RemoteIpAddress;
 
-        public override Task<IList<string>> GetFormValuesAsync(string key)
-        {
-            var type = _request.GetType();
-            if (type.Name == "OwinDashboardRequest")
-            {
-                return System.Threading.Tasks.Task.Run<IList<string>>(() =>
-                {//Owin 模式
-                    var owinContext = type.GetField("_context", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_request);
-                    var owinContextType = owinContext.GetType();
-                    var request = owinContextType.GetProperty("Request").GetValue(owinContext);
-                    var requestType = request.GetType();
-                    var formTask = requestType.GetMethod("ReadFormAsync").Invoke(request, null) as Task;//Task<IFormCollection>
-                    var formTaskType = formTask.GetType();
-                    var formCollection = formTaskType.GetProperty("Result").GetValue(formTask);
-                    var formCollectionType = formCollection.GetType();
+    //    public override Task<IList<string>> GetFormValuesAsync(string key)
+    //    {
+    //        var type = _request.GetType();
+    //        if (type.Name == "OwinDashboardRequest")
+    //        {
+    //            return System.Threading.Tasks.Task.Run<IList<string>>(() =>
+    //            {//Owin 模式
+    //                var owinContext = type.GetField("_context", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_request);
+    //                var owinContextType = owinContext.GetType();
+    //                var request = owinContextType.GetProperty("Request").GetValue(owinContext);
+    //                var requestType = request.GetType();
+    //                var formTask = requestType.GetMethod("ReadFormAsync").Invoke(request, null) as Task;//Task<IFormCollection>
+    //                var formTaskType = formTask.GetType();
+    //                var formCollection = formTaskType.GetProperty("Result").GetValue(formTask);
+    //                var formCollectionType = formCollection.GetType();
 
-                    var from = formCollectionType.GetMethod("GetValues").Invoke(formCollection, new[] { key }) as IList<string>;
+    //                var from = formCollectionType.GetMethod("GetValues").Invoke(formCollection, new[] { key }) as IList<string>;
 
-                    return from;
+    //                return from;
 
-                    //Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
-                    //var environment = context.GetOwinEnvironment();
-                    //var _context = new Microsoft.Owin.OwinContext(environment);
-                    //var form = _context.Request.ReadFormSafeAsync().Result;
-                    //return form.GetValues(key);
-                });
-            }
-            else
-            {
-                return _request.GetFormValuesAsync(key);
-            }
-        }
+    //                //Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
+    //                //var environment = context.GetOwinEnvironment();
+    //                //var _context = new Microsoft.Owin.OwinContext(environment);
+    //                //var form = _context.Request.ReadFormSafeAsync().Result;
+    //                //return form.GetValues(key);
+    //            });
+    //        }
+    //        else
+    //        {
+    //            return _request.GetFormValuesAsync(key);
+    //        }
+    //    }
 
-        public override string GetQuery(string key)
-        {
-            return _request.GetQuery(key);
-        }
-    }
+    //    public override string GetQuery(string key)
+    //    {
+    //        return _request.GetQuery(key);
+    //    }
+    //}
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Hangfire.Dashboard.Management;
+using System;
+using System.Linq;
 
 namespace Hangfire.Dashboard.Management.Standard.Test
 {
@@ -40,9 +37,9 @@ namespace Hangfire.Dashboard.Management.Standard.Test
             {
                 x
                     .UseColouredConsoleLogProvider()//使用彩色控制台日志提供程序
-                    //.UseLog4NetLogProvider()//使用log4net日志提供程序
-                    //.UseNLogLogProvider()//使用NLogLog日志提供程序
-                    //.UseConsole()//使用控制台程序(Hangfire.Console)
+                                                    //.UseLog4NetLogProvider()//使用log4net日志提供程序
+                                                    //.UseNLogLogProvider()//使用NLogLog日志提供程序
+                                                    //.UseConsole()//使用控制台程序(Hangfire.Console)
 
                     //.UseActivator(new OrchardJobActivator(_lifetimeScope))
                     //.UseFilter(new LogFailureAttribute())//登录失败日志记录
@@ -50,8 +47,8 @@ namespace Hangfire.Dashboard.Management.Standard.Test
                     .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ServerCount)//服务器数量
                     .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.RecurringJobCount)//任务数量
                     .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.RetriesCount)//重试次数
-                    //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.EnqueuedCountOrNull)//队列数量
-                    //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.FailedCountOrNull)//失败数量
+                                                                                         //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.EnqueuedCountOrNull)//队列数量
+                                                                                         //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.FailedCountOrNull)//失败数量
                     .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.EnqueuedAndQueueCount)//队列数量
                     .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ScheduledCount)//计划任务数量
                     .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ProcessingCount)//执行中的任务数量

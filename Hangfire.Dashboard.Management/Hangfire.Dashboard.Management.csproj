@@ -1,10 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;NET45</TargetFrameworks>
+    <TargetFrameworks>netstandard2;NET45</TargetFrameworks>
     <Version>1.0.0-beta1</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|NET45|AnyCPU'">
+    <DefineConstants>TRACE;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'NET45'">
+    <PackageReference Include="Microsoft.Owin" Version="3.1.0" />
+  </ItemGroup>
+  
   <ItemGroup>
     <Compile Remove="Pages\**" />
     <EmbeddedResource Remove="Pages\**" />
@@ -48,7 +59,7 @@
 
   <ItemGroup>
     <PackageReference Include="Hangfire.Core" Version="1.6.20" />
-    <PackageReference Include="CronExpressionDescriptor" Version="2.6.0" />
+    <PackageReference Include="CronExpressionDescriptor" Version="2.6.7" />
     <PackageReference Include="ncrontab" Version="3.3.0" />
     <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.0" />
   </ItemGroup>
