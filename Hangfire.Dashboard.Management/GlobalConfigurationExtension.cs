@@ -18,56 +18,40 @@ namespace Hangfire.Dashboard.Management
 {
     public static class GlobalConfigurationExtension
     {
+        /// <summary>
+        /// 加载可管理任务
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="assembly"></param>
+        public static IGlobalConfiguration UseManagementPages(this IGlobalConfiguration config, params Assembly[] assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            UseManagementPages(config, cc => cc.AddJobs(assembly));
+            return config;
+        }
+        /// <summary>
+        /// 加载可管理任务
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="types"></param>
+        public static IGlobalConfiguration UseManagementPages(this IGlobalConfiguration config, params Type[] types)
+        {
+            if (types == null) throw new ArgumentNullException(nameof(types));
+            UseManagementPages(config, cc => cc.AddJobs(types));
+            return config;
+        }
+        /// <summary>
+        /// 加载可管理任务
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
         public static IGlobalConfiguration UseManagementPages(this IGlobalConfiguration config, Func<ManagementPagesOptions, ManagementPagesOptions> func)
         {
             var options = func(new ManagementPagesOptions());
             CreateManagement(options);
             return config;
         }
-        ///// <summary>
-        ///// 加载可管理任务
-        ///// </summary>
-        ///// <param name="config"></param>
-        ///// <param name="assembly"></param>
-        //public static IGlobalConfiguration UseManagementPages(this IGlobalConfiguration config, params Assembly[] assembly)
-        //{
-        //    if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-        //    JobsHelper.GetAllJobs(assembly);
-        //    CreateManagement();
-        //    return config;
-        //}
-        ///// <summary>
-        ///// 加载可管理任务
-        ///// </summary>
-        ///// <param name="config"></param>
-        ///// <param name="types"></param>
-        //public static IGlobalConfiguration UseManagementPages(this IGlobalConfiguration config, IEnumerable<Type> types)
-        //{
-        //    if (types == null) throw new ArgumentNullException(nameof(types));
-        //    JobsHelper.GetAllJobs(types);
-        //    CreateManagement();
-        //    return config;
-        //}
-        ///// <summary>
-        ///// 加载可管理任务
-        ///// </summary>
-        ///// <param name="config"></param>
-        ///// <param name="typesProvider"></param>
-        ///// <param name="getDisplayData"></param>
-        //public static IGlobalConfiguration UseManagementPages(this IGlobalConfiguration config, Func<IEnumerable<Hangfire.Dashboard.Management.Support.ManagePage>> typesProvider, Func<ParameterInfo, Metadata.DisplayDataAttribute> getDisplayData)
-        //{
-        //    if (typesProvider == null) throw new ArgumentNullException(nameof(typesProvider));
-        //    if (getDisplayData == null) throw new ArgumentNullException(nameof(getDisplayData));
-        //    JobsHelper.GetAllJobs(typesProvider);
-        //    CreateManagement(getDisplayData);
-        //    return config;
-        //}
-        //private static void CreateManagement()
-        //{
-        //    CreateManagement(parameterInfo =>
-        //        parameterInfo.GetCustomAttributes(true).OfType<Metadata.DisplayDataAttribute>().Any() ? parameterInfo.GetCustomAttribute<Metadata.DisplayDataAttribute>() : null
-        //    );
-        //}
         private static void CreateManagement(ManagementPagesOptions options = null)
         {
             #region 翻译
