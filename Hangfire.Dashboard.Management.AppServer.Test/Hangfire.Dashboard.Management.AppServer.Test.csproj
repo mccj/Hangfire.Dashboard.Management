@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Hangfire.Dashboard.Management.Test</RootNamespace>
     <AssemblyName>Hangfire.Dashboard.Management.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
