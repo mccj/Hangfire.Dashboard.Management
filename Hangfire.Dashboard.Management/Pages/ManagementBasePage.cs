@@ -347,12 +347,12 @@ namespace Hangfire.Dashboard.Management.Pages
 namespace System.Web.WebPages
 {
 
-    public class HelperResult //: IHtmlString
+    public class HelperResult2 //: IHtmlString
     {
         private readonly Action<IO.TextWriter> _action;
 
         /// <summary>This type/member supports the .NET Framework infrastructure and is not intended to be used directly from your code.</summary>
-        public HelperResult(Action<IO.TextWriter> action)
+        public HelperResult2(Action<IO.TextWriter> action)
         {
             if (action == null)
             {
