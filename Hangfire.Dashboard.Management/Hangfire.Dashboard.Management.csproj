@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2;netcoreapp2;NET461</TargetFrameworks>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <PackageProjectUrl>https://github.com/mccj/Hangfire.Dashboard.Management</PackageProjectUrl>
     <PackageTags>Hangfire Dashboard Management</PackageTags>
     <Description>Hangfire.Dashboard.Management provides a Management page in the default dashboard. It allows for manually creating jobs.</Description>
