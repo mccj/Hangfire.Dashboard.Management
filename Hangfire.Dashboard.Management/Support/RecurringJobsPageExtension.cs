@@ -49,8 +49,8 @@ namespace Hangfire.Dashboard.Management.Pages
 
                 try
                 {
-                    var invocationData = JobHelper.FromJson<InvocationData>(hash["Job"]);
-                    dto.Job = invocationData.Deserialize();
+                    var invocationData = SerializationHelper.Deserialize<InvocationData>(hash["Job"]);
+                    dto.Job = invocationData.DeserializeJob();
                 }
                 catch (JobLoadException ex)
                 {
@@ -94,7 +94,7 @@ namespace Hangfire.Dashboard.Management.Pages
                 }
                 if (hash.ContainsKey("PauseState"))
                 {
-                    dto.PauseState = JobHelper.FromJson<bool>(hash["PauseState"]);
+                    dto.PauseState = SerializationHelper.Deserialize<bool>(hash["PauseState"]);
                 }
 
                 result.Add(dto);
@@ -110,7 +110,7 @@ namespace Hangfire.Dashboard.Management.Pages
         public static void SetPauseState([NotNull] this IStorageConnection connection, [NotNull] string jobId, [NotNull] bool value)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
-            connection.SetRangeInHash("recurring-job:" + jobId, new[] { new KeyValuePair<string, string>("PauseState", Common.JobHelper.ToJson(value)) });
+            connection.SetRangeInHash("recurring-job:" + jobId, new[] { new KeyValuePair<string, string>("PauseState", SerializationHelper.Serialize(value)) });
         }
         
     }

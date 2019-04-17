@@ -31,7 +31,7 @@ namespace Hangfire.Dashboard.Management
             if (!string.IsNullOrWhiteSpace(recurringJobId))
             {
                 var recurringJob = filterContext.Connection.GetAllEntriesFromHash("recurring-job:" + recurringJobId);
-                var isPauseState = recurringJob.ContainsKey("PauseState") ? Common.JobHelper.FromJson<bool>(recurringJob["PauseState"]) : false;
+                var isPauseState = recurringJob.ContainsKey("PauseState") ? SerializationHelper.Deserialize<bool>(recurringJob["PauseState"]) : false;
 
                 if (isPauseState)
                 {

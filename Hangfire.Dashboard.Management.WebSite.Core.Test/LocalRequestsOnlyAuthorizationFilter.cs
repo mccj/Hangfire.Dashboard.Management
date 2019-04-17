@@ -13,19 +13,19 @@ namespace Hangfire.Dashboard.Management.Standard.Test
         public bool Authorize([NotNull] DashboardContext context)
         {
             return true;
-            // if unknown, assume not local
-            if (String.IsNullOrEmpty(context.Request.RemoteIpAddress))
-                return false;
+            //// if unknown, assume not local
+            //if (String.IsNullOrEmpty(context.Request.RemoteIpAddress))
+            //    return false;
 
-            // check if localhost
-            if (context.Request.RemoteIpAddress == "127.0.0.1" || context.Request.RemoteIpAddress == "::1")
-                return true;
+            //// check if localhost
+            //if (context.Request.RemoteIpAddress == "127.0.0.1" || context.Request.RemoteIpAddress == "::1")
+            //    return true;
 
-            // compare with local address
-            if (context.Request.RemoteIpAddress == context.Request.LocalIpAddress)
-                return true;
+            //// compare with local address
+            //if (context.Request.RemoteIpAddress == context.Request.LocalIpAddress)
+            //    return true;
 
-            return false;
+            //return false;
         }
 
         //#if NETFULL

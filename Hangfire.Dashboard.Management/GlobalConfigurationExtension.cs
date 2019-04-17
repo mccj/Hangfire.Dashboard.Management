@@ -165,8 +165,9 @@ namespace Hangfire.Dashboard.Management
                            var _context = new Microsoft.Owin.OwinContext(environment);
                            var form = _context.Request?.ReadFormAsync()?.Result;
                            return form?.GetValues(_key);
-#endif
+#else
                            return context.Request.GetFormValuesAsync(_key)?.Result;
+#endif
                        }
                        var r = getValue(key);
                        return r.Select(f => string.IsNullOrWhiteSpace(f) ? null : f).ToArray();

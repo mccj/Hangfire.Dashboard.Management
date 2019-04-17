@@ -10,7 +10,7 @@ namespace Hangfire.Dashboard.Management.Test
     {
         public void Configuration(IAppBuilder app)
         {
-            Microsoft.Owin.IOwinContext owinContext;
+            //Microsoft.Owin.IOwinContext owinContext;
             //owinContext.Request.ReadFormAsync()
 
             GlobalConfiguration.Configuration
