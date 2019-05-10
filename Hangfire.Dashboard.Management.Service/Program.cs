@@ -19,6 +19,14 @@ namespace Hangfire.Dashboard.Management.Service
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureAppConfiguration((context, builder) =>
+                {
+                    IHostingEnvironment env = context.HostingEnvironment;
+                    builder
+                        .AddJsonFile("App_Data/appsettings.json", optional: true, reloadOnChange: true)
+                        .AddJsonFile($"App_Data/appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+                });
     }
 }
