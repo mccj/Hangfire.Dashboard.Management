@@ -64,6 +64,7 @@
   <ItemGroup>
     <PackageReference Include="Hangfire.Core" Version="1.7.2" />
     <PackageReference Include="CronExpressionDescriptor" Version="2.11.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.0.461" />
     <PackageReference Include="ncrontab" Version="3.3.1" />
     <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.0" />
   </ItemGroup>
