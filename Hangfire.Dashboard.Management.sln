@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management", "Hangfire.Dashboard.Management\Hangfire.Dashboard.Management.csproj", "{CC0FC702-70D2-4E86-98A8-9386827CDF61}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{4E20C887-C782-4A75-BB8A-64FF4C31AD2C}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -18,10 +16,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CC0FC702-70D2-4E86-98A8-9386827CDF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC0FC702-70D2-4E86-98A8-9386827CDF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC0FC702-70D2-4E86-98A8-9386827CDF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC0FC702-70D2-4E86-98A8-9386827CDF61}.Release|Any CPU.Build.0 = Release|Any CPU
 		{119E487C-7EBB-47D5-BBA0-12343B39A7D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{119E487C-7EBB-47D5-BBA0-12343B39A7D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{119E487C-7EBB-47D5-BBA0-12343B39A7D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
