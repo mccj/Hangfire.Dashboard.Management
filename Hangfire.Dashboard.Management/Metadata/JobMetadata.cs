@@ -28,7 +28,9 @@ namespace Hangfire.Dashboard.Management.Metadata
         public string Name { get; set; }
         public string LabelText { get; set; }
         public string PlaceholderText { get; set; }
+        public string DescriptionText { get; set; }
+        public bool? IsMultiLine { get; set; }
+        public Type ConvertType { get; set; }
         public object DefaultValue { get; set; }
-        
     }
 }

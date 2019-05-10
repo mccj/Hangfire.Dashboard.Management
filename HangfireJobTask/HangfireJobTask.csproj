@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2;NET461</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.2" />
+    <ProjectReference Include="..\Hangfire.Dashboard.Management\Hangfire.Dashboard.Management.csproj" />
+  </ItemGroup>
+
+</Project>

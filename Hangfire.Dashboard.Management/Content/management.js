@@ -59,6 +59,9 @@
                         $("input[id^='" + id + "']", container).each(function () {
                             send[$(this).attr('id')] = $(this).val();
                         });
+                        $("textarea[id^='" + id + "']", container).each(function () {
+                            send[$(this).attr('id')] = $(this).val();
+                        });
                         $("select[id^='" + id + "']", container).each(function () {
                             send[$(this).attr('id')] = $(this).val();
                         });

@@ -196,7 +196,7 @@ namespace Hangfire.Dashboard.Management
 
                         object item = null;
                         var formInput = t?.FirstOrDefault();
-                        if (parameterInfo.ParameterType == typeof(string))
+                        if (parameterInfo.ParameterType == typeof(string) || parameterInfo.ParameterType == typeof(Uri) || parameterInfo.ParameterType.IsEnum)
                         {
                             item = formInput;
                         }
@@ -456,7 +456,10 @@ namespace Hangfire.Dashboard.Management
                           ParameterType = f?.Parameter?.ParameterType,
                           LabelText = f?.DisplayData?.LabelText ?? f?.Parameter?.Name,
                           PlaceholderText = f?.DisplayData?.PlaceholderText ?? f?.Parameter?.Name,
-                          DefaultValue = _defaultValue.Count > 0 ? _defaultValue.Dequeue() : null
+                          DescriptionText = f?.DisplayData?.DescriptionText,
+                          IsMultiLine = f?.DisplayData?.IsMultiLine,
+                          ConvertType = f?.DisplayData?.ConvertType,
+                          DefaultValue = f?.DisplayData?.DefaultValue//_defaultValue.Count > 0 ? _defaultValue.Dequeue() : null
                       }).ToArray(),
                 Description = tm.GetCustomAttribute<System.ComponentModel.DescriptionAttribute>()?.Description ?? tm.Name,
                 DisplayName = tm.GetCustomAttribute<System.ComponentModel.DisplayNameAttribute>()?.DisplayName ?? recurringJobId

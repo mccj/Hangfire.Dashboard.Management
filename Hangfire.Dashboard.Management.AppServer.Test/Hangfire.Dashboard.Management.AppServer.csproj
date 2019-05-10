@@ -36,8 +36,8 @@
     <Reference Include="Hangfire.Console, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Console.1.4.2\lib\net45\Hangfire.Console.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Core, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Core.1.7.1\lib\net46\Hangfire.Core.dll</HintPath>
+    <Reference Include="Hangfire.Core, Version=1.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.7.2\lib\net46\Hangfire.Core.dll</HintPath>
     </Reference>
     <Reference Include="Hangfire.MemoryStorage, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.MemoryStorage.1.6.0\lib\net40\Hangfire.MemoryStorage.dll</HintPath>
@@ -52,7 +52,7 @@
       <HintPath>..\packages\Microsoft.Owin.Hosting.4.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -85,6 +85,10 @@
     <ProjectReference Include="..\Hangfire.Dashboard.Management\Hangfire.Dashboard.Management.csproj">
       <Project>{cc0fc702-70d2-4e86-98a8-9386827cdf61}</Project>
       <Name>Hangfire.Dashboard.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HangfireJobTask\HangfireJobTask.csproj">
+      <Project>{119e487c-7ebb-47d5-bba0-12343b39a7d6}</Project>
+      <Name>HangfireJobTask</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

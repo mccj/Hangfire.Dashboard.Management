@@ -158,12 +158,23 @@
             </div>
         </div>
 }
-@helper Input(string id, string css, string labelText, string placeholderText, string inputtype, object defaultValue = null)
+@helper Input(string id, string css, string labelText, string placeholderText,string descriptionText, string inputtype, object defaultValue = null)
     {
-        <div class="form-group @css">
-            <label for="@(id)" class="control-label">@(labelText)</label>
-            <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)">
-        </div>
+    <div class="form-group @css">
+        <label for="@(id)" class="control-label">@(labelText)</label>
+        @if (inputtype != "textarea")
+        {
+            <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" />
+        }
+        else
+        {
+            <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)">@(defaultValue)</textarea>
+        }
+        @if (!string.IsNullOrWhiteSpace(descriptionText))
+        {
+            <small id="@(id)Help" class="form-text text-muted">@(descriptionText)</small>
+        }
+    </div>
 }
 @helper InputDatebox(string id, string css, string labelText, string placeholderText, object defaultValue = null)
     {

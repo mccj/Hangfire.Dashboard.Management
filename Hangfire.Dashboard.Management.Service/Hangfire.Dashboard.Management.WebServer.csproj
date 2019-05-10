@@ -2,17 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.2" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.0" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.2" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\Hangfire.Dashboard.Management\Hangfire.Dashboard.Management.csproj" />
+    <ProjectReference Include="..\HangfireJobTask\HangfireJobTask.csproj" />
   </ItemGroup>
 
 </Project>
