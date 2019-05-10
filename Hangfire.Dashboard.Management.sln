@@ -12,10 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{4E20C887-C78
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HangfireJobTask", "HangfireJobTask\HangfireJobTask.csproj", "{119E487C-7EBB-47D5-BBA0-12343B39A7D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire.Dashboard.Management.AppServer", "Hangfire.Dashboard.Management.AppServer\Hangfire.Dashboard.Management.AppServer.csproj", "{8850D939-0341-43C4-BD45-2D8DB2C8BDE9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.WebServer", "Hangfire.Dashboard.Management.WebServer\Hangfire.Dashboard.Management.WebServer.csproj", "{D42210D7-3024-44A0-9403-444492514199}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,14 +26,6 @@ Global
 		{119E487C-7EBB-47D5-BBA0-12343B39A7D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{119E487C-7EBB-47D5-BBA0-12343B39A7D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{119E487C-7EBB-47D5-BBA0-12343B39A7D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8850D939-0341-43C4-BD45-2D8DB2C8BDE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8850D939-0341-43C4-BD45-2D8DB2C8BDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8850D939-0341-43C4-BD45-2D8DB2C8BDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8850D939-0341-43C4-BD45-2D8DB2C8BDE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D42210D7-3024-44A0-9403-444492514199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D42210D7-3024-44A0-9403-444492514199}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D42210D7-3024-44A0-9403-444492514199}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D42210D7-3024-44A0-9403-444492514199}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
