@@ -168,14 +168,13 @@ namespace Hangfire.Dashboard.Management.Service
                 {
                     _logger.LogInformation("启动面板");
                     ////启用面板
-                    app.UseHangfireDashboard(_hangfireOption.HangfireDashboardUrl
-                        //,
-                        //new DashboardOptions
-                        //{
-                        //    //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter 
-                        //    Authorization = new[] { new DashboardAuthorizationFilter() },//授权
-                        //                                                                 //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
-                        //}
+                    app.UseHangfireDashboard(_hangfireOption.HangfireDashboardUrl,
+                        new DashboardOptions
+                        {
+                            //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter 
+                            Authorization = new[] { new DashboardAuthorizationFilter() },//授权
+                                                                                         //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
+                        }
                         );
                 }
             }
