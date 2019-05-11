@@ -32,6 +32,9 @@ namespace Hangfire.Dashboard.Management.Service
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddHealthChecks()
+              //.AddDbContextCheck<Data.ApplicationDbContext>()
+              ;
 
             services.Configure<HangfireServiceOption>(Configuration.GetSection("HangfireTask"));
             var serviceProvider = services.BuildServiceProvider();
@@ -125,6 +128,8 @@ namespace Hangfire.Dashboard.Management.Service
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseHealthChecks("/health");
 
             var serviceProvider = app.ApplicationServices;
             var _hangfireOption = serviceProvider.GetService<Microsoft.Extensions.Options.IOptions<HangfireServiceOption>>()?.Value;
