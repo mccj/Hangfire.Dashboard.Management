@@ -34,6 +34,7 @@ namespace Hangfire.Dashboard.Management.Service
                     logging.AddConsole();
                     logging.AddDebug();
                     logging.AddEventSourceLogger();
+                    logging.AddEventLog();
                 });
     }
 }

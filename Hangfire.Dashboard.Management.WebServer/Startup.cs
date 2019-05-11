@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
@@ -12,9 +13,11 @@ namespace Hangfire.Dashboard.Management.Service
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILogger _logger;
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -40,70 +43,78 @@ namespace Hangfire.Dashboard.Management.Service
             var serviceProvider = services.BuildServiceProvider();
             services.AddHangfire(x =>
             {
-                var _hangfireOption = serviceProvider.GetService<Microsoft.Extensions.Options.IOptionsSnapshot<HangfireServiceOption>>()?.Value;
-                var queues = _hangfireOption?.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
-                if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
-
-                x
-                    .UseColouredConsoleLogProvider()//使用彩色控制台日志提供程序
-                                                    //.UseLog4NetLogProvider()//使用log4net日志提供程序
-                                                    //.UseNLogLogProvider()//使用NLogLog日志提供程序
-                                                    //.UseConsole()//使用控制台程序(Hangfire.Console)
-
-                    //.UseActivator(new OrchardJobActivator(_lifetimeScope))
-                    //.UseFilter(new LogFailureAttribute())//登录失败日志记录
-                    .UseManagementPages((cc) => { return cc.AddJobs(GetModuleTypes()); })
-
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ServerCount)//服务器数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.RecurringJobCount)//任务数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.RetriesCount)//重试次数
-                                                                                         //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.EnqueuedCountOrNull)//队列数量
-                                                                                         //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.FailedCountOrNull)//失败数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.EnqueuedAndQueueCount)//队列数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ScheduledCount)//计划任务数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ProcessingCount)//执行中的任务数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.SucceededCount)//成功作业数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.FailedCount)//失败数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.DeletedCount)//删除数量
-                    .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.AwaitingCount)//等待任务数量
-                    ;
-
-                switch (_hangfireOption.StorageType)
+                try
                 {
-                    case StorageType.SqlServerStorage:
-                        {
-                            //nameOrConnectionString="server=weberpdb.fd.com;database=Hangfire;uid=sa;pwd=`1q2w3e4r;Application Name=WebErpApp (Hangfire) Data Provider";
-                            UseSqlServerStorage(x, _hangfireOption.nameOrConnectionString, queues);
-                        }
-                        break;
-                    case StorageType.MemoryStorage:
-                        x.UseMemoryStorage();
-                        break;
-                    //case Settings.StorageType.FirebirdStorage:
-                    //    break;
-                    //case Settings.StorageType.RedisStorage:
-                    //    //config.UseRedisStorage();
-                    //    break;
-                    //case Settings.StorageType.FirebaseStorage:
-                    //    break;
-                    //case Settings.StorageType.MongoStorage:
-                    //    break;
-                    //case Settings.StorageType.MySqlStorage:
-                    //    break;
-                    //case Settings.StorageType.PostgreSqlStorage:
-                    //    break;
-                    //case Settings.StorageType.RavenStorage:
-                    //    break;
-                    //case Settings.StorageType.SQLiteStorage:
-                    //    break;
-                    case StorageType.LocalStorage:
-                    default:
-                        {
-                            UseSqlServerStorage(x, $"Data Source=(LocalDb)\\MSSQLLocalDB;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\\Hangfire.mdf", queues);
-                        }
-                        break;
+                    var _hangfireOption = serviceProvider.GetService<Microsoft.Extensions.Options.IOptionsSnapshot<HangfireServiceOption>>()?.Value;
+                    var queues = _hangfireOption?.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
+                    if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
+
+                    x
+                        .UseColouredConsoleLogProvider()//使用彩色控制台日志提供程序
+                                                        //.UseLog4NetLogProvider()//使用log4net日志提供程序
+                                                        //.UseNLogLogProvider()//使用NLogLog日志提供程序
+                                                        //.UseConsole()//使用控制台程序(Hangfire.Console)
+
+                        //.UseActivator(new OrchardJobActivator(_lifetimeScope))
+                        //.UseFilter(new LogFailureAttribute())//登录失败日志记录
+                        .UseManagementPages((cc) => { return cc.AddJobs(GetModuleTypes()); })
+
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ServerCount)//服务器数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.RecurringJobCount)//任务数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.RetriesCount)//重试次数
+                                                                                             //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.EnqueuedCountOrNull)//队列数量
+                                                                                             //.UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.FailedCountOrNull)//失败数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.EnqueuedAndQueueCount)//队列数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ScheduledCount)//计划任务数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ProcessingCount)//执行中的任务数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.SucceededCount)//成功作业数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.FailedCount)//失败数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.DeletedCount)//删除数量
+                        .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.AwaitingCount)//等待任务数量
+                        ;
+
+                    switch (_hangfireOption.StorageType)
+                    {
+                        case StorageType.SqlServerStorage:
+                            {
+                                //nameOrConnectionString="server=weberpdb.fd.com;database=Hangfire;uid=sa;pwd=`1q2w3e4r;Application Name=WebErpApp (Hangfire) Data Provider";
+                                UseSqlServerStorage(x, _hangfireOption.nameOrConnectionString, queues);
+                            }
+                            break;
+                        case StorageType.MemoryStorage:
+                            x.UseMemoryStorage();
+                            break;
+                        //case Settings.StorageType.FirebirdStorage:
+                        //    break;
+                        //case Settings.StorageType.RedisStorage:
+                        //    //config.UseRedisStorage();
+                        //    break;
+                        //case Settings.StorageType.FirebaseStorage:
+                        //    break;
+                        //case Settings.StorageType.MongoStorage:
+                        //    break;
+                        //case Settings.StorageType.MySqlStorage:
+                        //    break;
+                        //case Settings.StorageType.PostgreSqlStorage:
+                        //    break;
+                        //case Settings.StorageType.RavenStorage:
+                        //    break;
+                        //case Settings.StorageType.SQLiteStorage:
+                        //    break;
+                        case StorageType.LocalStorage:
+                        default:
+                            {
+                                UseSqlServerStorage(x, $"Data Source=(LocalDb)\\MSSQLLocalDB;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\\Hangfire.mdf", queues);
+                            }
+                            break;
+                    }
+                    //.UseSqlServerStorage("server=10.11.1.121;database=Hangfire;uid=sa;pwd=`1q2w3e4r;Application Name=WebErpApp (Hangfire) Data Provider")
                 }
-                //.UseSqlServerStorage("server=10.11.1.121;database=Hangfire;uid=sa;pwd=`1q2w3e4r;Application Name=WebErpApp (Hangfire) Data Provider")
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "AddHangfire 异常");
+                    throw;
+                }
             });
         }
 
@@ -131,37 +142,47 @@ namespace Hangfire.Dashboard.Management.Service
 
             app.UseHealthChecks("/health");
 
-            var serviceProvider = app.ApplicationServices;
-            var _hangfireOption = serviceProvider.GetService<Microsoft.Extensions.Options.IOptions<HangfireServiceOption>>()?.Value;
-            //var _hangfireOption = _hangfireServiceOption?.Value;
-            var queues = _hangfireOption.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
-            if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
+            try
+            {
+                var serviceProvider = app.ApplicationServices;
+                var _hangfireOption = serviceProvider.GetService<Microsoft.Extensions.Options.IOptions<HangfireServiceOption>>()?.Value;
+                //var _hangfireOption = _hangfireServiceOption?.Value;
+                var queues = _hangfireOption.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
+                if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
 
-            if (_hangfireOption?.IsUseHangfireServer == true)
-            {
-                //启用本地服务
-                //var options = new BackgroundJobServerOptions
-                //{//:{System.Web.Hosting.HostingEnvironment.SiteName }:{System.Web.Hosting.HostingEnvironment.ApplicationID}
-                //    ServerName = $"{(string.IsNullOrWhiteSpace(_hangfireOption?.ServiceName) ? "" : ("[" + _hangfireOption?.ServiceName + "]"))}{Environment.MachineName}:{System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture}:{AppDomain.CurrentDomain.FriendlyName}:{System.Diagnostics.Process.GetCurrentProcess().Id}:{AppDomain.CurrentDomain.Id}",
-                //    //[]mccj-pc:webuiapp:32732:1
-                //    ShutdownTimeout = TimeSpan.FromMinutes(30),//关闭超时时间
-                //    WorkerCount = Math.Max(Environment.ProcessorCount, _hangfireOption.WorkerCount == 0 ? 20 : _hangfireOption.WorkerCount),//最大job并发处理数量
-                //    Queues = queues
-                //};
-                app.UseHangfireServer(/*options*/);
+                if (_hangfireOption?.IsUseHangfireServer == true)
+                {
+                    //启用本地服务
+                    //var options = new BackgroundJobServerOptions
+                    //{//:{System.Web.Hosting.HostingEnvironment.SiteName }:{System.Web.Hosting.HostingEnvironment.ApplicationID}
+                    //    ServerName = $"{(string.IsNullOrWhiteSpace(_hangfireOption?.ServiceName) ? "" : ("[" + _hangfireOption?.ServiceName + "]"))}{Environment.MachineName}:{System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture}:{AppDomain.CurrentDomain.FriendlyName}:{System.Diagnostics.Process.GetCurrentProcess().Id}:{AppDomain.CurrentDomain.Id}",
+                    //    //[]mccj-pc:webuiapp:32732:1
+                    //    ShutdownTimeout = TimeSpan.FromMinutes(30),//关闭超时时间
+                    //    WorkerCount = Math.Max(Environment.ProcessorCount, _hangfireOption.WorkerCount == 0 ? 20 : _hangfireOption.WorkerCount),//最大job并发处理数量
+                    //    Queues = queues
+                    //};
+                    _logger.LogInformation("启动服务");
+                    app.UseHangfireServer(/*options*/);
+                }
+                if (_hangfireOption?.IsUseHangfireDashboard == true)
+                {
+                    _logger.LogInformation("启动面板");
+                    ////启用面板
+                    app.UseHangfireDashboard(_hangfireOption.HangfireDashboardUrl
+                        //,
+                        //new DashboardOptions
+                        //{
+                        //    //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter 
+                        //    Authorization = new[] { new DashboardAuthorizationFilter() },//授权
+                        //                                                                 //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
+                        //}
+                        );
+                }
             }
-            if (_hangfireOption?.IsUseHangfireDashboard == true)
+            catch (Exception ex)
             {
-                ////启用面板
-                app.UseHangfireDashboard(_hangfireOption.HangfireDashboardUrl
-                    //,
-                    //new DashboardOptions
-                    //{
-                    //    //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter 
-                    //    Authorization = new[] { new DashboardAuthorizationFilter() },//授权
-                    //                                                                 //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
-                    //}
-                    );
+                _logger.LogError(ex, "Hangfire 异常");
+                throw;
             }
             //app.UseHangfireServer();//启动Hangfire服务
             //app.UseHangfireDashboard();//启动hangfire面板
