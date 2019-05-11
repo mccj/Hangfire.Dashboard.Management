@@ -91,7 +91,7 @@
 
                 using (var connection = Storage.GetConnection())
                 {
-                    continuations = JobHelper.FromJson<List<Continuation>>(connection.GetJobParameter(
+                    continuations = SerializationHelper.Deserialize<List<Continuation>>(connection.GetJobParameter(
                         JobId, "Continuations")) ?? new List<Continuation>();
                 }
 
