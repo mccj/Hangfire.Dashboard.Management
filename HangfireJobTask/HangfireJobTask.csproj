@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.2" />
-    <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.0">
+    <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.1-beta2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
