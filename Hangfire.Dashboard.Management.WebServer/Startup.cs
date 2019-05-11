@@ -39,13 +39,14 @@ namespace Hangfire.Dashboard.Management.Service
               //.AddDbContextCheck<Data.ApplicationDbContext>()
               ;
 
+            //services.AddHostedService<HangfireHostedService>();
+
             services.Configure<HangfireServiceOption>(Configuration.GetSection("HangfireTask"));
-            var serviceProvider = services.BuildServiceProvider();
-            services.AddHangfire(x =>
+            services.AddHangfire((sp,x) =>
             {
                 try
                 {
-                    var _hangfireOption = serviceProvider.GetService<Microsoft.Extensions.Options.IOptionsSnapshot<HangfireServiceOption>>()?.Value;
+                    var _hangfireOption = sp.GetService<Microsoft.Extensions.Options.IOptions<HangfireServiceOption>>()?.Value;
                     var queues = _hangfireOption?.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
                     if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
 
