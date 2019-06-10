@@ -1,0 +1,30 @@
+language: csharp    #设定编译语言
+sudo: required      #需要sudo权限
+os:                 #设定测试操作系统
+  - linux
+  - windows
+#  - osx
+mono:               #Mono版本,可以指定为 latest
+  - none
+ dotnet:
+  - 2.2.103
+script:             #脚本
+  - if test "$TRAVIS_OS_NAME" == "linux"; then 
+        curl https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version 2.2.103;
+        export PATH="/home/travis/.dotnet":"$PATH"; 
+    fi;
+  #  - if test "$TRAVIS_OS_NAME" == "linux"; then export PATH="/home/travis/.dotnet":"$PATH"; fi
+  - dotnet --info
+  - dotnet build -c Release
+  - dotnet publish -c Release -o $TRAVIS_BUILD_DIR/.build/release;
+#dotnet: 2.1.502
+#script:
+# - dotnet restore
+#
+#
+# matrix:
+#  include:
+#    - dotnet: 2.1.502
+#      mono: none
+#      env: DOTNETCORE=2  # optional, can be used to take different code paths in your script
+#    - mono: latest
