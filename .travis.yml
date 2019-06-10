@@ -9,11 +9,12 @@ mono:               #Mono版本,可以指定为 latest
  dotnet:
   - 2.2.103
 script:             #脚本
-  - if test "$TRAVIS_OS_NAME" == "linux"; then 
-        curl https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version 2.2.103;
-        export PATH="/home/travis/.dotnet":"$PATH"; 
-    fi;
-  #  - if test "$TRAVIS_OS_NAME" == "linux"; then export PATH="/home/travis/.dotnet":"$PATH"; fi
+#  - true
+#  - if test "$TRAVIS_OS_NAME" == "linux"; then 
+#        curl https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version 2.2.103;
+#        export PATH="/home/travis/.dotnet":"$PATH"; 
+#    fi;
+#  #  - if test "$TRAVIS_OS_NAME" == "linux"; then export PATH="/home/travis/.dotnet":"$PATH"; fi
   - dotnet --info
   - dotnet build -c Release
   - dotnet publish -c Release -o $TRAVIS_BUILD_DIR/.build/release;
