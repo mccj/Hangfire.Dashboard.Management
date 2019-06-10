@@ -1,28 +1,25 @@
-language: csharp    #设定编译语言
-sudo: required      #需要sudo权限
-os:                 #设定测试操作系统
-  - linux
-  - windows
+language:   csharp          #设定编译语言
+sudo:       required        #需要sudo权限
+os:                         #设定测试操作系统
+#  - linux
 #  - osx
-mono:               #Mono版本,可以指定为 latest
-  - none
- dotnet:
-  - 2.2.103
+  - windows
+mono:       none            #Mono版本,可以指定为 latest,none
+#dotnet:     2.1.502         #dotnet版本
+#install:
+#  - curl https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version 2.2.107
+#  - if test "$TRAVIS_OS_NAME" == "linux"; then export PATH="/home/travis/.dotnet":"$PATH"; fi
+#  - if test "$TRAVIS_OS_NAME" == "osx"; then export PATH="/Users/travis/.dotnet":"$PATH"; fi
 script:             #脚本
-#  - true
-#  - if test "$TRAVIS_OS_NAME" == "linux"; then 
-#        curl https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version 2.2.103;
-#        export PATH="/home/travis/.dotnet":"$PATH"; 
-#    fi;
-#  #  - if test "$TRAVIS_OS_NAME" == "linux"; then export PATH="/home/travis/.dotnet":"$PATH"; fi
+#  - dir %WINDIR%\Microsoft.Net\Framework\v* /B
   - dotnet --info
   - dotnet build -c Release
-  - dotnet publish -c Release -o $TRAVIS_BUILD_DIR/.build/release;
-#dotnet: 2.1.502
-#script:
-# - dotnet restore
-#
-#
+#  - dotnet publish -c Release
+  - dotnet test -c Release
+#  - true
+
+
+
 # matrix:
 #  include:
 #    - dotnet: 2.1.502
