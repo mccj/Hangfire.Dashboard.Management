@@ -6,6 +6,8 @@ Hangfire.Dashboard.Management provides a Management page in the default dashboar
 
 ![management](management.PNG)
 
+[![Build Status](https://travis-ci.org/mccj/Hangfire.Dashboard.Management.svg?branch=master)](https://travis-ci.org/mccj/Hangfire.Dashboard.Management)
+
 ## Features
 
  - **Automatic page and menu generation**: Simple attributes on your job classes define management pages. 
