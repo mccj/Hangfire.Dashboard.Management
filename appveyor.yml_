@@ -1,0 +1,30 @@
+version: 1.0.0-beta-{build}
+image: Visual Studio 2019
+init:
+- ps: dotnet --version
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+before_build:
+- ps: msbuild -t:restore
+build:
+  publish_wap_octopus: true
+  publish_azure_webjob: true
+  publish_azure: true
+  publish_nuget: true
+  publish_nuget_symbols: true
+  use_snupkg_format: true
+  include_nuget_references: true
+  publish_aspnet_core: true
+  publish_core_console: true
+  verbosity: minimal
+deploy:
+- provider: Environment
+  name: MyGet
+- provider: Environment
+  name: NuGet
