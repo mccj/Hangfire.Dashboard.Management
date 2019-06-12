@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Hangfire.Dashboard.Management.Test</RootNamespace>
-    <AssemblyName>Hangfire.Dashboard.Management.Test</AssemblyName>
+    <RootNamespace>Hangfire.Dashboard.Management.AppServer</RootNamespace>
+    <AssemblyName>Hangfire.Dashboard.Management.AppServer</AssemblyName>
     <TargetFramework>net461</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Hangfire.Dashboard.Management.Test</AssemblyTitle>

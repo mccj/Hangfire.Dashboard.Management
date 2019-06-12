@@ -31,7 +31,7 @@ namespace Hangfire.Dashboard.Management.Test
             //    assembliePaths = assembliePaths.Concat(System.IO.Directory.GetFiles(moduleDirectory, "*.dll")).ToArray();
 
             //var assemblies = assembliePaths.Select(f => System.Reflection.Assembly.LoadFile(f)).ToArray();
-            var assemblies = new[] { typeof(HangfireJobTask.常规任务).Assembly};
+            var assemblies = new[] { typeof(HangfireJobTask.常规任务).Assembly };
             var moduleTypes = assemblies.SelectMany(f =>
             {
                 try
