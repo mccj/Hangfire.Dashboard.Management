@@ -11,8 +11,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Hangfire.Console" Version="1.4.2" />
-    <PackageReference Include="Hangfire.Core" Version="1.7.3" />
-    <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.0" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.4" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.1" />
     <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
     <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.0.1" />
     <PackageReference Include="Microsoft.Owin.Host.HttpListener.zh-Hans" Version="4.0.1" />
