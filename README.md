@@ -37,7 +37,7 @@ Each input property, other than IJobCancellationToken and PerformContext, should
 defines the input label and placeholder text for better readability. 
 
 ```c#
-[ManagementPage("Misc Jobs", "Miscellaneous", "misc")]
+[ManagementPage("Misc Jobs", "misc")]
 public class MiscJobs
 {   
     [Job]

@@ -57,7 +57,7 @@ namespace Hangfire.Dashboard.Management
             #region 翻译
             var resourceManager = Hangfire.Dashboard.Resources.Strings.ResourceManager;
             var resourceManField = typeof(Hangfire.Dashboard.Resources.Strings).GetField("resourceMan", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-            var customHangfireLanguage = new CustomHangfireLanguage(resourceManager, options.TranslateFunc);
+            var customHangfireLanguage = new CustomHangfireLanguage(resourceManager, options.translateFunc,options.culture);
             resourceManField.SetValue(null, customHangfireLanguage /*_customHangfireLanguage*/);
             JobHistoryRenderer.Register(customHangfireLanguage);
             //翻译时间脚本
@@ -361,14 +361,17 @@ namespace Hangfire.Dashboard.Management
         public ManagementPagesOptions()
         {
         }
-        protected internal Func<string, System.Globalization.CultureInfo, string> TranslateFunc { get; private set; }
-        private List<ManagePage> Pages { get; /*set; */} = new List<ManagePage>();
-
-        protected internal aaaa[] GetPages()
+        protected internal Func<string, System.Globalization.CultureInfo, string> translateFunc { get; private set; } = new Func<string, System.Globalization.CultureInfo, string>((name, culture) =>
         {
-            return Pages.GroupBy(f => f.Title.IsNullOrWhiteSpace() ? string.Empty : f.Title.Trim()).Select(f => new aaaa { Title = f.Key, Pages = f.Where(ff => ff.Metadatas.Length > 0).ToArray() }).ToArray();
+            return JsonHangfireLanguage.TranslatLanguage(culture, name);
+        });
+        private List<ManagePage> Pages { get; /*set; */} = new List<ManagePage>();
+        protected internal System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentUICulture;
+        protected internal PageInfo[] GetPages()
+        {
+            return Pages.GroupBy(f => f.Title.IsNullOrWhiteSpace() ? string.Empty : f.Title.Trim()).Select(f => new PageInfo { Title = f.Key, Pages = f.Where(ff => ff.Metadatas.Length > 0).ToArray() }).ToArray();
         }
-        protected internal class aaaa
+        protected internal class PageInfo
         {
             public string Title { get; set; }
             public ManagePage[] Pages { get; set; }
@@ -376,13 +379,45 @@ namespace Hangfire.Dashboard.Management
         }
 
         /// <summary>
-        /// 翻译
+        /// 重新翻译方法
         /// </summary>
         /// <param name="func"></param>
         /// <returns></returns>
-        public ManagementPagesOptions Translate(Func<string, System.Globalization.CultureInfo, string> func)
+        public ManagementPagesOptions TranslateFunc(Func<string, System.Globalization.CultureInfo, string> func)
         {
-            this.TranslateFunc = func;
+            this.translateFunc = func;
+            return this;
+        }
+        /// <summary>
+        /// 添加翻译对象
+        /// </summary>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public ManagementPagesOptions TranslateCulture(CultureLanguages culture)
+        {
+            JsonHangfireLanguage.AddCultureLanguages(culture);
+            return this;
+        }
+        /// <summary>
+        /// 添加翻译json文件
+        /// </summary>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public ManagementPagesOptions TranslateJson(string json)
+        {
+            var culture = Newtonsoft.Json.JsonConvert.DeserializeObject<CultureLanguages>(json);
+            TranslateCulture(culture);
+            return this;
+        }
+        public ManagementPagesOptions TranslateStream(System.IO.Stream stream)
+        {
+            var json = new System.IO.StreamReader(stream).ReadToEnd();
+            TranslateJson(json);
+            return this;
+        }
+        public ManagementPagesOptions SetCulture(System.Globalization.CultureInfo culture)
+        {
+            this.culture = culture;
             return this;
         }
         /// <summary>

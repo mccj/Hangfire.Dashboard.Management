@@ -58,7 +58,17 @@ namespace Hangfire.Dashboard.Management.Service
 
                         //.UseActivator(new OrchardJobActivator(_lifetimeScope))
                         //.UseFilter(new LogFailureAttribute())//登录失败日志记录
-                        .UseManagementPages((cc) => { return cc.AddJobs(GetModuleTypes()); })
+                        .UseManagementPages((cc) => {
+                            return cc
+                                .AddJobs(GetModuleTypes())
+                               //.SetCulture(new System.Globalization.CultureInfo("en-us"))
+                               //.TranslateJson("")
+                               ////or
+                               //.TranslateCulture(obj)
+                               ////or
+                               //.TranslateStream(s);
+                                ;
+                        })
 
                         .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.ServerCount)//服务器数量
                         .UseDashboardMetric(Hangfire.Dashboard.DashboardMetrics.RecurringJobCount)//任务数量
@@ -130,7 +140,6 @@ namespace Hangfire.Dashboard.Management.Service
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
