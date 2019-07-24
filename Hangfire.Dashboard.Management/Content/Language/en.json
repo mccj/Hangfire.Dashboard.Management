@@ -1,7 +1,10 @@
 {
   "Culture": "en",
   "Translates": {
-    "添加一个新的计划任务": "fffffffffffffffff"
+    "添加一个新的计划任务": "Add a new planned task",
+    "暂停": "pause",
+    "恢复": "recovery",
+    "添加": "add"
     //"Metrics_RecurringJobs": "Recurring Jobs"
     //  "JobsSidebarMenu_Enqueued": "队列",
     //  "JobDetailsPage_JobId": "任务编号",

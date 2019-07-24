@@ -59,24 +59,24 @@
                     </button>
                     <button class="js-jobs-list-command btn btn-sm btn-warning"
                             data-url="@Url.To("/recurring/pause")"
-                            data-loading-text="暂停中"
-                            data-confirm="您确定要暂停所选的全部作业吗？"
+                            data-loading-text="@Strings.ResourceManager.GetString("暂停中")"
+                            data-confirm="@Strings.ResourceManager.GetString("您确定要暂停所选的全部作业吗？")"
                             disabled="disabled">
                         <span class="glyphicon glyphicon-pause"></span>
-                        暂停
+                        @Strings.ResourceManager.GetString("暂停")
                     </button>
                     <button class="js-jobs-list-command btn btn-sm btn-success"
                             data-url="@Url.To("/recurring/repeat")"
-                            data-loading-text="恢复中"
-                            data-confirm="您确定要恢复所选的全部作业吗？"
+                            data-loading-text="@Strings.ResourceManager.GetString("恢复中")"
+                            data-confirm="@Strings.ResourceManager.GetString("您确定要恢复所选的全部作业吗？")"
                             disabled="disabled">
                         <span class="glyphicon glyphicon-repeat"></span>
-                        恢复
+                        @Strings.ResourceManager.GetString("恢复")
                     </button>
 
                     <a class="js-jobs-list-command btn btn-sm btn-default" href="@Url.To(ManagementPage.UrlRoute)">
                         <span class="glyphicon glyphicon-plus"></span>
-                        添加
+                        @Strings.ResourceManager.GetString("添加")
                     </a>
                     <button class="js-jobs-list-command btn btn-sm btn-danger"
                             data-url="@Url.To("/recurring/remove")"
@@ -170,11 +170,11 @@
                                     <td class="word-break">
                                         @if (job.PauseState)
                                         {
-                                            <span class="label label-warning">暂停</span>
+                                            <span class="label label-warning">@Strings.ResourceManager.GetString("暂停")</span>
                                         }
                                         else
                                         {
-                                            <span class="label label-success">正常</span>
+                                            <span class="label label-success">@Strings.ResourceManager.GetString("正常")</span>
                                         }
                                     </td>
                                     <td class="align-right min-width">
