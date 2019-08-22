@@ -23,7 +23,17 @@ Hangfire.Dashboard.Management provides a Management page in the default dashboar
 
 ```c#
 GlobalConfiguration.Configuration
-    .UseManagementPages(<assembly with IJob implementations>);    
+    .UseManagementPages(config => {
+        return config
+            .AddJobs(< assembly with IJob implementations >)
+            .SetCulture(new System.Globalization.CultureInfo("en-us"))
+            //.TranslateJson(< Custom language JSON >)
+            ////or
+            //.TranslateCulture(< Custom Language Object >)
+            ////or
+            //.TranslateStream(< Custom language Stream >);
+            ;
+    });    
 ```
 ## Defining Pages
 
@@ -40,27 +50,26 @@ defines the input label and placeholder text for better readability.
 [ManagementPage("Misc Jobs", "Miscellaneous", "misc")]
 public class MiscJobs : IJob
 {   
-	[DisplayName("Test")]    
-	[Description("Test that jobs are running with simple console output.")]
+    [DisplayName("Test")]    
+    [Description("Test that jobs are running with simple console output.")]
     [AutomaticRetry(Attempts = 0)]
     [DisableConcurrentExecution(90)]
     public void Test(PerformContext context, IJobCancellationToken token,
             [DisplayData("Output Text", "Enter text to output.")] string outputText,
             [DisplayData("Repeat When Completed", "Repeat")] bool repeat,
             [DisplayData("Test Date", "Enter date")] DateTime testDate) 
-	
-	{
-		context.WriteLine(outputText);
-		Thread.Sleep(15000);
-				
-		token.ThrowIfCancellationRequested();
+            {
+                 context.WriteLine(outputText);
+                 Thread.Sleep(15000);
 
-		if (repeat)
-		{
-			context.WriteLine("Enquing the job again from the job.");
-			BackgroundJob.Enqueue<MiscJobs>(m => m.Test(context, token, outputText, repeat));
-		}
-	}
+                 token.ThrowIfCancellationRequested();
+
+                 if (repeat)
+                 {
+                      context.WriteLine("Enquing the job again from the job.");
+                      BackgroundJob.Enqueue<MiscJobs>(m => m.Test(context, token, outputText, repeat));
+                 }
+            }
 }
 ```
 
