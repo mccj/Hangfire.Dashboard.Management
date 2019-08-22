@@ -1,8 +1,8 @@
 # Hangfire.Dashboard.Management
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ofdcnfyh5k7vcvsy?svg=true)](https://ci.appveyor.com/project/mccj/hangfire-dashboard-management)
-[![MyGet](https://img.shields.io/myget/mccj/vpre/hangfire.dashboard.management.svg)](https://myget.org/feed/mccj/package/nuget/hangfire.dashboard.management)
-[![NuGet](https://img.shields.io/nuget/v/hangfire.dashboard.management.svg)](https://www.nuget.org/packages/hangfire.dashboard.management)
+[![MyGet](https://img.shields.io/myget/mccj/vpre/Hangfire.Dashboard.Management.svg)](https://myget.org/feed/mccj/package/nuget/Hangfire.Dashboard.Management)
+[![NuGet](https://img.shields.io/nuget/v/Hangfire.Dashboard.Management.svg)](https://www.nuget.org/packages/Hangfire.Dashboard.Management)
 ![MIT License](https://img.shields.io/badge/license-MIT-orange.svg)
 
 Hangfire.Dashboard.Management provides a Management page in the default dashboard. It allows for manually creating jobs.
@@ -23,7 +23,17 @@ Hangfire.Dashboard.Management provides a Management page in the default dashboar
 
 ```c#
 GlobalConfiguration.Configuration
-    .UseManagementPages(<assembly with IJob implementations>);    
+    .UseManagementPages(config => {
+        return config
+            .AddJobs(< assembly with IJob implementations >)
+            .SetCulture(new System.Globalization.CultureInfo("en-us"))
+            //.TranslateJson(< Custom language JSON >)
+            ////or
+            //.TranslateCulture(< Custom Language Object >)
+            ////or
+            //.TranslateStream(< Custom language Stream >);
+            ;
+    });    
 ```
 ## Defining Pages
 
@@ -37,10 +47,9 @@ Each input property, other than IJobCancellationToken and PerformContext, should
 defines the input label and placeholder text for better readability. 
 
 ```c#
-[ManagementPage("Misc Jobs", "misc")]
-public class MiscJobs
+[ManagementPage("Misc Jobs", "Miscellaneous", "misc")]
+public class MiscJobs : IJob
 {   
-    [Job]
     [DisplayName("Test")]    
     [Description("Test that jobs are running with simple console output.")]
     [AutomaticRetry(Attempts = 0)]
@@ -49,18 +58,18 @@ public class MiscJobs
             [DisplayData("Output Text", "Enter text to output.")] string outputText,
             [DisplayData("Repeat When Completed", "Repeat")] bool repeat,
             [DisplayData("Test Date", "Enter date")] DateTime testDate) 
-	{
-		context.WriteLine(outputText);
-		Thread.Sleep(15000);
-				
-		token.ThrowIfCancellationRequested();
+            {
+                 context.WriteLine(outputText);
+                 Thread.Sleep(15000);
 
-		if (repeat)
-		{
-			context.WriteLine("Enquing the job again from the job.");
-			BackgroundJob.Enqueue<MiscJobs>(m => m.Test(context, token, outputText, repeat));
-		}
-	}
+                 token.ThrowIfCancellationRequested();
+
+                 if (repeat)
+                 {
+                      context.WriteLine("Enquing the job again from the job.");
+                      BackgroundJob.Enqueue<MiscJobs>(m => m.Test(context, token, outputText, repeat));
+                 }
+            }
 }
 ```
 
@@ -70,7 +79,7 @@ sure what will happen.
 
 ## License
 
-Copyright (c) 2018
+Copyright (c) 2017
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
