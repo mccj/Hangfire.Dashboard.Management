@@ -1,4 +1,6 @@
 ﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
+@using Hangfire.Dashboard.Resources
+@using Hangfire.Dashboard
 @inherits RazorPage
 @{
 }
@@ -16,28 +18,28 @@
                     <a href="#second" aria-controls="second" role="tab" data-toggle="tab">秒</a>
                 </li>*@
             <li role="presentation" class="active">
-                <a href="#minute" aria-controls="minute" role="tab" data-toggle="tab">分钟</a>
+                <a href="#minute" aria-controls="minute" role="tab" data-toggle="tab">@Strings.ResourceManager.GetString("分钟")</a>
             </li>
             <li role="presentation">
-                <a href="#hour" aria-controls="hour" role="tab" data-toggle="tab">小时</a>
+                <a href="#hour" aria-controls="hour" role="tab" data-toggle="tab">@Strings.ResourceManager.GetString("小时")</a>
             </li>
             <li role="presentation">
-                <a href="#day" aria-controls="day" role="tab" data-toggle="tab">日</a>
+                <a href="#day" aria-controls="day" role="tab" data-toggle="tab">@Strings.ResourceManager.GetString("日")</a>
             </li>
             <li role="presentation">
-                <a href="#month" aria-controls="month" role="tab" data-toggle="tab">月</a>
+                <a href="#month" aria-controls="month" role="tab" data-toggle="tab">@Strings.ResourceManager.GetString("月")</a>
             </li>
             <li role="presentation">
-                <a href="#week" aria-controls="week" role="tab" data-toggle="tab">周</a>
+                <a href="#week" aria-controls="week" role="tab" data-toggle="tab">@Strings.ResourceManager.GetString("周")</a>
             </li>
             @*<li role="presentation">
                     <a href="#year" aria-controls="year" role="tab" data-toggle="tab">年</a>
                 </li>*@
             <li role="presentation">
-                <a href="#general" aria-controls="general" role="tab" data-toggle="tab">常用Cron表达式</a>
+                <a href="#general" aria-controls="general" role="tab" data-toggle="tab">@Strings.ResourceManager.GetString("常用Cron表达式")</a>
             </li>
             <li role="presentation">
-                <a href="#cron" aria-controls="cron" role="tab" data-toggle="tab">Cron表达式解析</a>
+                <a href="#cron" aria-controls="cron" role="tab" data-toggle="tab">@Strings.ResourceManager.GetString("Cron表达式解析")</a>
             </li>
         </ul>
         <!-- Tab panes -->

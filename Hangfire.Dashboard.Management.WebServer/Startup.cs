@@ -61,12 +61,12 @@ namespace Hangfire.Dashboard.Management.Service
                         .UseManagementPages((cc) => {
                             return cc
                                 .AddJobs(GetModuleTypes())
-                               //.SetCulture(new System.Globalization.CultureInfo("en-us"))
-                               //.TranslateJson("")
-                               ////or
-                               //.TranslateCulture(obj)
-                               ////or
-                               //.TranslateStream(s);
+                               .SetCulture(new System.Globalization.CultureInfo("en-us"))
+                                //.TranslateJson("")
+                                ////or
+                                //.TranslateCulture(obj)
+                                ////or
+                                //.TranslateStream(s);
                                 ;
                         })
 

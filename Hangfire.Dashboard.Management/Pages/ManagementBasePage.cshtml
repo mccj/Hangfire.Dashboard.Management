@@ -3,6 +3,8 @@
 @using System.Reflection
 @using Hangfire.Dashboard
 @using Hangfire.Dashboard.Pages
+@using Hangfire.Dashboard.Resources
+
 @inherits RazorPage
 @{
     Layout = new LayoutPage(pageTitle);
@@ -48,7 +50,7 @@
             <button class="js-management-input-commands btn btn-sm btn-success"
                     data-url="@(Url.To(url))" data-loading-text="@(loadingText)" input-id="@(id)" input-type="Enqueue">
                 <span class="glyphicon glyphicon-play-circle"></span>
-                &nbsp;列队执行
+                &nbsp;@Strings.ResourceManager.GetString("列队执行")
             </button>
         </div>
         <div class="col-sm-8 pull-right commands-panel ScheduleDateTime" style="display:none">
@@ -58,7 +60,7 @@
                     <button class="btn btn-default btn-sm btn-primary js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleDateTime"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
                         <span class="glyphicon glyphicon-calendar"></span>
-                        &nbsp;定时执行
+                        &nbsp;@Strings.ResourceManager.GetString("定时执行")
                     </button>
                 </div>
             </div>
@@ -70,7 +72,7 @@
                     <button class="btn btn-default btn-sm btn-info js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleTimeSpan"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
                         <span class="glyphicon glyphicon-time"></span>
-                        &nbsp;延时执行
+                        &nbsp;@Strings.ResourceManager.GetString("延时执行")
                     </button>
                     <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
@@ -78,23 +80,23 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:5"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">5 秒</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">5 @Strings.ResourceManager.GetString("秒")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:10"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">10 秒</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">10 @Strings.ResourceManager.GetString("秒")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:15"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">15 秒</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">15 @Strings.ResourceManager.GetString("秒")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:30"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">30 秒</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">30 @Strings.ResourceManager.GetString("秒")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:1:0"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">60 秒</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">60 @Strings.ResourceManager.GetString("秒")</a>
                         </li>
 
                     </ul>
@@ -109,7 +111,7 @@
                     <button class="btn btn-default btn-sm btn-warning js-management-input-commands" type="button" input-id="@(id)" input-type="CronExpression"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
                         <span class="glyphicon glyphicon-repeat"></span>
-                        &nbsp;重复执行
+                        &nbsp;@Strings.ResourceManager.GetString("重复执行")
                     </button>
                     <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
@@ -117,27 +119,27 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Minutely())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每分 (@(Cron.Minutely()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("每分") (@(Cron.Minutely()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Hourly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每时 (@(Cron.Hourly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("每时") (@(Cron.Hourly()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Daily())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每天 (@(Cron.Daily()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("每天") (@(Cron.Daily()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Weekly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每周 (@(Cron.Weekly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("每周") (@(Cron.Weekly()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Monthly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每月 (@(Cron.Monthly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("每月") (@(Cron.Monthly()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Yearly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">每年 (@(Cron.Yearly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("每年") (@(Cron.Yearly()))</a>
                         </li>
                     </ul>
                 </div>
@@ -146,14 +148,14 @@
         <div class="col-sm-4">
             <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    任务类型: <span class="@(id) commandsType">列队执行</span>
+                    @Strings.ResourceManager.GetString("任务类型:") <span class="@(id) commandsType">@Strings.ResourceManager.GetString("列队执行")</span>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="Enqueue" data-id="@(id)">列队执行</a></li>
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleDateTime" data-id="@(id)">定时执行</a></li>
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleTimeSpan" data-id="@(id)">延时执行</a></li>
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="CronExpression" data-id="@(id)">重复执行</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="Enqueue" data-id="@(id)">@Strings.ResourceManager.GetString("列队执行")</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleDateTime" data-id="@(id)">@Strings.ResourceManager.GetString("定时执行")</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleTimeSpan" data-id="@(id)">@Strings.ResourceManager.GetString("延时执行")</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="CronExpression" data-id="@(id)">@Strings.ResourceManager.GetString("重复执行")</a></li>
                 </ul>
             </div>
         </div>
@@ -229,14 +231,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="cronModalLabel">Corn表达式生成器</h4>
+                    <h4 class="modal-title" id="cronModalLabel">@Strings.ResourceManager.GetString("Corn表达式生成器")</h4>
                 </div>
                 <div class="modal-body">
                     @(Html.RenderPartial(new CornJobsPage()))
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" id="connExpressionOk">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Strings.ResourceManager.GetString("关闭")</button>
+                    <button type="button" class="btn btn-primary" id="connExpressionOk">@Strings.ResourceManager.GetString("确定")</button>
                 </div>
             </div>
         </div>

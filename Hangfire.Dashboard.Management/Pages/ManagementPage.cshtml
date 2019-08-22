@@ -2,6 +2,8 @@
 @using System
 @using Hangfire.Dashboard
 @using Hangfire.Dashboard.Pages
+@using Hangfire.Dashboard.Resources
+
 @inherits RazorPage
 @functions {
     public const string Title = "Management";
@@ -19,6 +21,6 @@
             @(Title)
         </h1>
         @*@("Select the job type you would like enqueue from the menu.");*@
-        @("从菜单中选择你喜欢的工作内容");
+        @Strings.ResourceManager.GetString("从菜单中选择你喜欢的工作内容")
     </div>
 </div>
