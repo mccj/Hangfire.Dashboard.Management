@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Hangfire.Dashboard.Management\Hangfire.Dashboard.Management.csproj" />
   </ItemGroup>
 

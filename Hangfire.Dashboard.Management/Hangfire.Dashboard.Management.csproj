@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2;NET461</TargetFrameworks>
-    <Version>1.7.5</Version>
+    <Version>1.7.6</Version>
     <!--<RazorViewsCodeGenDirectory>$(MsBuildProjectDirectory)\</RazorViewsCodeGenDirectory>-->
 
     <PackageProjectUrl>https://github.com/mccj/Hangfire.Dashboard.Management</PackageProjectUrl>
@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.Core" Version="1.7.5" />
-    <PackageReference Include="CronExpressionDescriptor" Version="2.11.0"/>
+    <PackageReference Include="Hangfire.Core" Version="1.7.6" />
+    <PackageReference Include="CronExpressionDescriptor" Version="2.13.0" />
     <PackageReference Include="ncrontab" Version="3.3.1" />
     <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.0">
       <PrivateAssets>all</PrivateAssets>
