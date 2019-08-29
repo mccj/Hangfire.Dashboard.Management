@@ -61,7 +61,7 @@ namespace Hangfire.Dashboard.Management.Service
                         .UseManagementPages((config) => {
                             return config
                                 .AddJobs(GetModuleTypes())
-                               .SetCulture(new System.Globalization.CultureInfo("en-us"))
+                               //.SetCulture(new System.Globalization.CultureInfo("en-us"))
                                 //.TranslateJson(< Custom language JSON >)
                                 ////or
                                 //.TranslateCulture(< Custom Language Object >)
