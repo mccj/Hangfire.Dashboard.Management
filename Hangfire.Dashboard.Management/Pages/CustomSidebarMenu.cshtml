@@ -1,15 +1,15 @@
-@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
+@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True TrimLeadingUnderscores : true *@
 @using System
 @using Hangfire.Dashboard
 @using Hangfire.Annotations
 @inherits RazorPage
 @functions {
-public CustomSidebarMenu([NotNull] IEnumerable<Func<RazorPage, MenuItem>> items)
-{
-    if (items == null) throw new ArgumentNullException(nameof(items));
-    Items = items;
-}
-public IEnumerable<Func<RazorPage, MenuItem>> Items { get; }
+    public CustomSidebarMenu([NotNull] IEnumerable<Func<RazorPage, MenuItem>> items)
+    {
+        if (items == null) throw new ArgumentNullException(nameof(items));
+        Items = items;
+    }
+    public IEnumerable<Func<RazorPage, MenuItem>> Items { get; }
 }
 @if (!Items.Any()) { return; }
 <div id="stats" class="list-group">

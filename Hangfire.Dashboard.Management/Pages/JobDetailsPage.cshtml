@@ -1,4 +1,4 @@
-﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
+﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True TrimLeadingUnderscores : true *@
 @using System
 @using System.Collections.Generic
 @using System.Linq
@@ -167,7 +167,7 @@
                             }
                             else
                             {
-                                var duration = Html.ToHumanDurationTr(Hangfire.Dashboard.Resources.Strings.ResourceManager,entry.CreatedAt - job.History[index + 1].CreatedAt);
+                                var duration = Html.ToHumanDurationTr(Hangfire.Dashboard.Resources.Strings.ResourceManager, entry.CreatedAt - job.History[index + 1].CreatedAt);
 
                                 if (index == 0)
                                 {

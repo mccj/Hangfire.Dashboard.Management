@@ -1,4 +1,4 @@
-﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
+﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True TrimLeadingUnderscores : true *@
 @using System.Collections.Generic
 @using Hangfire.Common
 @using Hangfire.Dashboard
@@ -8,7 +8,7 @@
 @inherits RazorPage
 @{
     Layout = new LayoutPage(Strings.RetriesPage_Title);
-    
+
     int from, perPage;
 
     int.TryParse(Query("from"), out from);
