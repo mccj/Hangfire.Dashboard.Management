@@ -1,5 +1,4 @@
-﻿using Hangfire.Dashboard;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Hangfire.Dashboard.Management.Pages

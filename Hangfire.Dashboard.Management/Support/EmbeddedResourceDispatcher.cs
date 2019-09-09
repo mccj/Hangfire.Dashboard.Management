@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Hangfire.Annotations;
+using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Hangfire.Annotations;
 
 namespace Hangfire.Dashboard.Management.Support
 {
