@@ -22,7 +22,7 @@ namespace Hangfire.Dashboard.Extensions
         {
             if (dispatcher == null)
                 throw new ArgumentNullException(nameof(dispatcher));
-            
+
             _dispatchers.Add(dispatcher);
         }
 

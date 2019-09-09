@@ -1,25 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Hangfire.Common;
-using Hangfire.Dashboard.Management.Metadata;
-using Hangfire.Dashboard.Management.Support;
-using Hangfire.Dashboard;
-using Hangfire.Dashboard.Pages;
 using Hangfire.Server;
-using Hangfire.States;
+using System;
+using System.Linq;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
-    public partial class ManagementBasePage : RazorPage
+    partial class ManagementBasePage : RazorPage
     {
         private readonly string pageTitle;
         private readonly string pageHeader;
-        private readonly ManagePage[] managePages;
+        private readonly Support.ManagePage[] managePages;
 
-        protected internal ManagementBasePage(string pageTitle, string pageHeader, ManagePage[] managePages)
+        protected internal ManagementBasePage(string pageTitle, string pageHeader, Support.ManagePage[] managePages)
         {
             this.pageTitle = pageTitle;
             this.pageHeader = pageHeader;
@@ -70,7 +61,7 @@ namespace Hangfire.Dashboard.Management.Pages
                             //DisplayDataAttribute displayInfo = parameterInfo.GetCustomAttribute<DisplayDataAttribute>(true);
 
                             var myId = $"{id}_{parameterInfo.Name}";
-                            if (parameterInfo.ParameterType == typeof(string)&& parameterInfo.ConvertType == null)
+                            if (parameterInfo.ParameterType == typeof(string) && parameterInfo.ConvertType == null)
                             {
                                 //inputs += InputTextbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
                                 inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue).ToHtmlString();
@@ -98,9 +89,9 @@ namespace Hangfire.Dashboard.Management.Pages
                                 var data = Enum.GetNames(parameterInfo.ParameterType).ToDictionary(f => f, f => f).ToArray();
                                 inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString()).ToHtmlString();
                             }
-                            else if (parameterInfo.ConvertType != null && typeof(IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))
+                            else if (parameterInfo.ConvertType != null && typeof(Metadata.IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))
                             {
-                                var r = System.Activator.CreateInstance(parameterInfo.ConvertType) as IInputDataList;
+                                var r = System.Activator.CreateInstance(parameterInfo.ConvertType) as Metadata.IInputDataList;
                                 var data = r.GetData().ToArray();
                                 var defaultValue = r.GetDefaultValue();
                                 inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString()).ToHtmlString();
@@ -364,7 +355,7 @@ namespace Hangfire.Dashboard.Management.Pages
 namespace System.Web.WebPages
 {
 
-    public class HelperResult //: IHtmlString
+    internal class HelperResult //: IHtmlString
     {
         private readonly Action<IO.TextWriter> _action;
 

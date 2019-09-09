@@ -109,7 +109,7 @@ namespace Hangfire.Dashboard.Extensions
 
             routes.Add(pathTemplate, dispatcher);
         }
-        
+
         /// <summary>
         /// Removes dispatcher for <paramref name="pathTemplate"/>.
         /// </summary>

@@ -57,7 +57,7 @@ namespace Hangfire.Dashboard.Management
             #region 翻译
             var resourceManager = Hangfire.Dashboard.Resources.Strings.ResourceManager;
             var resourceManField = typeof(Hangfire.Dashboard.Resources.Strings).GetField("resourceMan", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-            var customHangfireLanguage = new CustomHangfireLanguage(resourceManager, options.translateFunc,options.culture);
+            var customHangfireLanguage = new CustomHangfireLanguage(resourceManager, options.translateFunc, options.culture);
             resourceManField.SetValue(null, customHangfireLanguage /*_customHangfireLanguage*/);
             JobHistoryRenderer.Register(customHangfireLanguage);
             //翻译时间脚本

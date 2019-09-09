@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Hangfire.Annotations;
+﻿using Hangfire.Annotations;
 using Hangfire.Common;
-using Hangfire.Dashboard;
 using Hangfire.Storage;
+using System;
+using System.Collections.Generic;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
@@ -112,7 +111,7 @@ namespace Hangfire.Dashboard.Management.Pages
             if (connection == null) throw new ArgumentNullException(nameof(connection));
             connection.SetRangeInHash("recurring-job:" + jobId, new[] { new KeyValuePair<string, string>("PauseState", SerializationHelper.Serialize(value)) });
         }
-        
+
     }
     public class RecurringJobDto : Hangfire.Storage.RecurringJobDto
     {

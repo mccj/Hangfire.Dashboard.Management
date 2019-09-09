@@ -1,5 +1,3 @@
-using System;
-
 namespace Hangfire.Dashboard.Management.Service.Models
 {
     public class ErrorViewModel

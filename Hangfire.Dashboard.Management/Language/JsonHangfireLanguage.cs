@@ -1,8 +1,5 @@
-﻿using Hangfire.Dashboard;
-using System;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hangfire.Dashboard.Management
 {
@@ -27,7 +24,7 @@ namespace Hangfire.Dashboard.Management
                  return getTranslat(name, defaultCulture);
              });
         }
-        private static string getTranslat(string name, CultureLanguages  culture)
+        private static string getTranslat(string name, CultureLanguages culture)
         {
             string translat = null;
             if (culture?.Translates?.TryGetValue(name, out translat) == true)

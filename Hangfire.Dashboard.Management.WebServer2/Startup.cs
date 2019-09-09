@@ -58,7 +58,8 @@ namespace Hangfire.Dashboard.Management.Service
 
                         //.UseActivator(new OrchardJobActivator(_lifetimeScope))
                         //.UseFilter(new LogFailureAttribute())//登录失败日志记录
-                        .UseManagementPages((config) => {
+                        .UseManagementPages((config) =>
+                        {
                             return config
                                 .AddJobs(GetModuleTypes())
                                 //.SetCulture(new System.Globalization.CultureInfo("en-us"))

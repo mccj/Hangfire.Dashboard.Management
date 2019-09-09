@@ -42,7 +42,7 @@ namespace Hangfire.Dashboard.Management.Service
             //services.AddHostedService<HangfireHostedService>();
 
             services.Configure<HangfireServiceOption>(Configuration.GetSection("HangfireTask"));
-            services.AddHangfire((sp,x) =>
+            services.AddHangfire((sp, x) =>
             {
                 try
                 {
@@ -58,10 +58,11 @@ namespace Hangfire.Dashboard.Management.Service
 
                         //.UseActivator(new OrchardJobActivator(_lifetimeScope))
                         //.UseFilter(new LogFailureAttribute())//登录失败日志记录
-                        .UseManagementPages((config) => {
+                        .UseManagementPages((config) =>
+                        {
                             return config
                                 .AddJobs(GetModuleTypes())
-                               //.SetCulture(new System.Globalization.CultureInfo("en-us"))
+                                //.SetCulture(new System.Globalization.CultureInfo("en-us"))
                                 //.TranslateJson(< Custom language JSON >)
                                 ////or
                                 //.TranslateCulture(< Custom Language Object >)
