@@ -8,7 +8,7 @@ namespace Hangfire.Dashboard.Management.Metadata
         //public string MenuName { get; }
         public string Queue { get; }
 
-        public ManagementPageAttribute(string title/*, string menuName*/, string queue=null)
+        public ManagementPageAttribute(string title/*, string menuName*/, string queue = null)
         {
             Title = title;
             //MenuName = menuName;

@@ -3,7 +3,6 @@ using Hangfire.States;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Resources;
 using System.Text;
@@ -41,7 +40,7 @@ namespace Hangfire.Dashboard.Management
             return new NonEscapedString(
                 $"<dl class=\"dl-horizontal\"><dt>{resource.GetString("Enqueue at:")}</dt><dd data-moment=\"{JobHelper.ToTimestamp(enqueueAt)}\">{enqueueAt}</dd></dl>");
         }
-        public  NonEscapedString SucceededRenderer(HtmlHelper html, IDictionary<string, string> stateData)
+        public NonEscapedString SucceededRenderer(HtmlHelper html, IDictionary<string, string> stateData)
         {
             var builder = new StringBuilder();
             builder.Append("<dl class=\"dl-horizontal\">");
@@ -52,7 +51,7 @@ namespace Hangfire.Dashboard.Management
             {
                 var latency = TimeSpan.FromMilliseconds(long.Parse(stateData["Latency"]));
 
-                builder.Append($"<dt>{resource.GetString("Latency:")}</dt><dd>{html.ToHumanDurationTr(resource,latency, false)}</dd>");
+                builder.Append($"<dt>{resource.GetString("Latency:")}</dt><dd>{html.ToHumanDurationTr(resource, latency, false)}</dd>");
 
                 itemsAdded = true;
             }
@@ -60,7 +59,7 @@ namespace Hangfire.Dashboard.Management
             if (stateData.ContainsKey("PerformanceDuration"))
             {
                 var duration = TimeSpan.FromMilliseconds(long.Parse(stateData["PerformanceDuration"]));
-                builder.Append($"<dt>{resource.GetString("Duration:")}</dt><dd>{html.ToHumanDurationTr(resource,duration, false)}</dd>");
+                builder.Append($"<dt>{resource.GetString("Duration:")}</dt><dd>{html.ToHumanDurationTr(resource, duration, false)}</dd>");
 
                 itemsAdded = true;
             }
@@ -123,7 +122,7 @@ namespace Hangfire.Dashboard.Management
             return new NonEscapedString(
                 $"<dl class=\"dl-horizontal\"><dt>{resource.GetString("Queue:")}</dt><dd>{helper.QueueLabel(stateData["Queue"])}</dd></dl>");
         }
-        public  NonEscapedString AwaitingRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
+        public NonEscapedString AwaitingRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
             var builder = new StringBuilder();
 

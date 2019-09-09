@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using Hangfire.Dashboard.Management.Metadata;
+﻿using Hangfire.Dashboard.Management.Metadata;
 
 namespace Hangfire.Dashboard.Management.Support
 {
     public static class JobsHelper
     {
-        public static List<JobMetadata> Metadata { get; private set; }
+        public static System.Collections.Generic.List<JobMetadata> Metadata { get; private set; }
         //internal static List<ManagementPageAttribute> Pages { get; set; } = new List<ManagementPageAttribute>();
 
         //internal static void GetAllJobs(params Assembly[] assembly)
@@ -97,7 +92,7 @@ namespace Hangfire.Dashboard.Management.Support
             Title = title;
             //MenuName = menuName;
             //Queue = queue;
-            Metadatas =metadatas;
+            Metadatas = metadatas;
         }
         public string Title { get; }
         //public string MenuName { get; }

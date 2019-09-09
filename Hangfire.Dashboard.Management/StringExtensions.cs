@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.IO;
@@ -13,7 +9,7 @@ namespace System.Linq
     /// <summary>
     /// 字符串<see cref="String"/>类型的扩展辅助操作类
     /// </summary>
-     static class StringExtensions
+    static class StringExtensions
     {
         #region 类型转换-提供用于将字符串值转换为其他数据类型的实用工具方法。
         #region Is   

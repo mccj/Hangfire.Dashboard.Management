@@ -1,5 +1,4 @@
 using Hangfire.Annotations;
-using Hangfire.Dashboard;
 
 namespace Hangfire.Dashboard.Management.Service
 {

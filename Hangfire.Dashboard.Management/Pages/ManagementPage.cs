@@ -1,7 +1,4 @@
-﻿using Hangfire.Dashboard;
-using Hangfire.Dashboard.Pages;
-
-namespace Hangfire.Dashboard.Management.Pages
+﻿namespace Hangfire.Dashboard.Management.Pages
 {
     partial class ManagementPage : RazorPage
     {

@@ -1,5 +1,4 @@
-﻿using Hangfire.Annotations;
-using System;
+﻿using System;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
@@ -21,7 +20,7 @@ namespace Hangfire.Dashboard.Management.Pages
     {
         public static NonEscapedString Render(Common.Job job)
         {
-            if (job == null) { return new NonEscapedString("<em>"+ Hangfire.Dashboard.Resources.Strings.Common_CannotFindTargetMethod + "</em>"); }
+            if (job == null) { return new NonEscapedString("<em>" + Hangfire.Dashboard.Resources.Strings.Common_CannotFindTargetMethod + "</em>"); }
 
             var type = Type.GetType("Hangfire.Dashboard.JobMethodCallRenderer,Hangfire.Core");
             var render = type.GetMethod("Render");

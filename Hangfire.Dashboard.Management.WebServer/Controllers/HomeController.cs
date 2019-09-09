@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Hangfire.Dashboard.Management.Service.Models;
 using Microsoft.AspNetCore.Mvc;
-using Hangfire.Dashboard.Management.Service.Models;
+using System.Diagnostics;
 
 namespace Hangfire.Dashboard.Management.Service.Controllers
 {
