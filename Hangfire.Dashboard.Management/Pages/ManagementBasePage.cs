@@ -13,7 +13,7 @@ using Hangfire.States;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
-    public partial class ManagementBasePage : RazorPage
+    partial class ManagementBasePage : RazorPage
     {
         private readonly string pageTitle;
         private readonly string pageHeader;
@@ -364,7 +364,7 @@ namespace Hangfire.Dashboard.Management.Pages
 namespace System.Web.WebPages
 {
 
-    public class HelperResult //: IHtmlString
+    internal class HelperResult //: IHtmlString
     {
         private readonly Action<IO.TextWriter> _action;
 

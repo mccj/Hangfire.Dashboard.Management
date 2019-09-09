@@ -12,12 +12,12 @@ namespace Hangfire.Dashboard.Management.Pages
 
         public string JobId { get; }
     }
-    public struct Continuation
+    internal struct Continuation
     {
         public string JobId { get; set; }
         public JobContinuationOptions Options { get; set; }
     }
-    public static class JobMethodCallRenderer
+    internal static class JobMethodCallRenderer
     {
         public static NonEscapedString Render(Common.Job job)
         {
