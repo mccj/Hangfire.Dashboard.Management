@@ -1,4 +1,4 @@
-@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
+ï»¿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
 @using System
 @using System.Reflection
 @using Hangfire.Dashboard
@@ -50,7 +50,7 @@
             <button class="js-management-input-commands btn btn-sm btn-success"
                     data-url="@(Url.To(url))" data-loading-text="@(loadingText)" input-id="@(id)" input-type="Enqueue">
                 <span class="glyphicon glyphicon-play-circle"></span>
-                &nbsp;@Strings.ResourceManager.GetString("ÁĞ¶ÓÖ´ĞĞ")
+                &nbsp;@Strings.ResourceManager.GetString("åˆ—é˜Ÿæ‰§è¡Œ")
             </button>
         </div>
         <div class="col-sm-8 pull-right commands-panel ScheduleDateTime" style="display:none">
@@ -60,7 +60,7 @@
                     <button class="btn btn-default btn-sm btn-primary js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleDateTime"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
                         <span class="glyphicon glyphicon-calendar"></span>
-                        &nbsp;@Strings.ResourceManager.GetString("¶¨Ê±Ö´ĞĞ")
+                        &nbsp;@Strings.ResourceManager.GetString("å®šæ—¶æ‰§è¡Œ")
                     </button>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                     <button class="btn btn-default btn-sm btn-info js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleTimeSpan"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
                         <span class="glyphicon glyphicon-time"></span>
-                        &nbsp;@Strings.ResourceManager.GetString("ÑÓÊ±Ö´ĞĞ")
+                        &nbsp;@Strings.ResourceManager.GetString("å»¶æ—¶æ‰§è¡Œ")
                     </button>
                     <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
@@ -80,23 +80,23 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:5"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">5 @Strings.ResourceManager.GetString("Ãë")</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">5 @Strings.ResourceManager.GetString("ç§’")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:10"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">10 @Strings.ResourceManager.GetString("Ãë")</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">10 @Strings.ResourceManager.GetString("ç§’")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:15"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">15 @Strings.ResourceManager.GetString("Ãë")</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">15 @Strings.ResourceManager.GetString("ç§’")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:0:30"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">30 @Strings.ResourceManager.GetString("Ãë")</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">30 @Strings.ResourceManager.GetString("ç§’")</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="ScheduleTimeSpan" schedule="0:1:0"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">60 @Strings.ResourceManager.GetString("Ãë")</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">60 @Strings.ResourceManager.GetString("ç§’")</a>
                         </li>
 
                     </ul>
@@ -111,7 +111,7 @@
                     <button class="btn btn-default btn-sm btn-warning js-management-input-commands" type="button" input-id="@(id)" input-type="CronExpression"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
                         <span class="glyphicon glyphicon-repeat"></span>
-                        &nbsp;@Strings.ResourceManager.GetString("ÖØ¸´Ö´ĞĞ")
+                        &nbsp;@Strings.ResourceManager.GetString("é‡å¤æ‰§è¡Œ")
                     </button>
                     <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
@@ -119,27 +119,27 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Minutely())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("Ã¿·Ö") (@(Cron.Minutely()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("æ¯åˆ†") (@(Cron.Minutely()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Hourly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("Ã¿Ê±") (@(Cron.Hourly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("æ¯æ—¶") (@(Cron.Hourly()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Daily())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("Ã¿Ìì") (@(Cron.Daily()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("æ¯å¤©") (@(Cron.Daily()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Weekly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("Ã¿ÖÜ") (@(Cron.Weekly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("æ¯å‘¨") (@(Cron.Weekly()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Monthly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("Ã¿ÔÂ") (@(Cron.Monthly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("æ¯æœˆ") (@(Cron.Monthly()))</a>
                         </li>
                         <li>
                             <a href="#" class="js-management-input-commands" input-id="@(id)" input-type="CronExpression" schedule="@(Cron.Yearly())"
-                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("Ã¿Äê") (@(Cron.Yearly()))</a>
+                               data-url="@(Url.To(url))" data-loading-text="@(loadingText)">@Strings.ResourceManager.GetString("æ¯å¹´") (@(Cron.Yearly()))</a>
                         </li>
                     </ul>
                 </div>
@@ -148,14 +148,14 @@
         <div class="col-sm-4">
             <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    @Strings.ResourceManager.GetString("ÈÎÎñÀàĞÍ:") <span class="@(id) commandsType">@Strings.ResourceManager.GetString("ÁĞ¶ÓÖ´ĞĞ")</span>
+                    @Strings.ResourceManager.GetString("ä»»åŠ¡ç±»å‹"): <span class="@(id) commandsType">@Strings.ResourceManager.GetString("åˆ—é˜Ÿæ‰§è¡Œ")</span>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="Enqueue" data-id="@(id)">@Strings.ResourceManager.GetString("ÁĞ¶ÓÖ´ĞĞ")</a></li>
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleDateTime" data-id="@(id)">@Strings.ResourceManager.GetString("¶¨Ê±Ö´ĞĞ")</a></li>
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleTimeSpan" data-id="@(id)">@Strings.ResourceManager.GetString("ÑÓÊ±Ö´ĞĞ")</a></li>
-                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="CronExpression" data-id="@(id)">@Strings.ResourceManager.GetString("ÖØ¸´Ö´ĞĞ")</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="Enqueue" data-id="@(id)">@Strings.ResourceManager.GetString("åˆ—é˜Ÿæ‰§è¡Œ")</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleDateTime" data-id="@(id)">@Strings.ResourceManager.GetString("å®šæ—¶æ‰§è¡Œ")</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="ScheduleTimeSpan" data-id="@(id)">@Strings.ResourceManager.GetString("å»¶æ—¶æ‰§è¡Œ")</a></li>
+                    <li><a href="javascript:void(0)" class="commands-type" data-commands-type="CronExpression" data-id="@(id)">@Strings.ResourceManager.GetString("é‡å¤æ‰§è¡Œ")</a></li>
                 </ul>
             </div>
         </div>
@@ -231,14 +231,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="cronModalLabel">@Strings.ResourceManager.GetString("Corn±í´ïÊ½Éú³ÉÆ÷")</h4>
+                    <h4 class="modal-title" id="cronModalLabel">@Strings.ResourceManager.GetString("Cornè¡¨è¾¾å¼ç”Ÿæˆå™¨")</h4>
                 </div>
                 <div class="modal-body">
                     @(Html.RenderPartial(new CornJobsPage()))
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">@Strings.ResourceManager.GetString("¹Ø±Õ")</button>
-                    <button type="button" class="btn btn-primary" id="connExpressionOk">@Strings.ResourceManager.GetString("È·¶¨")</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Strings.ResourceManager.GetString("å…³é—­")</button>
+                    <button type="button" class="btn btn-primary" id="connExpressionOk">@Strings.ResourceManager.GetString("ç¡®å®š")</button>
                 </div>
             </div>
         </div>

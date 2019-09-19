@@ -261,7 +261,7 @@ namespace Hangfire.Dashboard.Management
                                     context.Response.WriteAsync("请填写 执行时间 表达式");
                                     throw new Exception("请填写 执行时间 表达式");
                                 }
-                                var jobId = client.Create(job, new States.ScheduledState(DateTime.Parse(datetime)));//Queue
+                                var jobId = client.Create(job, new States.ScheduledState(DateTime.Parse(datetime).ToUniversalTime()));//Queue
                                 return jobId != string.Empty;
                                 //break;
                             }
