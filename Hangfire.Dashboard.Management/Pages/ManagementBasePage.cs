@@ -115,7 +115,9 @@ namespace Hangfire.Dashboard.Management.Pages
                     //options += InputDataList($"{id}_sys_parentOption", string.Empty, "Parent Job Option", "Parent Job Option", new[] { "None" }.Concat(Enum.GetValues(typeof(JobContinuationOptions)).OfType<JobContinuationOptions>().Select(f => f.ToString())).ToDictionary(f => f, f => f).ToArray(), JobContinuationOptions.OnlyOnSucceededState).ToHtmlString();
 
                     var buttons = CreateButtons(route, "入队", "入队中...", id).ToHtmlString();
-                    WriteLiteral(Panel(id, jobMetadata.DisplayName, jobMetadata.Description, inputs, options, buttons).ToHtmlString());
+
+                    var isFirst = page.Metadatas.First() == jobMetadata;
+                    WriteLiteral(Panel(id, jobMetadata.DisplayName, jobMetadata.Description, inputs, options, buttons, isFirst).ToHtmlString());
                 }
             }
             //WriteLiteral("\r\n<script src=\"");
