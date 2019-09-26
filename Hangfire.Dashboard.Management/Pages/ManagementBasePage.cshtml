@@ -12,13 +12,13 @@
 @functions {
 
 }
-@helper Panel(string id, string heading, string description, string content, string options, string buttons)
+@helper Panel(string id, string heading, string description, string content, string options, string buttons, bool expanded)
     {
         <div class="panel panel-info js-management card" data-id="@(id)">
             <div class="panel-heading card-header" id="heading_@(id)">
-                <button class="btn btn-link collapsed" aria-expanded="false" data-toggle="collapse" data-target="#collapse_@(id)">@(heading)</button>
+                <button class="@(expanded ? "btn btn-link" : "btn btn-link collapsed")" aria-expanded="@(expanded ? "true":"false")" data-toggle="collapse" data-target="#collapse_@(id)">@(heading)</button>
             </div>
-            <div id="collapse_@(id)" class="collapse" aria-expanded="false" aria-labelledby="heading_@(id)" data-parent="#jobsAccordion">
+            <div id="collapse_@(id)" class="@(expanded ? "collapse in":"collapse")" aria-expanded="false" aria-labelledby="heading_@(id)" data-parent="#jobsAccordion">
                 <div class="panel-body">
                     <p>@(description)</p>
                 </div>
