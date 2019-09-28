@@ -1,4 +1,4 @@
-﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True TrimLeadingUnderscores : true *@
+﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True *@
 @using System
 @using System.Collections.Generic
 @using System.Linq
@@ -10,11 +10,12 @@
 @using Hangfire.States
 @using Hangfire.Storage
 @using Hangfire.Storage.Monitoring
+@using Hangfire.Dashboard.Management.Pages
 @inherits RazorPage
 @{
     var monitor = Storage.GetMonitoringApi();
     var job = monitor.JobDetails(JobId);
-
+    
     string title = null;
 
     if (job != null)
@@ -26,12 +27,14 @@
     title = title ?? Strings.Common_Job;
     Layout = new LayoutPage(title);
 }
+
 <div class="row">
     <div class="col-md-3">
         @Html.JobsSidebar()
     </div>
     <div class="col-md-9">
         <h1 class="page-header">@title</h1>
+
         @if (job == null)
         {
             <div class="alert alert-warning">
@@ -71,6 +74,7 @@
 @JobMethodCallRenderer.Render(job.Job)
 </code></pre>
                 </div>
+
                 @if (job.Properties.Count > 0)
                 {
                     <div class="job-snippet-properties">
@@ -91,8 +95,8 @@
 
                 using (var connection = Storage.GetConnection())
                 {
-                    continuations = SerializationHelper.Deserialize<List<Continuation>>(connection.GetJobParameter(
-                        JobId, "Continuations")) ?? new List<Continuation>();
+                    continuations = ContinuationsSupportAttributeEx.DeserializeContinuations(connection.GetJobParameter(
+                        JobId, "Continuations"));
                 }
 
                 if (continuations.Count > 0)
@@ -101,39 +105,39 @@
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th class="min-width">@Strings.Common_Id</th>
-                                    <th class="min-width">@Strings.Common_Condition</th>
-                                    <th class="min-width">@Strings.Common_State</th>
-                                    <th>@Strings.Common_Job</th>
-                                    <th class="align-right">@Strings.Common_Created</th>
-                                </tr>
+                            <tr>
+                                <th class="min-width">@Strings.Common_Id</th>
+                                <th class="min-width">@Strings.Common_Condition</th>
+                                <th class="min-width">@Strings.Common_State</th>
+                                <th>@Strings.Common_Job</th>
+                                <th class="align-right">@Strings.Common_Created</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var continuation in continuations)
+                            @foreach (var continuation in continuations)
+                            {
+                                JobData jobData;
+
+                                using (var connection = Storage.GetConnection())
                                 {
-                                    JobData jobData;
-
-                                    using (var connection = Storage.GetConnection())
-                                    {
-                                        jobData = connection.GetJobData(continuation.JobId);
-                                    }
-
-                                    <tr>
-                                        @if (jobData == null)
-                                        {
-                                            <td colspan="5"><em>@String.Format(Strings.JobDetailsPage_JobExpired, continuation.JobId)</em></td>
-                                        }
-                                        else
-                                        {
-                                            <td class="min-width">@Html.JobIdLink(continuation.JobId)</td>
-                                            <td class="min-width"><code>@continuation.Options.ToString("G")</code></td>
-                                            <td class="min-width">@Html.StateLabel(jobData.State)</td>
-                                            <td class="word-break">@Html.JobNameLink(continuation.JobId, jobData.Job)</td>
-                                            <td class="align-right">@Html.RelativeTime(jobData.CreatedAt)</td>
-                                        }
-                                    </tr>
+                                    jobData = connection.GetJobData(continuation.JobId);
                                 }
+
+                                <tr>
+                                    @if (jobData == null)
+                                    {
+                                        <td colspan="5"><em>@String.Format(Strings.JobDetailsPage_JobExpired, continuation.JobId)</em></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="min-width">@Html.JobIdLink(continuation.JobId)</td>
+                                        <td class="min-width"><code>@continuation.Options.ToString("G")</code></td>
+                                        <td class="min-width">@Html.StateLabel(jobData.State)</td>
+                                        <td class="word-break">@Html.JobNameLink(continuation.JobId, jobData.Job)</td>
+                                        <td class="align-right">@Html.RelativeTime(jobData.CreatedAt)</td>
+                                    }
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -144,10 +148,26 @@
                 @if (job.History.Count > 1)
                 {
                     <span class="job-snippet-buttons pull-right">
-                        <button class="btn btn-sm btn-default" data-ajax="@Url.To("/jobs/actions/requeue/" + JobId)" data-loading-text="@Strings.Common_Enqueueing">@Strings.JobDetailsPage_Requeue</button>
-                        <button class="btn btn-sm btn-death" data-ajax="@Url.To("/jobs/actions/delete/" + JobId)" data-loading-text="@Strings.Common_Deleting" data-confirm="@Strings.JobDetailsPage_DeleteConfirm">@Strings.Common_Delete</button>
+                        @if (!IsReadOnly)
+                        {
+                            <button class="btn btn-sm btn-default"
+                                    data-ajax="@Url.To("/jobs/actions/requeue/" + JobId)"
+                                    data-loading-text="@Strings.Common_Enqueueing">
+                                @Strings.JobDetailsPage_Requeue
+                            </button>
+                        }
+                        @if (!IsReadOnly)
+                        {
+                            <button class="btn btn-sm btn-death"
+                                    data-ajax="@Url.To("/jobs/actions/delete/" + JobId)"
+                                    data-loading-text="@Strings.Common_Deleting"
+                                    data-confirm="@Strings.JobDetailsPage_DeleteConfirm">
+                                @Strings.Common_Delete
+                            </button>
+                        }
                     </span>
                 }
+
                 @Strings.JobDetailsPage_State
             </h3>
 
@@ -179,15 +199,19 @@
                                 }
                             }
                         </small>
+
                         @(Strings.ResourceManager.GetString("StateName_" + entry.StateName))
                     </h4>
+
                     @if (!String.IsNullOrWhiteSpace(entry.Reason))
                     {
                         <p class="state-card-text text-muted">@(Strings.ResourceManager.GetString("Reason_" + entry.Reason))</p>
                     }
+
                     @{
                         var rendered = Html.RenderHistory(entry.StateName, entry.Data);
                     }
+
                     @if (rendered != null)
                     {
                         <div class="state-card-body" style="@(index == 0 ? $"background-color: {backgroundColor}" : null)">

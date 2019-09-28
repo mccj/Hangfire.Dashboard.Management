@@ -21,6 +21,7 @@
     "StateName_Succeeded": "完成",
     "StateName_Failed": "失败",
     "StateName_Scheduled": "计划",
+    "StateName_Deleted": "删除",
     "PropertyKey_CurrentCulture": "当前编码",
     "PropertyKey_CurrentUICulture": "当前界面编码",
     "PropertyKey_RecurringJobId": "任务编号",
@@ -78,7 +79,10 @@
     "月": "月",
     "周": "周",
     "常用Cron表达式": "常用Cron表达式",
-    "Cron表达式解析": "Cron表达式解析"
+    "Cron表达式解析": "Cron表达式解析",
+    "ServersPage_Note_Title": "停止的服务器将自动删除",
+    "ServersPage_Note_Text": "某些服务器在最后一分钟内未报告心跳，因此可能会中止。 如果它们在不久的将来没有报告心跳，则在超时后它们将被自动删除，无需手动操作。 这些服务器上运行的不完整后台作业将被自动重新排队，但是您可以通过选中<a href=\"{0}\">处理作业</a>页面来加快处理速度。",
+    "ServersPage_Possibly_Aborted": "可能中止"
   },
   "TranslateRegexs": [
     {
