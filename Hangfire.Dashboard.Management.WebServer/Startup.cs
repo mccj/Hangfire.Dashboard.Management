@@ -1,4 +1,6 @@
-﻿using Hangfire.MemoryStorage;
+﻿using Hangfire.Console;
+using Hangfire.Heartbeat;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +44,7 @@ namespace Hangfire.Dashboard.Management.Service
               ;
 
             //services.AddHostedService<HangfireHostedService>();
-
+            //System.Globalization.CultureInfo  cultureInfo = new System.Globalization.CultureInfo("en-us");
             services.Configure<HangfireServiceOption>(Configuration.GetSection("HangfireTask"));
             services.AddHangfire((sp, x) =>
             {
@@ -53,18 +55,22 @@ namespace Hangfire.Dashboard.Management.Service
                     if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
 
                     x
+                        .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)//设置数据兼容级别
+                        .UseSimpleAssemblyNameTypeSerializer()//使用简单程序集名称类型序列化程序
+                        .UseRecommendedSerializerSettings()//使用推荐的序列化程序设置
                         .UseColouredConsoleLogProvider()//使用彩色控制台日志提供程序
-                                                        //.UseLog4NetLogProvider()//使用log4net日志提供程序
-                                                        //.UseNLogLogProvider()//使用NLogLog日志提供程序
-                                                        //.UseConsole()//使用控制台程序(Hangfire.Console)
+                        .UseConsole()//使用控制台程序(Hangfire.Console)
+                                     //.UseLog4NetLogProvider()//使用log4net日志提供程序
+                                     //.UseNLogLogProvider()//使用NLogLog日志提供程序
 
                         //.UseActivator(new OrchardJobActivator(_lifetimeScope))
                         //.UseFilter(new LogFailureAttribute())//登录失败日志记录
+                        .UseHeartbeatPage(checkInterval: TimeSpan.FromSeconds(1))
                         .UseManagementPages((config) =>
                         {
                             return config
                                 .AddJobs(GetModuleTypes())
-                                //.SetCulture(new System.Globalization.CultureInfo("en-us"))
+                                //.SetCulture(cultureInfo)
                                 //.TranslateJson(< Custom language JSON >)
                                 ////or
                                 //.TranslateCulture(< Custom Language Object >)
@@ -130,6 +136,31 @@ namespace Hangfire.Dashboard.Management.Service
                     throw;
                 }
             });
+
+
+            services.AddHangfireServer((sp, options) =>
+            {
+                var _hangfireOption = sp.GetService<Microsoft.Extensions.Options.IOptions<HangfireServiceOption>>()?.Value;
+                //var _hangfireOption = _hangfireServiceOption?.Value;
+
+                if (_hangfireOption?.IsUseHangfireServer == true)
+                {
+                    var queues = _hangfireOption.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
+                    if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
+                    //启用本地服务
+                    options = new BackgroundJobServerOptions
+                    {//:{System.Web.Hosting.HostingEnvironment.SiteName }:{System.Web.Hosting.HostingEnvironment.ApplicationID}
+                        ServerName = $"{(string.IsNullOrWhiteSpace(_hangfireOption?.ServiceName) ? "" : ("[" + _hangfireOption?.ServiceName + "]"))}{Environment.MachineName}:{System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture}:{AppDomain.CurrentDomain.FriendlyName}:{System.Diagnostics.Process.GetCurrentProcess().Id}:{AppDomain.CurrentDomain.Id}",
+                        //[]mccj-pc:webuiapp:32732:1
+                        ShutdownTimeout = TimeSpan.FromMinutes(30),//关闭超时时间
+                        WorkerCount = Math.Max(Environment.ProcessorCount, _hangfireOption.WorkerCount == 0 ? 20 : _hangfireOption.WorkerCount),//最大job并发处理数量
+                        Queues = queues
+                    };
+
+                    return true;
+                }
+                return false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -159,24 +190,24 @@ namespace Hangfire.Dashboard.Management.Service
             {
                 var serviceProvider = app.ApplicationServices;
                 var _hangfireOption = serviceProvider.GetService<Microsoft.Extensions.Options.IOptions<HangfireServiceOption>>()?.Value;
-                //var _hangfireOption = _hangfireServiceOption?.Value;
-                var queues = _hangfireOption.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
-                if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
+                ////var _hangfireOption = _hangfireServiceOption?.Value;
 
-                if (_hangfireOption?.IsUseHangfireServer == true)
-                {
-                    //启用本地服务
-                    //var options = new BackgroundJobServerOptions
-                    //{//:{System.Web.Hosting.HostingEnvironment.SiteName }:{System.Web.Hosting.HostingEnvironment.ApplicationID}
-                    //    ServerName = $"{(string.IsNullOrWhiteSpace(_hangfireOption?.ServiceName) ? "" : ("[" + _hangfireOption?.ServiceName + "]"))}{Environment.MachineName}:{System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture}:{AppDomain.CurrentDomain.FriendlyName}:{System.Diagnostics.Process.GetCurrentProcess().Id}:{AppDomain.CurrentDomain.Id}",
-                    //    //[]mccj-pc:webuiapp:32732:1
-                    //    ShutdownTimeout = TimeSpan.FromMinutes(30),//关闭超时时间
-                    //    WorkerCount = Math.Max(Environment.ProcessorCount, _hangfireOption.WorkerCount == 0 ? 20 : _hangfireOption.WorkerCount),//最大job并发处理数量
-                    //    Queues = queues
-                    //};
-                    _logger.LogInformation("启动服务");
-                    app.UseHangfireServer(/*options*/);
-                }
+                //if (_hangfireOption?.IsUseHangfireServer == true)
+                //{
+                //    var queues = _hangfireOption.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
+                //    if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
+                //    //启用本地服务
+                //    var options = new BackgroundJobServerOptions
+                //    {//:{System.Web.Hosting.HostingEnvironment.SiteName }:{System.Web.Hosting.HostingEnvironment.ApplicationID}
+                //        ServerName = $"{(string.IsNullOrWhiteSpace(_hangfireOption?.ServiceName) ? "" : ("[" + _hangfireOption?.ServiceName + "]"))}{Environment.MachineName}:{System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture}:{AppDomain.CurrentDomain.FriendlyName}:{System.Diagnostics.Process.GetCurrentProcess().Id}:{AppDomain.CurrentDomain.Id}",
+                //        //[]mccj-pc:webuiapp:32732:1
+                //        ShutdownTimeout = TimeSpan.FromMinutes(30),//关闭超时时间
+                //        WorkerCount = Math.Max(Environment.ProcessorCount, _hangfireOption.WorkerCount == 0 ? 20 : _hangfireOption.WorkerCount),//最大job并发处理数量
+                //        Queues = queues
+                //    };
+                //    _logger.LogInformation("启动服务");
+                //    app.UseHangfireServer(options, new[] { new Heartbeat.Server.ProcessMonitor(checkInterval: TimeSpan.FromSeconds(1)) });
+                //}
                 if (_hangfireOption?.IsUseHangfireDashboard == true)
                 {
                     _logger.LogInformation("启动面板");
@@ -187,6 +218,8 @@ namespace Hangfire.Dashboard.Management.Service
                             //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter 
                             Authorization = new[] { new DashboardAuthorizationFilter() },//授权
                                                                                          //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
+                                                                                         //DisplayStorageConnectionString = false,
+                                                                                         //IsReadOnlyFunc = f => true
                         }
                         );
                 }
@@ -208,24 +241,50 @@ namespace Hangfire.Dashboard.Management.Service
             //    assembliePaths = assembliePaths.Concat(System.IO.Directory.GetFiles(moduleDirectory, "*.dll")).ToArray();
 
             //var assemblies = assembliePaths.Select(f => System.Reflection.Assembly.LoadFile(f)).ToArray();
-            var assemblies = new[] { typeof(HangfireJobTask.常规任务).Assembly };
-            var moduleTypes = assemblies.SelectMany(f =>
-            {
-                try
-                {
-                    return f.GetTypes();
-                }
-                catch (Exception)
-                {
+            //var assemblies = new[] { typeof(HangfireJobTask.常规任务).Assembly };
 
-                    return new Type[] { };
-                }
-            }
+            //var moduleTypes = assemblies.SelectMany(f =>
+            //{
+            //    try
+            //    {
+            //        return f.GetTypes();
+            //    }
+            //    catch (Exception)
+            //    {
+
+            //        return new Type[] { };
+            //    }
+            //}
 
 
-            )/*.Where(f => f.IsClass && typeof(IClientModule).IsAssignableFrom(f))*/.ToArray();
+            //).Where(f => f.IsClass && !f.IsAbstract && !f.IsInterface)
+            //.Where(f => f.GetCustomAttributes(true).Any(ff => ff is Hangfire.Dashboard.Management.Support.JobAttribute))
+            //.ToArray();
+            var moduleTypes = GetApplicationTypes();
 
             return moduleTypes;
+        }
+        private static Type[] GetApplicationTypes()
+        {
+            // Get all assembly and types.
+            var deps = Microsoft.Extensions.DependencyModel.DependencyContext.Default;
+            var typeList = new System.Collections.Generic.List<Type>();
+            deps.CompileLibraries
+                // Ignore all system assembly and nuget pakage
+                .Where(lib => !lib.Serviceable && lib.Type != "package")
+                .ToList().ForEach(lib =>
+                {
+                    try
+                    {
+                        var assembly = System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyName(new System.Reflection.AssemblyName(lib.Name));
+                        typeList.AddRange(assembly.GetTypes().Where(type => type != null));
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Load deps error.", e);
+                    }
+                });
+            return typeList.ToArray();
         }
 
         private void UseSqlServerStorage(IGlobalConfiguration config, string nameOrConnectionString, string[] queues)
@@ -233,7 +292,16 @@ namespace Hangfire.Dashboard.Management.Service
             var configSql = config
                 .UseDashboardMetric(Hangfire.SqlServer.SqlServerStorage.ActiveConnections)//活动连接数量
                 .UseDashboardMetric(Hangfire.SqlServer.SqlServerStorage.TotalConnections)//总连接数量
-                .UseSqlServerStorage(nameOrConnectionString, new Hangfire.SqlServer.SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) })
+                .UseSqlServerStorage(nameOrConnectionString, new Hangfire.SqlServer.SqlServerStorageOptions
+                {
+                    //QueuePollInterval = TimeSpan.FromSeconds(1),
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    UsePageLocksOnDequeue = true,
+                    DisableGlobalLocks = true
+                })
                 ;
             try
             {
@@ -256,6 +324,32 @@ namespace Hangfire.Dashboard.Management.Service
                 //}
                 //catch (Exception ex2) { }
             }
+        }
+    }
+
+    public static class MyHangfireServiceCollectionExtensions
+    {
+        public static IServiceCollection AddHangfireServer([Annotations.NotNull] this IServiceCollection services, Func<IServiceProvider, BackgroundJobServerOptions, bool> func)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, BackgroundJobServerHostedService>(provider =>
+            {
+                var options = provider.GetService<BackgroundJobServerOptions>() ?? new BackgroundJobServerOptions();
+                if (func(provider, options))
+                    return CreateBackgroundJobServerHostedService(provider, options);
+                else
+                    return null;
+            });
+
+            return services;
+        }
+        private static BackgroundJobServerHostedService CreateBackgroundJobServerHostedService(
+           IServiceProvider provider,
+           BackgroundJobServerOptions options)
+        {
+            var m = typeof(HangfireServiceCollectionExtensions).GetMethod("CreateBackgroundJobServerHostedService", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            return m.Invoke(null, new object[] { provider, options }) as BackgroundJobServerHostedService;
         }
     }
 }

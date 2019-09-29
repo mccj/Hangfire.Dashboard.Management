@@ -29,15 +29,6 @@ namespace Hangfire.Dashboard.Management.Pages
             return render.Invoke(null, new[] { job }) as NonEscapedString;
         }
     }
-    internal class RecurringJobEntity
-    {
-        public static void ParseCronExpression([NotNull] string cronExpression)
-        {
-            var type = Type.GetType("Hangfire.RecurringJobEntity,Hangfire.Core");
-            var render = type.GetMethod("ParseCronExpression");
-            var cc = render.Invoke(null, new[] { cronExpression });
-        }
-    }
     internal static class ContinuationsSupportAttributeEx
     {
         internal static List<Continuation> DeserializeContinuations(string serialized)
