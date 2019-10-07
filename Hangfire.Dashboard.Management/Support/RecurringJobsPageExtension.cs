@@ -9,9 +9,9 @@ namespace Hangfire.Dashboard.Management.Pages
     public static class RecurringJobsPageExtension
     {
         public static List<RecurringJobDto> GetRecurringJobs(
-     [NotNull] this JobStorageConnection connection,
-     int startingFrom,
-     int endingAt)
+            [NotNull] this JobStorageConnection connection,
+            int startingFrom,
+            int endingAt)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
 
@@ -40,7 +40,7 @@ namespace Hangfire.Dashboard.Management.Pages
                     continue;
                 }
 
-                var dto = new RecurringJobDto(hash)
+                var dto = new RecurringJobDto
                 {
                     Id = id,
                     Cron = hash["Cron"]
@@ -48,8 +48,11 @@ namespace Hangfire.Dashboard.Management.Pages
 
                 try
                 {
-                    var invocationData = SerializationHelper.Deserialize<InvocationData>(hash["Job"]);
-                    dto.Job = invocationData.DeserializeJob();
+                    if (hash.TryGetValue("Job", out var payload) && !String.IsNullOrWhiteSpace(payload))
+                    {
+                        var invocationData = InvocationData.DeserializePayload(payload);
+                        dto.Job = invocationData.DeserializeJob();
+                    }
                 }
                 catch (JobLoadException ex)
                 {
@@ -58,7 +61,7 @@ namespace Hangfire.Dashboard.Management.Pages
 
                 if (hash.ContainsKey("NextExecution"))
                 {
-                    dto.NextExecution = JobHelper.DeserializeDateTime(hash["NextExecution"]);
+                    dto.NextExecution = JobHelper.DeserializeNullableDateTime(hash["NextExecution"]);
                 }
 
                 if (hash.ContainsKey("LastJobId") && !string.IsNullOrWhiteSpace(hash["LastJobId"]))
@@ -79,7 +82,7 @@ namespace Hangfire.Dashboard.Management.Pages
 
                 if (hash.ContainsKey("LastExecution"))
                 {
-                    dto.LastExecution = JobHelper.DeserializeDateTime(hash["LastExecution"]);
+                    dto.LastExecution = JobHelper.DeserializeNullableDateTime(hash["LastExecution"]);
                 }
 
                 if (hash.ContainsKey("TimeZoneId"))
@@ -89,11 +92,15 @@ namespace Hangfire.Dashboard.Management.Pages
 
                 if (hash.ContainsKey("CreatedAt"))
                 {
-                    dto.CreatedAt = JobHelper.DeserializeDateTime(hash["CreatedAt"]);
+                    dto.CreatedAt = JobHelper.DeserializeNullableDateTime(hash["CreatedAt"]);
                 }
                 if (hash.ContainsKey("PauseState"))
                 {
                     dto.PauseState = SerializationHelper.Deserialize<bool>(hash["PauseState"]);
+                }
+                if (hash.TryGetValue("Error", out var error))
+                {
+                    dto.Error = error;
                 }
 
                 result.Add(dto);
@@ -111,7 +118,6 @@ namespace Hangfire.Dashboard.Management.Pages
             if (connection == null) throw new ArgumentNullException(nameof(connection));
             connection.SetRangeInHash("recurring-job:" + jobId, new[] { new KeyValuePair<string, string>("PauseState", SerializationHelper.Serialize(value)) });
         }
-
     }
     public class RecurringJobDto : Hangfire.Storage.RecurringJobDto
     {
@@ -122,5 +128,4 @@ namespace Hangfire.Dashboard.Management.Pages
         public bool PauseState { get; set; }
         public Dictionary<string, string> Hash { get; }
     }
-
 }

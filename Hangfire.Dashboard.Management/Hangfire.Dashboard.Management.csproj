@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2;NET461</TargetFrameworks>
-    <Version>1.7.6</Version>
+    <Version>1.7.6.2</Version>
     <!--<RazorViewsCodeGenDirectory>$(MsBuildProjectDirectory)\</RazorViewsCodeGenDirectory>-->
 
     <PackageProjectUrl>https://github.com/mccj/Hangfire.Dashboard.Management</PackageProjectUrl>
@@ -61,6 +61,7 @@
       <DependentUpon>SucceededJobs.cshtml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties content_4language_4zh-cn_1json__JsonSchema="http://json.schemastore.org/appsettings" /></VisualStudio></ProjectExtensions>
   <!--<ItemGroup>
     <Compile Update="Pages\CornJobsPage.cshtml.cs">
       <DependentUpon>CornJobsPage.cshtml</DependentUpon>

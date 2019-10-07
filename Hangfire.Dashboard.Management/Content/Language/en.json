@@ -27,6 +27,13 @@
     "月": "month",
     "周": "week",
     "常用Cron表达式": "Common Cron Expressions",
-    "Cron表达式解析": "Cron Expression analysis"
+    "Cron表达式解析": "Cron Expression analysis",
+    "StateName_Created": "Created",
+    "StateName_Enqueued": "Enqueued",
+    "StateName_Processing": "Processing",
+    "StateName_Succeeded": "Succeeded",
+    "StateName_Failed": "Failed",
+    "StateName_Scheduled": "Scheduled",
+    "StateName_Deleted": "Deleted"
   }
 }
