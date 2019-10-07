@@ -43,8 +43,8 @@ namespace Hangfire.Dashboard.Management.Service
               //.AddDbContextCheck<Data.ApplicationDbContext>()
               ;
 
-            //services.AddHostedService<HangfireHostedService>();
-            //System.Globalization.CultureInfo  cultureInfo = new System.Globalization.CultureInfo("en-us");
+            //System.Globalization.CultureInfo cultureInfo = new System.Globalization.CultureInfo("en-us");
+            //System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
             services.Configure<HangfireServiceOption>(Configuration.GetSection("HangfireTask"));
             services.AddHangfire((sp, x) =>
             {
@@ -55,7 +55,7 @@ namespace Hangfire.Dashboard.Management.Service
                     if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
 
                     x
-                        .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)//设置数据兼容级别
+                        .SetDataCompatibilityLevel(CompatibilityLevel.Version_110)//设置数据兼容级别
                         .UseSimpleAssemblyNameTypeSerializer()//使用简单程序集名称类型序列化程序
                         .UseRecommendedSerializerSettings()//使用推荐的序列化程序设置
                         .UseColouredConsoleLogProvider()//使用彩色控制台日志提供程序
@@ -300,7 +300,8 @@ namespace Hangfire.Dashboard.Management.Service
                     QueuePollInterval = TimeSpan.Zero,
                     UseRecommendedIsolationLevel = true,
                     UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true
+                    DisableGlobalLocks = true//,
+                    //EnableHeavyMigrations = true
                 })
                 ;
             try
