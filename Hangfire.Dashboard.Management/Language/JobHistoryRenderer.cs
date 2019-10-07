@@ -14,141 +14,122 @@ namespace Hangfire.Dashboard.Management
         public static void Register(System.Resources.ResourceManager resource)
         {
             var jobHistoryRenderer = new JobHistoryRendererInfo(resource);
-            Hangfire.Dashboard.JobHistoryRenderer.Register(SucceededState.StateName, jobHistoryRenderer.SucceededRenderer);
+            jobHistoryRenderer.Register(SucceededState.StateName, jobHistoryRenderer.SucceededRenderer);
             //Hangfire.Dashboard.JobHistoryRenderer.Register(FailedState.StateName, jobHistoryRenderer.FailedRenderer);
-            Hangfire.Dashboard.JobHistoryRenderer.Register(ProcessingState.StateName, jobHistoryRenderer.ProcessingRenderer);
-            Hangfire.Dashboard.JobHistoryRenderer.Register(EnqueuedState.StateName, jobHistoryRenderer.EnqueuedRenderer);
-            Hangfire.Dashboard.JobHistoryRenderer.Register(ScheduledState.StateName, jobHistoryRenderer.ScheduledRenderer);
+            jobHistoryRenderer.Register(ProcessingState.StateName, jobHistoryRenderer.ProcessingRenderer);
+            jobHistoryRenderer.Register(EnqueuedState.StateName, jobHistoryRenderer.EnqueuedRenderer);
+            jobHistoryRenderer.Register(ScheduledState.StateName, jobHistoryRenderer.ScheduledRenderer);
             //Hangfire.Dashboard.JobHistoryRenderer.Register(DeletedState.StateName, jobHistoryRenderer.NullRenderer);
-            Hangfire.Dashboard.JobHistoryRenderer.Register(AwaitingState.StateName, jobHistoryRenderer.AwaitingRenderer);
+            jobHistoryRenderer.Register(AwaitingState.StateName, jobHistoryRenderer.AwaitingRenderer);
         }
     }
 
     public class JobHistoryRendererInfo
     {
         private ResourceManager resource;
+        private static readonly IDictionary<string, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString>>
+           _renderers = new Dictionary<string, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString>>();
 
         public JobHistoryRendererInfo(ResourceManager resource)
         {
             this.resource = resource;
         }
+        public void Register(string state, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString> renderer)
+        {
+            var type = Type.GetType("Hangfire.Dashboard.JobHistoryRenderer,Hangfire.Core");
+            var render = type.GetField("Renderers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance);
+            var renderers = render.GetValue(null) as IDictionary<string, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString>>;
 
+            if (renderers.ContainsKey(state))
+            {
+                var _state = renderer.Method.Name;
+                var ddd = renderers[state];
+                _register(_state, ddd);
+            }
+            Hangfire.Dashboard.JobHistoryRenderer.Register(state, renderer);
+        }
+        private void _register(string state, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString> renderer)
+        {
+            if (!_renderers.ContainsKey(state))
+            {
+                _renderers.Add(state, renderer);
+            }
+            else
+            {
+                _renderers[state] = renderer;
+            }
+        }
+        //private bool _exists(string state)
+        //{
+        //    return _renderers.ContainsKey(state);
+        //}
+        private NonEscapedString _renderHistory(
+             HtmlHelper helper,
+            string state, IDictionary<string, string> properties)
+        {
+            var renderer = _renderers.ContainsKey(state)
+                ? _renderers[state]
+                : Hangfire.Dashboard.JobHistoryRenderer.DefaultRenderer;
+
+            return renderer?.Invoke(helper, properties);
+        }
         public NonEscapedString ScheduledRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
-            var enqueueAt = JobHelper.DeserializeDateTime(stateData["EnqueueAt"]);
-
-            return new NonEscapedString(
-                $"<dl class=\"dl-horizontal\"><dt>{resource.GetString("Enqueue at:")}</dt><dd data-moment=\"{JobHelper.ToTimestamp(enqueueAt)}\">{enqueueAt}</dd></dl>");
+            var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData)?.ToString();
+            var builder = rendered?
+                     .Replace("<dt>Enqueue at:</dt>", $"<dt>{resource.GetString("Enqueue at:")}</dt>")
+                     ;
+            return new NonEscapedString(builder.ToString());
         }
-        public NonEscapedString SucceededRenderer(HtmlHelper html, IDictionary<string, string> stateData)
+        public NonEscapedString SucceededRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
-            var builder = new StringBuilder();
-            builder.Append("<dl class=\"dl-horizontal\">");
-
-            var itemsAdded = false;
-
-            if (stateData.ContainsKey("Latency"))
+            var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData).ToString();
+            rendered = System.Text.RegularExpressions.Regex.Replace(rendered, "<dd>(\\d+\\.?\\d*)(?<name>\\w+)</dd>", m =>
             {
-                var latency = TimeSpan.FromMilliseconds(long.Parse(stateData["Latency"]));
-
-                builder.Append($"<dt>{resource.GetString("Latency:")}</dt><dd>{html.ToHumanDurationTr(resource, latency, false)}</dd>");
-
-                itemsAdded = true;
-            }
-
-            if (stateData.ContainsKey("PerformanceDuration"))
-            {
-                var duration = TimeSpan.FromMilliseconds(long.Parse(stateData["PerformanceDuration"]));
-                builder.Append($"<dt>{resource.GetString("Duration:")}</dt><dd>{html.ToHumanDurationTr(resource, duration, false)}</dd>");
-
-                itemsAdded = true;
-            }
-
-
-            if (stateData.ContainsKey("Result") && !String.IsNullOrWhiteSpace(stateData["Result"]))
-            {
-                var result = stateData["Result"];
-                builder.Append($"<dt>{resource.GetString("Result:")}</dt><dd>{System.Net.WebUtility.HtmlEncode(result)}</dd>");
-
-                itemsAdded = true;
-            }
-
-            builder.Append("</dl>");
-
-            if (!itemsAdded) return null;
-
+                var name = m.Groups["name"].Value;
+                return m.Value.Replace(name, resource.GetString(name));
+            });
+            var builder = rendered?
+                     .Replace("<dt>Latency:</dt>", $"<dt>{resource.GetString("Latency:")}</dt>")
+                     .Replace("<dt>Duration:</dt>", $"<dt>{resource.GetString("Duration:")}</dt>")
+                     .Replace("<dt>Result:</dt>", $"<dt>{resource.GetString("Result:")}</dt>")
+                     ;
             return new NonEscapedString(builder.ToString());
         }
         public NonEscapedString ProcessingRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
-            var builder = new StringBuilder();
-            builder.Append("<dl class=\"dl-horizontal\">");
-
-            string serverId = null;
-
-            if (stateData.ContainsKey("ServerId"))
+            var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData)?.ToString();
+            rendered = System.Text.RegularExpressions.Regex.Replace(rendered, "<span data-moment-title=\"(?<timestamp>\\d+)\">(?<time>\\+(\\d+\\.?\\d*))(?<name>\\w+)</span>", m =>
             {
-                serverId = stateData["ServerId"];
-            }
-            else if (stateData.ContainsKey("ServerName"))
-            {
-                serverId = stateData["ServerName"];
-            }
-
-            if (serverId != null)
-            {
-                builder.Append($"<dt>{resource.GetString("Server:")}</dt>");
-                builder.Append($"<dd>{helper.ServerId(serverId)}</dd>");
-            }
-
-            if (stateData.ContainsKey("WorkerId"))
-            {
-                builder.Append($"<dt>{resource.GetString("Worker:")}</dt>");
-                builder.Append($"<dd>{stateData["WorkerId"].Substring(0, 8)}</dd>");
-            }
-            else if (stateData.ContainsKey("WorkerNumber"))
-            {
-                builder.Append($"<dt>{resource.GetString("Worker:")}</dt>");
-                builder.Append($"<dd>#{stateData["WorkerNumber"]}</dd>");
-            }
-
-            builder.Append("</dl>");
-
+                var timestamp = m.Groups["timestamp"].Value;
+                var time = m.Groups["time"].Value;
+                var name = m.Groups["name"].Value;
+                return $"<span data-moment-title=\"{timestamp}\">{time}{resource.GetString(name)}</span>";
+            });
+            var builder = rendered?
+                     .Replace("<dt>Server:</dt>", $"<dt>{resource.GetString("Server:")}</dt>")
+                     .Replace("<dt>Worker:</dt>", $"<dt>{resource.GetString("Worker:")}</dt>")
+                     ;
             return new NonEscapedString(builder.ToString());
         }
 
         public NonEscapedString EnqueuedRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
-            return new NonEscapedString(
-                $"<dl class=\"dl-horizontal\"><dt>{resource.GetString("Queue:")}</dt><dd>{helper.QueueLabel(stateData["Queue"])}</dd></dl>");
+            var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData)?.ToString();
+            var builder = rendered?
+                     .Replace("<dt>Queue:</dt>", $"<dt>{resource.GetString("Queue:")}</dt>")
+                     .Replace("<dt>Worker:</dt>", $"<dt>{resource.GetString("Worker:")}</dt>")
+                     ;
+            return new NonEscapedString(builder.ToString());
         }
         public NonEscapedString AwaitingRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
-            var builder = new StringBuilder();
-
-            builder.Append("<dl class=\"dl-horizontal\">");
-
-            if (stateData.ContainsKey("ParentId"))
-            {
-                builder.Append($"<dt>{resource.GetString("Parent")}</dt><dd>{helper.JobIdLink(stateData["ParentId"])}</dd>");
-            }
-
-            if (stateData.ContainsKey("NextState"))
-            {
-                var nextState = JsonConvert.DeserializeObject<IState>(
-                    stateData["NextState"],
-                    new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-
-                builder.Append($"<dt>{resource.GetString("Next State")}</dt><dd>{helper.StateLabel(nextState.Name)}</dd>");
-            }
-
-            if (stateData.ContainsKey("Options"))
-            {
-                builder.Append($"<dt>{resource.GetString("Options")}</dt><dd><code>{helper.HtmlEncode(stateData["Options"])}</code></dd>");
-            }
-
-            builder.Append("</dl>");
-
+            var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData)?.ToString();
+            var builder = rendered?
+                     .Replace("<dt>Parent:</dt>", $"<dt>{resource.GetString("Parent:")}</dt>")
+                     .Replace("<dt>Next State:</dt>", $"<dt>{resource.GetString("Next State:")}</dt>")
+                     .Replace("<dt>Options:</dt>", $"<dt>{resource.GetString("Options:")}</dt>")
+                    ;
             return new NonEscapedString(builder.ToString());
         }
 

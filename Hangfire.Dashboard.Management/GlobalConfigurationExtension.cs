@@ -126,23 +126,26 @@ namespace Hangfire.Dashboard.Management
 
             //执行暂停命令
             DashboardRoutes.Routes.AddBatchCommand("/recurring/pause", (context, jobId) =>
-                 {
-                     using (var connection = context.Storage.GetConnection())
-                     {
-                         connection.SetPauseState(jobId, true);
-                     }
-                 });
+            {
+                if (context.IsReadOnly) return;
+                using (var connection = context.Storage.GetConnection())
+                {
+                    connection.SetPauseState(jobId, true);
+                }
+            });
             //执行恢复命令
             DashboardRoutes.Routes.AddBatchCommand("/recurring/repeat", (context, jobId) =>
-                 {
-                     using (var connection = context.Storage.GetConnection())
-                     {
-                         connection.SetPauseState(jobId, false);
-                     }
-                 });
+            {
+                if (context.IsReadOnly) return;
+                using (var connection = context.Storage.GetConnection())
+                {
+                    connection.SetPauseState(jobId, false);
+                }
+            });
             //执行添加任务
             DashboardRoutes.Routes.AddCommand($"{ManagementPage.UrlRoute}/addJob", context =>
             {
+                if (context.IsReadOnly) return false;
                 if (context.Request.Method == "POST")
                 {
                     //Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值

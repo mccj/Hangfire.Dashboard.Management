@@ -84,7 +84,7 @@ namespace HangfireJobTask
     {
         public System.Collections.Generic.Dictionary<string, string> GetData()
         {
-            return System.Text.Encoding.GetEncodings().ToDictionary(f => f.Name, f => f.DisplayName);
+            return System.Text.Encoding.GetEncodings().GroupBy(f => f.Name, (f1, f2) => f2.FirstOrDefault()).ToDictionary(f => f.Name, f => f.DisplayName);
         }
 
         public string GetDefaultValue()

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Hangfire.Annotations;
+using System;
+using System.Collections.Generic;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
@@ -20,11 +22,21 @@ namespace Hangfire.Dashboard.Management.Pages
     {
         public static NonEscapedString Render(Common.Job job)
         {
-            if (job == null) { return new NonEscapedString("<em>" + Hangfire.Dashboard.Resources.Strings.Common_CannotFindTargetMethod + "</em>"); }
+            //if (job == null) { return new NonEscapedString("<em>" + Hangfire.Dashboard.Resources.Strings.Common_CannotFindTargetMethod + "</em>"); }
 
             var type = Type.GetType("Hangfire.Dashboard.JobMethodCallRenderer,Hangfire.Core");
             var render = type.GetMethod("Render");
             return render.Invoke(null, new[] { job }) as NonEscapedString;
+        }
+    }
+    internal static class ContinuationsSupportAttributeEx
+    {
+        internal static List<Continuation> DeserializeContinuations(string serialized)
+        {
+            var type = Type.GetType("Hangfire.ContinuationsSupportAttribute,Hangfire.Core");
+            var render = type.GetMethod("DeserializeContinuations", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static);
+            return render.Invoke(null, new[] { serialized }) as List<Continuation>;
+
         }
     }
 }
