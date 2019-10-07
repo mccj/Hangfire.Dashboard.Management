@@ -114,7 +114,7 @@ namespace Hangfire.Dashboard.Management.Pages
                     //options += Input($"{id}_sys_parentId", string.Empty, "Parent Job Id", "Parent Job Id", "text", "").ToHtmlString();
                     //options += InputDataList($"{id}_sys_parentOption", string.Empty, "Parent Job Option", "Parent Job Option", new[] { "None" }.Concat(Enum.GetValues(typeof(JobContinuationOptions)).OfType<JobContinuationOptions>().Select(f => f.ToString())).ToDictionary(f => f, f => f).ToArray(), JobContinuationOptions.OnlyOnSucceededState).ToHtmlString();
 
-                    var buttons = CreateButtons(route, "»Î∂”", "»Î∂”÷–...", id).ToHtmlString();
+                    var buttons = CreateButtons(route, "ÂÖ•Èòü", "ÂÖ•Èòü‰∏≠...", id).ToHtmlString();
                     WriteLiteral(Panel(id, jobMetadata.DisplayName, jobMetadata.Description, inputs, options, buttons).ToHtmlString());
                 }
             }
@@ -266,26 +266,26 @@ namespace Hangfire.Dashboard.Management.Pages
         //                    <button class=""js-management-input-commands btn btn-sm btn-success"" 
         //                            data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"" input-id=""{id}""> 
         //                        <span class=""glyphicon glyphicon-play-circle""></span>
-        //                        &nbsp;¡–∂”
+        //                        &nbsp;ÂàóÈòü
         //                    </button>
         //                </div>
         //                <div class=""btn-group col-3 pull-right"">
         //                    <button type=""button"" class=""btn btn-info btn-sm dropdown-toggle"" data-toggle=""dropdown"" aria-haspopup=""true"" aria-expanded=""false"">
-        //                        —” ± &nbsp;
+        //                        Âª∂Êó∂ &nbsp;
         //                        <span class=""caret""></span>
         //                    </button>
 
         //                    <ul class=""dropdown-menu"">
         //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""5""  
-        //                            data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">5 √Î</a></li>
+        //                            data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">5 Áßí</a></li>
         //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""10""
-        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">10 √Î</a></li>
+        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">10 Áßí</a></li>
         //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""15""
-        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">15 √Î</a></li>
+        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">15 Áßí</a></li>
         //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""30""
-        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">30 √Î</a></li>
+        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">30 Áßí</a></li>
         //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""60""
-        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">60 √Î</a></li>
+        //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">60 Áßí</a></li>
 
         //                    </ul>
         //                </div>
@@ -297,7 +297,7 @@ namespace Hangfire.Dashboard.Management.Pages
         //                        <button class=""btn btn-default btn-sm btn-warning js-management-input-commands"" type=""button"" input-id=""{id}""
         //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">
         //                            <span class=""glyphicon glyphicon-repeat""></span>
-        //                            &nbsp;÷ÿ∏¥÷¥––</button>
+        //                            &nbsp;ÈáçÂ§çÊâßË°å</button>
         //                        </span>
         //                    </div>
         //                </div>

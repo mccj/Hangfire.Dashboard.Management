@@ -35,9 +35,9 @@ namespace Hangfire.Dashboard.Management.Service
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddHealthChecks()
-            //  //.AddDbContextCheck<Data.ApplicationDbContext>()
-            //  ;
+            services.AddHealthChecks()
+              //.AddDbContextCheck<Data.ApplicationDbContext>()
+              ;
 
             //services.AddHostedService<HangfireHostedService>();
 
@@ -151,7 +151,7 @@ namespace Hangfire.Dashboard.Management.Service
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //app.UseHealthChecks("/health");
+            app.UseHealthChecks("/health");
 
             try
             {

@@ -115,6 +115,13 @@
     "注：'L'和 'W'可以一组合使用。如果在日字段上设置\"LW\"，则表示在本月的最后一个工作日触发。": "Note: 'L' and 'W' can be used together. \"LW\" placed at the day of month means the job will be ran at the last business day for that month.",
     "1-12月依次是": "The months from 1 to 12 represents ",
     "反解析": "Analysis",
-    "结果": "Result"
+    "结果": "Result",
+    "StateName_Created": "Created",
+    "StateName_Enqueued": "Enqueued",
+    "StateName_Processing": "Processing",
+    "StateName_Succeeded": "Succeeded",
+    "StateName_Failed": "Failed",
+    "StateName_Scheduled": "Scheduled",
+    "StateName_Deleted": "Deleted"
   }
 }
