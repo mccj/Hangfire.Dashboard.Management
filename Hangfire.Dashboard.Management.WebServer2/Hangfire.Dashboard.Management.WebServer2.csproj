@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <!--<PackageReference Include="Hangfire.MemoryStorage" Version="1.6.3" />-->
+    <PackageReference Include="Hangfire.Console" Version="1.4.2" />
+    <PackageReference Include="Hangfire.Heartbeat" Version="0.5.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />

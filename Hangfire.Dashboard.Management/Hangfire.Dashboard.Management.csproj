@@ -12,7 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.Core" Version="1.7.6" />
     <PackageReference Include="CronExpressionDescriptor" Version="2.13.0" />
     <PackageReference Include="ncrontab" Version="3.3.1" />
     <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.0">
@@ -34,6 +33,11 @@
   <ItemGroup>
     <None Remove="Content\**" />
     <EmbeddedResource Include="Content\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hangfire.Dashboard.Management.Abstractions\Hangfire.Dashboard.Management.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Pages\CornJobsPage.cs">

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hangfire.Dashboard.Management\Hangfire.Dashboard.Management.csproj" />
+    <ProjectReference Include="..\Hangfire.Dashboard.Management.Abstractions\Hangfire.Dashboard.Management.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -145,7 +145,7 @@ namespace Hangfire.Dashboard.Management.Service
 
                 if (_hangfireOption?.IsUseHangfireServer == true)
                 {
-                    var queues = _hangfireOption.Queues?.ToLower()?.Replace("-", "_")?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
+                    var queues = _hangfireOption.Queues?.ToLower()/*?.Replace("-", "_")*/?.Replace(" ", "_")?.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(f => !string.IsNullOrWhiteSpace(f)).ToArray();//new[] { "default", "apis", "jobs" };
                     if (queues == null || queues.Length == 0) queues = new[] { Hangfire.States.EnqueuedState.DefaultQueue };
                     //启用本地服务
                     options = new BackgroundJobServerOptions

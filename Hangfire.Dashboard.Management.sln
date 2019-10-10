@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Manageme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.WebServer2", "Hangfire.Dashboard.Management.WebServer2\Hangfire.Dashboard.Management.WebServer2.csproj", "{4F0E9018-D09E-4CC7-9BBF-190D5C8B1200}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.Abstractions", "Hangfire.Dashboard.Management.Abstractions\Hangfire.Dashboard.Management.Abstractions.csproj", "{15392103-58CC-4C99-8168-29BD5273329D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{4F0E9018-D09E-4CC7-9BBF-190D5C8B1200}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F0E9018-D09E-4CC7-9BBF-190D5C8B1200}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F0E9018-D09E-4CC7-9BBF-190D5C8B1200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15392103-58CC-4C99-8168-29BD5273329D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15392103-58CC-4C99-8168-29BD5273329D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15392103-58CC-4C99-8168-29BD5273329D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15392103-58CC-4C99-8168-29BD5273329D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
