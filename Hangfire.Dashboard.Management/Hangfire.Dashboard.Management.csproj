@@ -65,7 +65,6 @@
       <DependentUpon>SucceededJobs.cshtml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ProjectExtensions><VisualStudio><UserProperties content_4language_4zh-cn_1json__JsonSchema="http://json.schemastore.org/appsettings" /></VisualStudio></ProjectExtensions>
   <!--<ItemGroup>
     <Compile Update="Pages\CornJobsPage.cshtml.cs">
       <DependentUpon>CornJobsPage.cshtml</DependentUpon>

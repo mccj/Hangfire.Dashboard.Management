@@ -16,9 +16,13 @@
     {
         <div class="panel panel-info js-management card" data-id="@(id)">
             <div class="panel-heading card-header" id="heading_@(id)">
-                <button class="@(expanded ? "btn btn-link" : "btn btn-link collapsed")" aria-expanded="@(expanded ? "true":"false")" data-toggle="collapse" data-target="#collapse_@(id)">@(heading)</button>
+                <h4 class="panel-title">
+                    <a class="@(expanded ? "" : "collapsed")collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_@(id)" aria-expanded="@(expanded ? "true":"false")" aria-controls="collapse_@(id)">
+                        @(heading)
+                    </a>
+                </h4>
             </div>
-            <div id="collapse_@(id)" class="@(expanded ? "collapse in":"collapse")" aria-expanded="false" aria-labelledby="heading_@(id)" data-parent="#jobsAccordion">
+            <div id="collapse_@(id)" class="panel-collapse @(expanded ? "collapse in":"collapse")" aria-expanded="@(expanded ? "true":"false")" aria-labelledby="heading_@(id)" data-parent="#jobsAccordion">
                 <div class="panel-body">
                     <p>@(description)</p>
                 </div>
@@ -59,7 +63,7 @@
         </div>
         <div class="col-sm-8 pull-right commands-panel ScheduleDateTime" style="display:none">
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control date" placeholder="Enter a date" id="@(id)_sys_datetime">
+        	<input type="text" class="form-control date" placeholder="@Strings.ResourceManager.GetString("Enter a date")" id="@(id)_sys_datetime">
                 <div class="input-group-btn ">
                     <button class="btn btn-default btn-sm btn-primary js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleDateTime"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
@@ -71,7 +75,7 @@
         </div>
         <div class="col-sm-8 pull-right commands-panel ScheduleTimeSpan" style="display:none">
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control time" placeholder="Enter a time 00:00:00" id="@(id)_sys_timespan" data-inputmask="'mask':'99:99:99'" value="00:00:00">
+        	<input type="text" class="form-control time" placeholder="@Strings.ResourceManager.GetString("Enter a time 00:00:00")" id="@(id)_sys_timespan" data-inputmask="'mask':'99:99:99'" value="00:00:00">
                 <div class="input-group-btn ">
                     <button class="btn btn-default btn-sm btn-info js-management-input-commands" type="button" input-id="@(id)" input-type="ScheduleTimeSpan"
                             data-url="@(Url.To(url))" data-loading-text="@(loadingText)">
@@ -109,7 +113,7 @@
         </div>
         <div class="col-sm-8 pull-right commands-panel CronExpression" style="display:none">
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control" placeholder="Enter a cron expression * * * * *" id="@(id)_sys_cron">
+        	<input type="text" class="form-control" placeholder="@Strings.ResourceManager.GetString("Enter a cron expression * * * * *")" id="@(id)_sys_cron">
                 <div class="input-group-btn ">
                     <button type="button" class="btn btn-default js-management-input-CronModal" input-id="@(id)"><span class="glyphicon glyphicon-wrench"></span></button>
                     <button class="btn btn-default btn-sm btn-warning js-management-input-commands" type="button" input-id="@(id)" input-type="CronExpression"
