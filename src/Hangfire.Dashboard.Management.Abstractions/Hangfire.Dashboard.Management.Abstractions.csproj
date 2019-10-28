@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2;NET461</TargetFrameworks>
+    <Version>1.7.6</Version>
+    <PackageProjectUrl>https://github.com/mccj/Hangfire.Dashboard.Management</PackageProjectUrl>
+    <PackageTags>Hangfire Dashboard Management</PackageTags>
+    <Description>Hangfire.Dashboard.Management provides a Management page in the default dashboard. It allows for manually creating jobs.</Description>
+    <PackageLicenseUrl>https://github.com/mccj/Hangfire.Dashboard.Management/blob/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HangFire.Core" Version="1.7.7" />
+  </ItemGroup>
+</Project>
