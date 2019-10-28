@@ -290,6 +290,7 @@ namespace Hangfire.Dashboard.Management.Service
         private static Type[] GetApplicationTypes()
         {
             //var assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(Assembly.Load);
+            //var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var assemblies = new[] { typeof(HangfireJobTask.常规任务).Assembly };
             var types = assemblies.SelectMany(f => f.GetTypes()).ToArray();
             return types;
