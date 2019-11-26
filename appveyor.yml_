@@ -1,4 +1,6 @@
-version: 1.0.0-beta-{build}
+version: 1.7.6.3-beta-{build}
+pull_requests:
+  do_not_increment_build_number: true
 image: Visual Studio 2019
 init:
 - ps: dotnet --version
@@ -6,6 +8,7 @@ dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: '{version}'
+  version_prefix: '{version}'
   package_version: '{version}'
   assembly_version: '{version}'
   file_version: '{version}'

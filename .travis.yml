@@ -5,7 +5,7 @@ os:                         #设定测试操作系统
 #  - osx
   - windows
 mono:       none            #Mono版本,可以指定为 latest,none
-#dotnet:     2.1.502         #dotnet版本
+dotnet:     3.0.100         #dotnet版本
 #install:
 #  - curl https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version 2.2.107
 #  - if test "$TRAVIS_OS_NAME" == "linux"; then export PATH="/home/travis/.dotnet":"$PATH"; fi
