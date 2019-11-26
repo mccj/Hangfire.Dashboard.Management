@@ -1,15 +1,35 @@
 language:   csharp          #设定编译语言
 sudo:       required        #需要sudo权限
-os:                         #设定测试操作系统
+dist:       xenial          #指定Ubuntu版本
+
+services:                   #用Docker构建
+  - docker
+
+matrix:
+include:
+- dotnet: 3.0.100
+    mono: none
+    os: linux
+- dotnet: 3.0.100
+    mono: none
+    os: osx
+- mono: latest
+    os: linux
+- mono: beta
+    os: osx
+
+
+#os:                         #设定测试操作系统
 #  - linux
 #  - osx
-  - windows
-mono:       none            #Mono版本,可以指定为 latest,none
-dotnet:     3.0.100         #dotnet版本
+#  - windows
+#mono:       none            #Mono版本,可以指定为 latest,none
+#dotnet:     3.0.100         #dotnet版本
 #install:
 #  - curl https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version 2.2.107
 #  - if test "$TRAVIS_OS_NAME" == "linux"; then export PATH="/home/travis/.dotnet":"$PATH"; fi
 #  - if test "$TRAVIS_OS_NAME" == "osx"; then export PATH="/Users/travis/.dotnet":"$PATH"; fi
+
 script:             #脚本
 #  - dir %WINDIR%\Microsoft.Net\Framework\v* /B
   - dotnet --info
