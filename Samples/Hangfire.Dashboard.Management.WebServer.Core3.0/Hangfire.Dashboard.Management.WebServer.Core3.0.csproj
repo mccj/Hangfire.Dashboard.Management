@@ -5,16 +5,18 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <!--<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>-->
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>Hangfire.Dashboard.Management</UserSecretsId>
   </PropertyGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.7" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.8" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.3" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.7.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="3.0.0" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.6.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.0" />
     <PackageReference Include="Hangfire.Heartbeat" Version="0.5.0" />
     <PackageReference Include="Hangfire.Console" Version="1.4.2" />
   </ItemGroup>

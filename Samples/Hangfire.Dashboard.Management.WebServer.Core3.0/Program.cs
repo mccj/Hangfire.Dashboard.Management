@@ -24,6 +24,10 @@ namespace Hangfire.Dashboard.Management.Service
                             .AddJsonFile("App_Data/appsettings.json", optional: true, reloadOnChange: true)
                             .AddJsonFile($"App_Data/appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
+                        if (env.IsDevelopment())
+                        {
+                            builder.AddUserSecrets<Startup>();
+                        }
                     })
                     .ConfigureLogging((hostingContext, logging) =>
                     {

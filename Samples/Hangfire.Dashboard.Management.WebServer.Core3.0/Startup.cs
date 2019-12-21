@@ -7,10 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace Hangfire.Dashboard.Management.Service
@@ -18,7 +16,7 @@ namespace Hangfire.Dashboard.Management.Service
     public class Startup
     {
         //private readonly ILogger _logger;
-        public Startup(IConfiguration configuration/*, ILogger<Startup> logger*/)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env/*, ILogger<Startup> logger*/)
         {
             Configuration = configuration;
             //_logger = logger;
@@ -39,10 +37,10 @@ namespace Hangfire.Dashboard.Management.Service
             });
 
             services.AddControllersWithViews();
-
             services.AddHealthChecks()
-              //.AddDbContextCheck<Data.ApplicationDbContext>()
-              ;
+                .AddSqlServer(Configuration["HangfireTask:nameOrConnectionString"]);
+            //.AddDbContextCheck<Data.ApplicationDbContext>()
+            ;
 
             //System.Globalization.CultureInfo cultureInfo = new System.Globalization.CultureInfo("en-us");
             //System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;

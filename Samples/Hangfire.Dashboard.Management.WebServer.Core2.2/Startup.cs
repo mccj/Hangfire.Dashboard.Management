@@ -40,8 +40,9 @@ namespace Hangfire.Dashboard.Management.Service
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddHealthChecks()
-              //.AddDbContextCheck<Data.ApplicationDbContext>()
-              ;
+            .AddSqlServer(Configuration["HangfireTask:nameOrConnectionString"]);
+            //.AddDbContextCheck<Data.ApplicationDbContext>()
+            ;
 
             //System.Globalization.CultureInfo cultureInfo = new System.Globalization.CultureInfo("en-us");
             //System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;

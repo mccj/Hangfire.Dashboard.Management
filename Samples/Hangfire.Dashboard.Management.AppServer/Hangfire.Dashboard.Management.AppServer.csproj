@@ -8,15 +8,16 @@
     <AssemblyTitle>Hangfire.Dashboard.Management.Test</AssemblyTitle>
     <Product>Hangfire.Dashboard.Management.Test</Product>
     <Copyright>Copyright ©  2018</Copyright>
+    <UserSecretsId>Hangfire.Dashboard.Management</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Hangfire.Console" Version="1.4.2" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.3" />
-    <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
-    <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.0.1" />
-    <PackageReference Include="Microsoft.Owin.Host.HttpListener.zh-Hans" Version="4.0.1" />
-    <PackageReference Include="Microsoft.Owin.Hosting" Version="4.0.1" />
-    <PackageReference Include="Microsoft.Owin.Hosting.zh-Hans" Version="4.0.1" />
+    <PackageReference Include="Microsoft.Owin" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Owin.Host.HttpListener.zh-Hans" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Owin.Hosting" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Owin.Hosting.zh-Hans" Version="4.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <!--<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />-->
     <PackageReference Include="Owin" Version="1.0" />

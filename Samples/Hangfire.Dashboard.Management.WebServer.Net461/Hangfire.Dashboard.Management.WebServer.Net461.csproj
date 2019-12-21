@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <DebugType>full</DebugType>
+    <UserSecretsId>Hangfire.Dashboard.Management</UserSecretsId>
   </PropertyGroup>
 
 
