@@ -1,8 +1,8 @@
 # Hangfire.Dashboard.Management
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ofdcnfyh5k7vcvsy?svg=true)](https://ci.appveyor.com/project/mccj/hangfire-dashboard-management)
-[![MyGet](https://img.shields.io/myget/mccj/vpre/Hangfire.Dashboard.Management.svg)](https://myget.org/feed/mccj/package/nuget/Hangfire.Dashboard.Management)
-[![NuGet](https://img.shields.io/nuget/v/Hangfire.Dashboard.Management.svg)](https://www.nuget.org/packages/Hangfire.Dashboard.Management)
+[![MyGet](https://buildstats.info/myget/Hangfire.Dashboard.Management?includePreReleases=true)](https://myget.org/feed/mccj/package/nuget/Hangfire.Dashboard.Management)
+[![NuGet](https://buildstats.info/nuget/Hangfire.Dashboard.Management?includePreReleases=false)](https://www.nuget.org/packages/Hangfire.Dashboard.Management)
 [![MIT License](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/mccj/Hangfire.Dashboard.Management/blob/master/LICENSE)
 
 Hangfire.Dashboard.Management provides a Management page in the default dashboard. It allows for manually creating jobs.
