@@ -107,8 +107,8 @@ namespace Hangfire.Dashboard.Management
                         "Metrics_Count",
                         page => new Metric(pageInfo.Metadatas.Length)
                         {
-                            Style = pageInfo.Metadatas.Length > 0 ? MetricStyle.Info : MetricStyle.Default,
-                            Highlighted = pageInfo.Metadatas.Length > 0
+                            //Style = pageInfo.Metadatas.Length > 0 ? MetricStyle.Info : MetricStyle.Default,
+                            //Highlighted = pageInfo.Metadatas.Length > 0
                         })
                 });
                 ////添加页面
