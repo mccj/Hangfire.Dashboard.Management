@@ -3,6 +3,7 @@ using Hangfire.Common;
 using Hangfire.Storage;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
@@ -26,7 +27,13 @@ namespace Hangfire.Dashboard.Management.Pages
             var ids = connection.GetAllItemsFromSet("recurring-jobs");
             return GetRecurringJobDtos(connection, ids);
         }
+        public static RecurringJobDto GetRecurringJob([NotNull] this IStorageConnection connection, string jobId)
+        {
+            if (connection == null) throw new ArgumentNullException(nameof(connection));
 
+            var ids = new[] { jobId };
+            return GetRecurringJobDtos(connection, ids)?.FirstOrDefault();
+        }
         private static List<RecurringJobDto> GetRecurringJobDtos(IStorageConnection connection, IEnumerable<string> ids)
         {
             var result = new List<RecurringJobDto>();
@@ -116,7 +123,80 @@ namespace Hangfire.Dashboard.Management.Pages
         public static void SetPauseState([NotNull] this IStorageConnection connection, [NotNull] string jobId, [NotNull] bool value)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
-            connection.SetRangeInHash("recurring-job:" + jobId, new[] { new KeyValuePair<string, string>("PauseState", SerializationHelper.Serialize(value)) });
+            //var recurringJob = connection.GetRecurringJob(jobId);
+            var hash = connection.GetAllEntriesFromHash($"recurring-job:{jobId}") ?? new Dictionary<string, string>();
+            var nextExecution = hash.ContainsKey("NextExecution") ? hash["NextExecution"] : string.Empty;
+            if (string.IsNullOrWhiteSpace(nextExecution))
+                nextExecution = hash.ContainsKey("PauseNextExecution") ? hash["PauseNextExecution"] : string.Empty;
+            if (value)
+            {
+                connection.SetRangeInHash("recurring-job:" + jobId, new[] {
+                    new KeyValuePair<string, string>("PauseState", SerializationHelper.Serialize(value)),
+                    new KeyValuePair<string, string>("NextExecution", string.Empty),
+                    new KeyValuePair<string, string>("PauseNextExecution", nextExecution),
+                });
+            }
+            else
+            {
+                connection.SetRangeInHash("recurring-job:" + jobId, new[] {
+                    new KeyValuePair<string, string>("PauseState", SerializationHelper.Serialize(value)),
+                    new KeyValuePair<string, string>("NextExecution", nextExecution),
+                    new KeyValuePair<string, string>("PauseNextExecution", string.Empty),
+                });
+
+            }
+
+            //Dictionary<string, string> dictionary = connection.GetAllEntriesFromHash("recurring-job:" + jobId);
+            //if (dictionary == null || dictionary.Count == 0)
+            //{
+            //    return;
+            //}
+
+            //if (!dictionary.TryGetValue(nameof(Job), out var jobDetail))
+            //{
+            //    return;
+            //}
+
+            //var RecurringJob = InvocationData.DeserializePayload(jobDetail).DeserializeJob();
+
+            ////var job = CodingUtil.FromJson<HttpJobItem>(RecurringJob.Args.FirstOrDefault()?.ToString());
+
+            ////if (job == null) return;
+
+            //using (var tran = connection.CreateWriteTransaction())
+            //{
+            //    //拿到所有的设置
+            //    var conts = connection.GetAllItemsFromSet($"JobPauseOf:{jobId}");
+
+            //    //有就先清掉
+            //    foreach (var pair in conts)
+            //    {
+            //        tran.RemoveFromSet($"JobPauseOf:{jobId}", pair);
+            //    }
+
+            //    var cron = conts.FirstOrDefault(r => r.StartsWith("Cron:"));
+            //    if (!string.IsNullOrEmpty(cron)) cron = cron.Replace("Cron:", "");
+            //    //如果包含有true 的 说明已经设置了 暂停 要把改成 启动 并且拿到 Cron 进行更新
+            //    if (conts.Contains("true"))
+            //    {
+            //        tran.AddToSet($"JobPauseOf:{jobId}", "false");
+            //        if (!string.IsNullOrEmpty(cron))
+            //        {
+            //            //job.Cron = cron;
+            //            //AddHttprecurringjob(job);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        tran.AddToSet($"JobPauseOf:{jobId}", "true");
+            //        //tran.AddToSet($"JobPauseOf:{jobId}", "Cron:" + job.Cron);
+            //        //job.Cron = "";
+            //        //AddHttprecurringjob(job);
+            //    }
+
+            //    tran.Commit();
+            //}
+
         }
     }
     public class RecurringJobDto : Hangfire.Storage.RecurringJobDto
