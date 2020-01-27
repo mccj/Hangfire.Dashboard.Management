@@ -8,9 +8,9 @@ namespace Hangfire.Dashboard.Management.Pages
     {
         private readonly string pageTitle;
         private readonly string pageHeader;
-        private readonly Support.ManagePage[] managePages;
+        private readonly Metadata.JobMetadata[] managePages;
 
-        protected internal ManagementBasePage(string pageTitle, string pageHeader, Support.ManagePage[] managePages)
+        protected internal ManagementBasePage(string pageTitle, string pageHeader, Metadata.JobMetadata[] managePages)
         {
             this.pageTitle = pageTitle;
             this.pageHeader = pageHeader;
@@ -39,86 +39,84 @@ namespace Hangfire.Dashboard.Management.Pages
         protected virtual void Content()
         {
             //var jobs = JobsHelper.Metadata.Where(j => j.Queue.Contains(queue));
-            foreach (var page in this.managePages)
+            foreach (var jobMetadata in this.managePages)
             {
-                if (page.Metadatas == null) continue;
-                foreach (var jobMetadata in page.Metadatas)
+                if (jobMetadata == null) continue;
+                //var route = $"{ManagementPage.UrlRoute}/{queue}/{jobMetadata.DisplayName.Replace(" ", string.Empty)}";
+                //var id = $"{jobMetadata.DisplayName.Replace(" ", string.Empty)}";
+
+                var id = $"{jobMetadata.GetId()/*(jobMetadata.Type.FullName + jobMetadata.MethodInfo.Name).ToBase64Url()*/}";
+                var route = $"{ManagementPage.UrlRoute}/addJob";
+
+                string inputs = string.Empty;
+                if (jobMetadata.Parameters?.Length > 0)
                 {
-                    //var route = $"{ManagementPage.UrlRoute}/{queue}/{jobMetadata.DisplayName.Replace(" ", string.Empty)}";
-                    //var id = $"{jobMetadata.DisplayName.Replace(" ", string.Empty)}";
-
-                    var id = $"{jobMetadata.GetId()/*(jobMetadata.Type.FullName + jobMetadata.MethodInfo.Name).ToBase64Url()*/}";
-                    var route = $"{ManagementPage.UrlRoute}/addJob";
-
-                    string inputs = string.Empty;
-                    if (jobMetadata.Parameters?.Length > 0)
+                    foreach (var parameterInfo in jobMetadata.Parameters)
                     {
-                        foreach (var parameterInfo in jobMetadata.Parameters)
+                        if (parameterInfo.ParameterType == typeof(PerformContext) || parameterInfo.ParameterType == typeof(IJobCancellationToken))
+                            continue;
+
+                        //DisplayDataAttribute displayInfo = parameterInfo.GetCustomAttribute<DisplayDataAttribute>(true);
+
+                        var myId = $"{id}_{parameterInfo.Name}";
+                        if (parameterInfo.ParameterType == typeof(string) && parameterInfo.ConvertType == null)
                         {
-                            if (parameterInfo.ParameterType == typeof(PerformContext) || parameterInfo.ParameterType == typeof(IJobCancellationToken))
-                                continue;
-
-                            //DisplayDataAttribute displayInfo = parameterInfo.GetCustomAttribute<DisplayDataAttribute>(true);
-
-                            var myId = $"{id}_{parameterInfo.Name}";
-                            if (parameterInfo.ParameterType == typeof(string) && parameterInfo.ConvertType == null)
-                            {
-                                //inputs += InputTextbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                                inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue).ToHtmlString();
-                            }
-                            else if (parameterInfo.ParameterType == typeof(int))
-                            {
-                                //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                                inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "number", parameterInfo.DefaultValue).ToHtmlString();
-                            }
-                            else if (parameterInfo.ParameterType == typeof(Uri))
-                            {
-                                //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                                inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "url", parameterInfo.DefaultValue).ToHtmlString();
-                            }
-                            else if (parameterInfo.ParameterType == typeof(DateTime))
-                            {
-                                inputs += InputDatebox(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo.DefaultValue).ToHtmlString();
-                            }
-                            else if (parameterInfo.ParameterType == typeof(bool))
-                            {
-                                inputs += "<br/>" + InputCheckbox(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name).ToHtmlString();
-                            }
-                            else if (parameterInfo.ParameterType.IsEnum)
-                            {
-                                var data = Enum.GetNames(parameterInfo.ParameterType).ToDictionary(f => f, f => f).ToArray();
-                                inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString()).ToHtmlString();
-                            }
-                            else if (parameterInfo.ConvertType != null && typeof(Metadata.IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))
-                            {
-                                var r = System.Activator.CreateInstance(parameterInfo.ConvertType) as Metadata.IInputDataList;
-                                var data = r.GetData().ToArray();
-                                var defaultValue = r.GetDefaultValue();
-                                inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString()).ToHtmlString();
-                            }
-                            else
-                            {
-                                throw new NotImplementedException();
-                            }
+                            //inputs += InputTextbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
+                            inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue).ToHtmlString();
+                        }
+                        else if (parameterInfo.ParameterType == typeof(int))
+                        {
+                            //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
+                            inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "number", parameterInfo.DefaultValue).ToHtmlString();
+                        }
+                        else if (parameterInfo.ParameterType == typeof(Uri))
+                        {
+                            //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
+                            inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "url", parameterInfo.DefaultValue).ToHtmlString();
+                        }
+                        else if (parameterInfo.ParameterType == typeof(DateTime))
+                        {
+                            inputs += InputDatebox(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo.DefaultValue).ToHtmlString();
+                        }
+                        else if (parameterInfo.ParameterType == typeof(bool))
+                        {
+                            inputs += "<br/>" + InputCheckbox(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name).ToHtmlString();
+                        }
+                        else if (parameterInfo.ParameterType.IsEnum)
+                        {
+                            var data = Enum.GetNames(parameterInfo.ParameterType).ToDictionary(f => f, f => f).ToArray();
+                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString()).ToHtmlString();
+                        }
+                        else if (parameterInfo.ConvertType != null && typeof(Metadata.IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))
+                        {
+                            var r = System.Activator.CreateInstance(parameterInfo.ConvertType) as Metadata.IInputDataList;
+                            var data = r.GetData().ToArray();
+                            var defaultValue = r.GetDefaultValue();
+                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString()).ToHtmlString();
+                        }
+                        else
+                        {
+                            throw new NotImplementedException();
                         }
                     }
-
-                    if (!string.IsNullOrWhiteSpace(inputs))
-                    {
-                        inputs += "<hr class=\"wide\">";
-                    }
-                    var options = string.Empty;
-                    options += Input($"{id}_sys_queue", "commands-options Enqueue CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), "", "text", jobMetadata.Queue).ToHtmlString();
-                    options += InputDataList($"{id}_sys_timeZone", "commands-options CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("TimeZone"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("TimeZone"), TimeZoneInfo.GetSystemTimeZones().ToDictionary(f => f.Id, f => f.DisplayName).ToArray(), TimeZoneInfo.Local.Id).ToHtmlString();
-                    options += Input($"{id}_sys_displayName", "commands-options CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Display Name"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Display Name"), "", "text", "").ToHtmlString();
-                    //options += Input($"{id}_sys_parentId", string.Empty, "Parent Job Id", "Parent Job Id", "text", "").ToHtmlString();
-                    //options += InputDataList($"{id}_sys_parentOption", string.Empty, "Parent Job Option", "Parent Job Option", new[] { "None" }.Concat(Enum.GetValues(typeof(JobContinuationOptions)).OfType<JobContinuationOptions>().Select(f => f.ToString())).ToDictionary(f => f, f => f).ToArray(), JobContinuationOptions.OnlyOnSucceededState).ToHtmlString();
-
-                    var buttons = CreateButtons(route, "入队", "入队中...", id).ToHtmlString();
-
-                    var isFirst = page.Metadatas.First() == jobMetadata;
-                    WriteLiteral(Panel(id, jobMetadata.DisplayName, jobMetadata.Description, inputs, options, buttons, isFirst).ToHtmlString());
                 }
+
+                if (!string.IsNullOrWhiteSpace(inputs))
+                {
+                    inputs += "<hr class=\"wide\">";
+                }
+                var options = string.Empty;
+                options += Input($"{id}_sys_queue", "commands-options Enqueue CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), "", "text", jobMetadata.Queue).ToHtmlString();
+                options += InputDataList($"{id}_sys_timeZone", "commands-options CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("TimeZone"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("TimeZone"), TimeZoneInfo.GetSystemTimeZones().ToDictionary(f => f.Id, f => f.DisplayName).ToArray(), TimeZoneInfo.Local.Id).ToHtmlString();
+                options += Input($"{id}_sys_displayName", "commands-options CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Display Name"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Display Name"), "", "text", "").ToHtmlString();
+                //options += Input($"{id}_sys_parentId", string.Empty, "Parent Job Id", "Parent Job Id", "text", "").ToHtmlString();
+                //options += InputDataList($"{id}_sys_parentOption", string.Empty, "Parent Job Option", "Parent Job Option", new[] { "None" }.Concat(Enum.GetValues(typeof(JobContinuationOptions)).OfType<JobContinuationOptions>().Select(f => f.ToString())).ToDictionary(f => f, f => f).ToArray(), JobContinuationOptions.OnlyOnSucceededState).ToHtmlString();
+
+                var buttons = CreateButtons(route, "入队", "入队中...", id).ToHtmlString();
+
+                var isFirst = this.managePages.First() == jobMetadata;
+                var jobSnippetCode = MissionRenderer.RenderMission(jobMetadata.MethodInfo);
+                WriteLiteral(Panel(id, jobMetadata.DisplayName, jobMetadata.Description, jobSnippetCode, inputs, options, buttons, isFirst).ToHtmlString());
             }
             //WriteLiteral("\r\n<script src=\"");
             //Write(Url.To($"/jsm"));
@@ -234,7 +232,7 @@ namespace Hangfire.Dashboard.Management.Pages
 
         //protected void Panel(string id, string heading, string description, string content, string buttons)
         //{
-        //    WriteLiteral($@"<div class=""panel panel-info js-management"">
+        //    WriteLiteral($@"<div class=""panel panel-default js-management"">
         //                      <div class=""panel-heading"">{heading}</div>
         //                      <div class=""panel-body"">
         //                        <p>{description}</p>

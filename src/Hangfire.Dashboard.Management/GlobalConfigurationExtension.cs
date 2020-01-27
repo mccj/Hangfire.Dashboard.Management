@@ -101,10 +101,18 @@ namespace Hangfire.Dashboard.Management
                 var path = $"{ManagementPage.UrlRoute}/{pageInfo.Title.ToBase64Url()}";
                 ManagementSidebarMenu.Items.Add(p => new MenuItem(pageInfo.Title, path)
                 {
-                    Active = p.RequestPath.StartsWith(path)
+                    Active = p.RequestPath.StartsWith(path),
+                    Metric = new DashboardMetric(
+                        "metrics:count",
+                        "Metrics_Count",
+                        page => new Metric(pageInfo.Metadatas.Length)
+                        {
+                            Style = pageInfo.Metadatas.Length > 0 ? MetricStyle.Info : MetricStyle.Default,
+                            Highlighted = pageInfo.Metadatas.Length > 0
+                        })
                 });
                 ////添加页面
-                DashboardRoutes.Routes.AddRazorPage(path, x => new ManagementBasePage(pageInfo.Title, pageInfo.Title, pageInfo.Pages));
+                DashboardRoutes.Routes.AddRazorPage(path, x => new ManagementBasePage(pageInfo.Title, pageInfo.Title, pageInfo.Metadatas));
             }
             #endregion 任务
 
@@ -178,7 +186,7 @@ namespace Hangfire.Dashboard.Management
 
                     var jobtype = getFormValue("type")?.FirstOrDefault();
                     var id = getFormValue("id")?.FirstOrDefault();
-                    var jobMetadata = pages.SelectMany(f => f.Pages.SelectMany(ff => ff.Metadatas.Where(fff => fff.GetId() == id))).FirstOrDefault();
+                    var jobMetadata = pages.SelectMany(f => f.Metadatas.Where(fff => fff.GetId() == id)).FirstOrDefault();
                     var par = new List<object>();
 
                     foreach (var parameterInfo in jobMetadata.Parameters)
@@ -370,16 +378,17 @@ namespace Hangfire.Dashboard.Management
         });
         private List<ManagePage> Pages { get; /*set; */} = new List<ManagePage>();
         protected internal System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentUICulture;
-        protected internal PageInfo[] GetPages()
+        protected internal ManagePage[] GetPages()
         {
-            return Pages.GroupBy(f => f.Title.IsNullOrWhiteSpace() ? string.Empty : f.Title.Trim()).Select(f => new PageInfo { Title = f.Key, Pages = f.Where(ff => ff.Metadatas.Length > 0).ToArray() }).ToArray();
+            return Pages.GroupBy(f => f.Title.IsNullOrWhiteSpace() ? string.Empty : f.Title.Trim()).Select(f => new ManagePage(f.Key, f.SelectMany(ff => ff.Metadatas).ToArray())).ToArray();
         }
-        protected internal class PageInfo
-        {
-            public string Title { get; set; }
-            public ManagePage[] Pages { get; set; }
-            //public string MenuName { get; internal set; }
-        }
+        //protected internal class PageInfo
+        //{
+        //    public string Title { get; set; }
+        //    public ManagePage[] Pages { get; set; }
+        //    //public Hangfire.Dashboard.Management.Metadata.JobMetadata[] Pages { get; set; }
+        //    //public string MenuName { get; internal set; }
+        //}
 
         /// <summary>
         /// 重新翻译方法
