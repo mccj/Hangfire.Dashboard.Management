@@ -82,14 +82,14 @@ namespace Hangfire.Dashboard.Management.Support
 
     internal class CommandDispatcher : IDashboardDispatcher
     {
-        private readonly Func<DashboardContext, bool> _command;
+        private readonly Func<DashboardContext, Task<bool>> _command;
 
-        public CommandDispatcher(Func<DashboardContext, bool> command)
+        public CommandDispatcher(Func<DashboardContext, Task<bool>> command)
         {
             _command = command;
         }
 
-        public Task Dispatch(DashboardContext context)
+        public async Task Dispatch(DashboardContext context)
         {
             var request = context.Request;
             var response = context.Response;
@@ -100,7 +100,7 @@ namespace Hangfire.Dashboard.Management.Support
             //    return Task.FromResult(false);
             //}
 
-            if (_command(context))
+            if (await _command(context))
             {
                 response.StatusCode = (int)System.Net.HttpStatusCode.NoContent;
             }
@@ -109,7 +109,7 @@ namespace Hangfire.Dashboard.Management.Support
                 response.StatusCode = 422;
             }
 
-            return Task.CompletedTask;
+            return;
         }
     }
 

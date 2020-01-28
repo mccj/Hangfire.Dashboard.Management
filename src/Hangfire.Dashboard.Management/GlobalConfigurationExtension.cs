@@ -68,7 +68,7 @@ namespace Hangfire.Dashboard.Management
             #endregion 翻译
             //Cron最近5次运行时间
             //cron?cron=0+0+0+*+*+%3F+
-            DashboardRoutes.Routes.Add("/cron", new CommandDispatcher(context =>
+            DashboardRoutes.Routes.Add("/cron", new CommandDispatcher(async context =>
             {
                 var cron = context.Request.GetQuery("cron");
                 //var result = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cron, new Options
@@ -87,7 +87,7 @@ namespace Hangfire.Dashboard.Management
                     Description = cronDescription,
                     Example = example
                 });
-                context.Response.WriteAsync(str);
+                await context.Response.WriteAsync(str);
                 return true;
             }));
             var pages = options.GetPages();
