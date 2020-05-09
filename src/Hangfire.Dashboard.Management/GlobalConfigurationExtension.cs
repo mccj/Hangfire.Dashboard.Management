@@ -80,8 +80,10 @@ namespace Hangfire.Dashboard.Management
                 //});
                 //var cronDescription = Hangfire.Cron.GetDescription(cron);
                 var cronDescription = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cron);
-                var cronSchedule = NCrontab.CrontabSchedule.Parse(cron);
-                var example = cronSchedule.GetNextOccurrences(System.DateTime.UtcNow, System.DateTime.Now.AddYears(5)).Take(5).ToArray();
+                var cronSchedule = Cronos.CronExpression.Parse(cron);
+                var example = cronSchedule.GetOccurrences(System.DateTime.UtcNow, System.DateTime.Now.AddYears(5)).Take(5).ToArray();
+                //var cronSchedule = NCrontab.CrontabSchedule.Parse(cron);
+                //var example = cronSchedule.GetNextOccurrences(System.DateTime.UtcNow, System.DateTime.Now.AddYears(5)).Take(5).ToArray();
                 var str = Newtonsoft.Json.JsonConvert.SerializeObject(new
                 {
                     Description = cronDescription,
@@ -506,7 +508,9 @@ namespace Hangfire.Dashboard.Management
                           DescriptionText = f?.DisplayData?.DescriptionText,
                           IsMultiLine = f?.DisplayData?.IsMultiLine,
                           ConvertType = f?.DisplayData?.ConvertType,
-                          DefaultValue = f?.DisplayData?.DefaultValue//_defaultValue.Count > 0 ? _defaultValue.Dequeue() : null
+                          DefaultValue = f?.DisplayData?.DefaultValue,//_defaultValue.Count > 0 ? _defaultValue.Dequeue() : null
+                          //IsDisabled = f?.DisplayData?.IsDisabled,
+                          CssClasses = f?.DisplayData?.CssClasses,
                       }).ToArray(),
                 Description = tm.GetCustomAttribute<System.ComponentModel.DescriptionAttribute>()?.Description ?? tm.Name,
                 DisplayName = tm.GetCustomAttribute<System.ComponentModel.DisplayNameAttribute>()?.DisplayName ?? recurringJobId

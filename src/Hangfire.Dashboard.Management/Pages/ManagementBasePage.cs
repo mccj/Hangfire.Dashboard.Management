@@ -62,25 +62,25 @@ namespace Hangfire.Dashboard.Management.Pages
                         if (parameterInfo.ParameterType == typeof(string) && parameterInfo.ConvertType == null)
                         {
                             //inputs += InputTextbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                            inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue).ToHtmlString();
+                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue).ToHtmlString();
                         }
                         else if (parameterInfo.ParameterType == typeof(int))
                         {
                             //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                            inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "number", parameterInfo.DefaultValue).ToHtmlString();
+                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "number", parameterInfo.DefaultValue).ToHtmlString();
                         }
                         else if (parameterInfo.ParameterType == typeof(Uri))
                         {
                             //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                            inputs += Input(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "url", parameterInfo.DefaultValue).ToHtmlString();
+                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "url", parameterInfo.DefaultValue).ToHtmlString();
                         }
                         else if (parameterInfo.ParameterType == typeof(DateTime))
                         {
-                            inputs += InputDatebox(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo.DefaultValue).ToHtmlString();
+                            inputs += InputDatebox(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo.DefaultValue).ToHtmlString();
                         }
                         else if (parameterInfo.ParameterType == typeof(bool))
                         {
-                            inputs += "<br/>" + InputCheckbox(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name).ToHtmlString();
+                            inputs += "<br/>" + InputCheckbox(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name).ToHtmlString();
                         }
                         else if (parameterInfo.ParameterType.IsEnum)
                         {

@@ -11,6 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HangFire.Core" Version="1.7.9" />
+    <PackageReference Include="HangFire.Core" Version="1.7.11" />
   </ItemGroup>
 </Project>
