@@ -347,24 +347,27 @@ namespace Hangfire.Dashboard.Management
                 return false;
             });
             //替换页面
-            var type = Type.GetType("Hangfire.Dashboard.RazorPageDispatcher," + typeof(IGlobalConfiguration).Assembly.FullName);
-            if (type != null)
-            {
-                object obj = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.RecurringJobsPage()) });
-                var dispatcher = obj as IDashboardDispatcher;//new RazorPageDispatcher( )
-                Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/recurring", dispatcher);
+            if(options.OverrideDefaultHangfirePages)
+            { 
+                var type = Type.GetType("Hangfire.Dashboard.RazorPageDispatcher," + typeof(IGlobalConfiguration).Assembly.FullName);
+                if (type != null)
+                {
+                    object obj = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.RecurringJobsPage()) });
+                    var dispatcher = obj as IDashboardDispatcher;//new RazorPageDispatcher( )
+                    Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/recurring", dispatcher);
 
-                object obj2 = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.JobDetailsPage(x.Groups["JobId"].Value)) });
-                var dispatcher2 = obj2 as IDashboardDispatcher;//new RazorPageDispatcher( )
-                Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/jobs/details/(?<JobId>.+)", dispatcher2);
+                    object obj2 = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.JobDetailsPage(x.Groups["JobId"].Value)) });
+                    var dispatcher2 = obj2 as IDashboardDispatcher;//new RazorPageDispatcher( )
+                    Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/jobs/details/(?<JobId>.+)", dispatcher2);
 
-                object obj3 = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.RetriesPage()) });
-                var dispatcher3 = obj3 as IDashboardDispatcher;//new RazorPageDispatcher( )
-                Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/retries", dispatcher3);
+                    object obj3 = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.RetriesPage()) });
+                    var dispatcher3 = obj3 as IDashboardDispatcher;//new RazorPageDispatcher( )
+                    Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/retries", dispatcher3);
 
-                object obj4 = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.SucceededJobs()) });
-                var dispatcher4 = obj4 as IDashboardDispatcher;//new RazorPageDispatcher( )
-                Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/jobs/succeeded", dispatcher4);
+                    object obj4 = Activator.CreateInstance(type, new object[] { new Func<System.Text.RegularExpressions.Match, RazorPage>(x => new Hangfire.Dashboard.Management.Pages.SucceededJobs()) });
+                    var dispatcher4 = obj4 as IDashboardDispatcher;//new RazorPageDispatcher( )
+                    Hangfire.Dashboard.DashboardRoutes.Routes.Replace("/jobs/succeeded", dispatcher4);
+                }
             }
         }
     }
@@ -535,6 +538,15 @@ namespace Hangfire.Dashboard.Management
         {
             var expression = methodCall.Body as System.Linq.Expressions.MethodCallExpression;
             return AddJobs(expression.Method, title: title, recurringJobId: recurringJobId, queue: queue);
+        }
+
+        internal bool OverrideDefaultHangfirePages { get; set; } = true;//backwards compatible
+
+        public ManagementPagesOptions UseDefaultHangfirePages(bool useDefault = true)
+        {
+            OverrideDefaultHangfirePages = !useDefault;
+
+            return this;
         }
 
         //public SqlServerStorageOptions RemoveIfExists(string recurringJobId)
