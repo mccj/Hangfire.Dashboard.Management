@@ -13,7 +13,7 @@ namespace HangfireJobTask
 
     public class 常规任务
     {
-        [Queue("tttttttttt")]
+        //[Queue("tttttttttt")]
         [Hangfire.Dashboard.Management.Support.Job]
         [DisplayName("请求连接")]
         [Description("请求外部连接,除非指定任务")]
@@ -43,30 +43,27 @@ namespace HangfireJobTask
 
 
         [Hangfire.Dashboard.Management.Support.Job]
-        [DisplayName("请求连接1")]
-        [Description("请求外部连接,除非指定任务")]
+        [DisplayName("Ping 测试")]
+        //[Description("Ping 测试 任务")]
         [AutomaticRetry(Attempts = 3)]//自动重试
         [DisableConcurrentExecution(90)]//禁用并行执行
         public string Test1(
-           [Hangfire.Dashboard.Management.Metadata.DisplayData("请求链接","http://localhost:8080/test.html?name=youname","请求外部连接,必须http或者https开头")]
-            Uri url,
-           [Hangfire.Dashboard.Management.Metadata.DisplayData("请求方式","POST","常用的请求方式有 GET、POST、PUT、DELETE 等")]
-            HttpMethod method = HttpMethod.POST,
-           [Hangfire.Dashboard.Management.Metadata.DisplayData("请求内容",IsMultiLine =true)]
-            string content = null,
-           [Hangfire.Dashboard.Management.Metadata.DisplayData("请求协议","application/x-www-form-urlencoded","常见的有 application/x-www-form-urlencoded、multipart/form-data、text/plain、application/json 等","application/x-www-form-urlencoded")]
-            string contentType = "application/x-www-form-urlencoded",
-           [Hangfire.Dashboard.Management.Metadata.DisplayData("提交内容的编码方式","utf-8","常见的有 UTF-8、Unicode、ASCII，错误的编码会导致内容无法识别","utf-8",ConvertType=typeof(EncodingsInputDataList))]
-            string contentEncoding = "UTF-8",
-           [Hangfire.Dashboard.Management.Metadata.DisplayData("返回结果内容的编码方式","utf-8","常见的有 UTF-8、Unicode、ASCII，错误的编码会导致内容无法识别","utf-8",ConvertType=typeof(EncodingsInputDataList))]
-            string responseEncoding = "UTF-8",
+           [Hangfire.Dashboard.Management.Metadata.DisplayData("ping 的地址","www.baidu.com","")]
+            string hostNameOrAddress,
            PerformContext context = null)
         {
-            var _contentEncoding = Encoding.GetEncoding(contentEncoding) ?? Encoding.UTF8;
-            var _responseEncoding = Encoding.GetEncoding(responseEncoding) ?? Encoding.UTF8;
-            var r = SendData(url, method, content, contentType, _contentEncoding, _responseEncoding);
+            var pingSender = new System.Net.NetworkInformation.Ping();
+            var reply = pingSender.Send(hostNameOrAddress);
 
-            return r;
+            //if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
+            //{
+            //    Console.WriteLine("主机地址::" + reply.Address);
+            //    Console.WriteLine("往返时间::" + reply.RoundtripTime);
+            //    Console.WriteLine("生存时间TTL::" + reply.Options.Ttl);
+            //    Console.WriteLine("缓冲区大小::" + reply.Buffer.Length);
+            //    Console.WriteLine("数据包是否分段::" + reply.Options.DontFragment);
+            //}
+            return $"状态={reply.Status} Ip={reply.Address} 时间={reply.RoundtripTime} TTL={reply.Options.Ttl}";
         }
         /// <summary>  
         /// 指定Post地址使用Get 方式获取全部字符串  
