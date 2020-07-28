@@ -115,9 +115,9 @@ function loadManagement() {
     var link = document.createElement('link');
     link.setAttribute("rel", "stylesheet");
     link.setAttribute("type", "text/css");
-    link.setAttribute("href", 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.4/css/bootstrap-datetimepicker.min.css');
+    link.setAttribute("href", 'https://cdn.staticfile.org/bootstrap-datetimepicker/3.1.4/css/bootstrap-datetimepicker.min.css');
     document.getElementsByTagName("head")[0].appendChild(link);
-    var url = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.4/js/bootstrap-datetimepicker.min.js";
+    var url = "https://cdn.staticfile.org/bootstrap-datetimepicker/3.1.4/js/bootstrap-datetimepicker.min.js";
     $.getScript(url,
         function () {
             $(function () {
