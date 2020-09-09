@@ -3,6 +3,7 @@
   "Translates": {
     "添加一个新的计划任务": "Add a new planned task",
     "暂停": "pause",
+    "正常": "normal",
     "恢复": "recovery",
     "添加": "add",
     "从菜单中选择你喜欢的工作内容": "Select the job type you would like enqueue from the menu.",
@@ -116,6 +117,7 @@
     "1-12月依次是": "The months from 1 to 12 represents ",
     "反解析": "Analysis",
     "结果": "Result",
+    "状态" : "Status",
     "StateName_Created": "Created",
     "StateName_Enqueued": "Enqueued",
     "StateName_Processing": "Processing",
