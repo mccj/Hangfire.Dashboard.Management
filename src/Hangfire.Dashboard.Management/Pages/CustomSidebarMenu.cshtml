@@ -12,7 +12,7 @@
     public IEnumerable<Func<RazorPage, MenuItem>> Items { get; }
 }
 @if (!Items.Any()) { return; }
-<div id="stats" class="list-group">
+<div id="stats" class="list-group" style="height: 90vh; width: 245px;overflow-y: scroll; padding-right: 0; overflow-x: hidden;">
     @foreach (var item in Items)
     {
         var itemValue = item(this);
