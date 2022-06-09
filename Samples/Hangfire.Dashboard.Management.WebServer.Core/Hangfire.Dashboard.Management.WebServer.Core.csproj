@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<!--<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1</TargetFrameworks>-->
 		<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1;net5;</TargetFrameworks>
 		<!--<ImplicitUsings>enable</ImplicitUsings>-->
 		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
@@ -11,33 +10,34 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.29" />
-		<PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
-		<PackageReference Include="Hangfire.SqlServer" Version="1.7.29" />
-		<PackageReference Include="Hangfire.Heartbeat" Version="0.5.1" />
-		<PackageReference Include="Hangfire.Console" Version="1.4.2" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="*" />
+		<PackageReference Include="Hangfire.MemoryStorage" Version="*" />
+		<PackageReference Include="Hangfire.SqlServer" Version="*" />
+		<PackageReference Include="Hangfire.Heartbeat" Version="*" />
+		<PackageReference Include="Hangfire.Console" Version="*" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.*" Condition=" '$(TargetFramework)' == 'netcoreapp2.2' " />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="*" Condition=" '$(TargetFramework)' != 'netcoreapp2.2' " />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net5' ">
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="5.*" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="3.*" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
 		<PackageReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.*" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
 		<PackageReference Include="Microsoft.AspNetCore" Version="2.*" />
 		<PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.*" />
