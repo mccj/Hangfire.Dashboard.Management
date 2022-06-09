@@ -23,11 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Manageme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.Abstractions", "src\Hangfire.Dashboard.Management.Abstractions\Hangfire.Dashboard.Management.Abstractions.csproj", "{15392103-58CC-4C99-8168-29BD5273329D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.WebServer.Core2.2", "Samples\Hangfire.Dashboard.Management.WebServer.Core2.2\Hangfire.Dashboard.Management.WebServer.Core2.2.csproj", "{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4539F204-63D8-4E60-8E34-41858E9A42B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{26B41A5F-50F9-44B8-938E-2EA3861C815D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.WebServer.Core", "Samples\Hangfire.Dashboard.Management.WebServer.Core\Hangfire.Dashboard.Management.WebServer.Core.csproj", "{97A82BDD-745B-4ED3-A0DF-EFF98BB8F4C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +51,10 @@ Global
 		{15392103-58CC-4C99-8168-29BD5273329D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15392103-58CC-4C99-8168-29BD5273329D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15392103-58CC-4C99-8168-29BD5273329D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97A82BDD-745B-4ED3-A0DF-EFF98BB8F4C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97A82BDD-745B-4ED3-A0DF-EFF98BB8F4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97A82BDD-745B-4ED3-A0DF-EFF98BB8F4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97A82BDD-745B-4ED3-A0DF-EFF98BB8F4C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,7 +64,7 @@ Global
 		{78ECA3D5-9C18-49FF-AEB2-467693CA883C} = {4539F204-63D8-4E60-8E34-41858E9A42B8}
 		{8850D939-0341-43C4-BD45-2D8DB2C8BDE9} = {26B41A5F-50F9-44B8-938E-2EA3861C815D}
 		{15392103-58CC-4C99-8168-29BD5273329D} = {4539F204-63D8-4E60-8E34-41858E9A42B8}
-		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357} = {26B41A5F-50F9-44B8-938E-2EA3861C815D}
+		{97A82BDD-745B-4ED3-A0DF-EFF98BB8F4C5} = {26B41A5F-50F9-44B8-938E-2EA3861C815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67A1CBD5-1937-45C3-A1DD-E18482F8079F}
