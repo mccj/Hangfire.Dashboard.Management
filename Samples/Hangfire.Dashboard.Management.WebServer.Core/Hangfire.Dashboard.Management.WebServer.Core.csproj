@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<!--<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1</TargetFrameworks>-->
-		<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1;</TargetFrameworks>
+		<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1;net5;</TargetFrameworks>
 		<!--<ImplicitUsings>enable</ImplicitUsings>-->
 		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
 		<!--<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>-->
@@ -22,23 +22,28 @@
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
 	</ItemGroup>
 
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net5' ">
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="5.*" />
+	</ItemGroup>
+	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="3.1.25" />
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="3.*" />
 	</ItemGroup>
 	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
 		<PackageReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.1" />
-		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.2.0" />
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.*" />
 	</ItemGroup>
 	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-		<PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore" Version="2.*" />
+		<PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.*" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.*" />
 	</ItemGroup>
 
 
