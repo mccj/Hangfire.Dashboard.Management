@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<!--<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1</TargetFrameworks>-->
-		<TargetFrameworks>netcoreapp2.2;</TargetFrameworks>
+		<TargetFrameworks>netcoreapp2.2;netcoreapp3.1;</TargetFrameworks>
 		<!--<ImplicitUsings>enable</ImplicitUsings>-->
 		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
 		<!--<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>-->
@@ -22,6 +22,11 @@
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
 	</ItemGroup>
 
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="3.1.25" />
+	</ItemGroup>
+	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
 		<PackageReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.1" />

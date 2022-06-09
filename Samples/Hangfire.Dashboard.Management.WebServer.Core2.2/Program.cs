@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Hangfire.Dashboard.Management.Service
@@ -17,7 +18,7 @@ namespace Hangfire.Dashboard.Management.Service
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((context, builder) =>
                 {
-                    IHostingEnvironment env = context.HostingEnvironment;
+                    var env = context.HostingEnvironment;
                     builder
                         .AddJsonFile("App_Data/appsettings.json", optional: true, reloadOnChange: true)
                         .AddJsonFile($"App_Data/appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);

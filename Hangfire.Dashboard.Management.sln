@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{4E20C887-C782-4A75-BB8A-64FF4C31AD2C}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,8 +24,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.Abstractions", "src\Hangfire.Dashboard.Management.Abstractions\Hangfire.Dashboard.Management.Abstractions.csproj", "{15392103-58CC-4C99-8168-29BD5273329D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.WebServer.Core2.2", "Samples\Hangfire.Dashboard.Management.WebServer.Core2.2\Hangfire.Dashboard.Management.WebServer.Core2.2.csproj", "{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.WebServer.Core3.0", "Samples\Hangfire.Dashboard.Management.WebServer.Core3.0\Hangfire.Dashboard.Management.WebServer.Core3.0.csproj", "{E4545895-DFC6-46BC-826D-7B2B0699086E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Dashboard.Management.WebServer.Net461", "Samples\Hangfire.Dashboard.Management.WebServer.Net461\Hangfire.Dashboard.Management.WebServer.Net461.csproj", "{2EB42CC9-9F5A-401C-8F87-D875219C4CDF}"
 EndProject
@@ -59,10 +57,6 @@ Global
 		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4545895-DFC6-46BC-826D-7B2B0699086E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4545895-DFC6-46BC-826D-7B2B0699086E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4545895-DFC6-46BC-826D-7B2B0699086E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4545895-DFC6-46BC-826D-7B2B0699086E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2EB42CC9-9F5A-401C-8F87-D875219C4CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EB42CC9-9F5A-401C-8F87-D875219C4CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EB42CC9-9F5A-401C-8F87-D875219C4CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,7 +71,6 @@ Global
 		{8850D939-0341-43C4-BD45-2D8DB2C8BDE9} = {26B41A5F-50F9-44B8-938E-2EA3861C815D}
 		{15392103-58CC-4C99-8168-29BD5273329D} = {4539F204-63D8-4E60-8E34-41858E9A42B8}
 		{ABC4816F-4207-4FC5-9DD3-BE1C7FF0E357} = {26B41A5F-50F9-44B8-938E-2EA3861C815D}
-		{E4545895-DFC6-46BC-826D-7B2B0699086E} = {26B41A5F-50F9-44B8-938E-2EA3861C815D}
 		{2EB42CC9-9F5A-401C-8F87-D875219C4CDF} = {26B41A5F-50F9-44B8-938E-2EA3861C815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

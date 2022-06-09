@@ -1,6 +1,8 @@
-﻿using Hangfire.Console;
+﻿using Hangfire.Annotations;
+using Hangfire.Console;
 using Hangfire.Heartbeat;
 using Hangfire.MemoryStorage;
+using Hangfire.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,8 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if NETCOREAPP3_1
+using Microsoft.Extensions.Hosting;
+#endif
 
 namespace Hangfire.Dashboard.Management.Service
 {
@@ -37,7 +43,12 @@ namespace Hangfire.Dashboard.Management.Service
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+#if NETCOREAPP2_2
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+#else
+            services.AddControllersWithViews();
+#endif
 
             services.AddHealthChecks()
             .AddSqlServer(Configuration["HangfireTask:nameOrConnectionString"]);
@@ -165,7 +176,13 @@ namespace Hangfire.Dashboard.Management.Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app,
+#if NETCOREAPP2_2
+            IHostingEnvironment env
+#else
+            IWebHostEnvironment env
+#endif
+            )
         {
             if (env.IsDevelopment())
             {
@@ -176,6 +193,7 @@ namespace Hangfire.Dashboard.Management.Service
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+#if NETCOREAPP2_2
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
@@ -184,7 +202,16 @@ namespace Hangfire.Dashboard.Management.Service
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+#else
+app.UseRouting();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+#endif
             app.UseHealthChecks("/health");
 
             try
@@ -265,6 +292,7 @@ namespace Hangfire.Dashboard.Management.Service
 
             return moduleTypes;
         }
+#if NETCOREAPP2_2
         private static Type[] GetApplicationTypes()
         {
             // Get all assembly and types.
@@ -287,6 +315,16 @@ namespace Hangfire.Dashboard.Management.Service
                 });
             return typeList.ToArray();
         }
+#else
+        private static Type[] GetApplicationTypes()
+        {
+            //var assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(Assembly.Load);
+            //var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = new[] { typeof(HangfireJobTask.常规任务).Assembly };
+            var types = assemblies.SelectMany(f => f.GetTypes()).ToArray();
+            return types;
+        }
+#endif
 
         private void UseSqlServerStorage(IGlobalConfiguration config, string nameOrConnectionString, string[] queues)
         {
@@ -331,27 +369,29 @@ namespace Hangfire.Dashboard.Management.Service
 
     public static class MyHangfireServiceCollectionExtensions
     {
-        public static IServiceCollection AddHangfireServer([Annotations.NotNull] this IServiceCollection services, Func<IServiceProvider, BackgroundJobServerOptions, bool> func)
+        public static IServiceCollection AddHangfireServer([Annotations.NotNull] this IServiceCollection services, Func<IServiceProvider, BackgroundJobServerOptions, bool> optionsFun)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+            if (optionsFun == null) throw new ArgumentNullException(nameof(optionsFun));
 
+            return AddHangfireServerInner(services, null, null, optionsFun);
+        }
+        private static IServiceCollection AddHangfireServerInner([NotNull] IServiceCollection services, [CanBeNull] JobStorage storage, [CanBeNull] IEnumerable<IBackgroundProcess> additionalProcesses, [NotNull] Func<IServiceProvider, BackgroundJobServerOptions, bool> optionsFun)
+        {
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, BackgroundJobServerHostedService>(provider =>
             {
-                var options = provider.GetService<BackgroundJobServerOptions>() ?? new BackgroundJobServerOptions();
-                if (func(provider, options))
-                    return CreateBackgroundJobServerHostedService(provider, options);
+                var backgroundJobServerOptions = provider.GetService<BackgroundJobServerOptions>() ?? new BackgroundJobServerOptions();
+                if (optionsFun(provider, backgroundJobServerOptions))
+                    return CreateBackgroundJobServerHostedService(provider, storage, additionalProcesses, backgroundJobServerOptions);
                 else
                     return null;
             });
-
             return services;
         }
-        private static BackgroundJobServerHostedService CreateBackgroundJobServerHostedService(
-           IServiceProvider provider,
-           BackgroundJobServerOptions options)
+        private static BackgroundJobServerHostedService CreateBackgroundJobServerHostedService(IServiceProvider provider, JobStorage storage, IEnumerable<IBackgroundProcess> additionalProcesses, BackgroundJobServerOptions options)
         {
             var m = typeof(HangfireServiceCollectionExtensions).GetMethod("CreateBackgroundJobServerHostedService", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            return m.Invoke(null, new object[] { provider, options }) as BackgroundJobServerHostedService;
+            return m.Invoke(null, new object[] { provider, storage, additionalProcesses, options }) as BackgroundJobServerHostedService;
         }
     }
 }
