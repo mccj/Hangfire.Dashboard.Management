@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿#if !NET6_0_OR_GREATER
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -40,3 +41,4 @@ namespace Hangfire.Dashboard.Management.Service
                 });
     }
 }
+#endif

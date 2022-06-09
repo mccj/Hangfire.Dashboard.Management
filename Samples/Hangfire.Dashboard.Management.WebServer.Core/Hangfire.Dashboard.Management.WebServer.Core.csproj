@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1;net5;</TargetFrameworks>
+		<TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1;net5;net6;</TargetFrameworks>
 		<ImplicitUsings Condition="'$(TargetFramework)' != 'net461' and '$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">enable</ImplicitUsings>
 		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
 		<LangVersion>10.0</LangVersion>
@@ -18,11 +18,11 @@
 		<PackageReference Include="Hangfire.Console" Version="*" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.*" Condition=" '$(TargetFramework)' == 'netcoreapp2.2' " />
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="*" Condition=" '$(TargetFramework)' != 'netcoreapp2.2' " />
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6' ">
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="6.*" />
 	</ItemGroup>
-
+	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net5' ">
 		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="5.*" />
 		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="5.*" />
@@ -47,7 +47,11 @@
 		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.*" />
 	</ItemGroup>
 
-
+	<ItemGroup>
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.*" Condition=" '$(TargetFramework)' == 'netcoreapp2.2' " />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="*" Condition=" '$(TargetFramework)' != 'netcoreapp2.2' " />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Hangfire.Dashboard.Management\Hangfire.Dashboard.Management.csproj" />
 		<ProjectReference Include="..\HangfireJobTask\HangfireJobTask.csproj" />
