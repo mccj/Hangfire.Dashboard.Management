@@ -28,7 +28,7 @@
         //FirebirdStorage,
         //FirebaseStorage,
         //MongoStorage,
-        //MySqlStorage,
+        MySqlStorage,
         //PostgreSqlStorage,
         //RavenStorage,
         LiteDbStorage,

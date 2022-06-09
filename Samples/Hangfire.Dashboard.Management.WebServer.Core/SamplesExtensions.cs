@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hangfire.LiteDB;
 using Hangfire.Storage.SQLite;
+using Hangfire.MySql;
 
 public class Samples
 { }
@@ -90,8 +91,21 @@ public static class SamplesExtensions
                     //    break;
                     //case Settings.StorageType.MongoStorage:
                     //    break;
-                    //case Settings.StorageType.MySqlStorage:
-                    //    break;
+                    case StorageType.MySqlStorage:
+                        x.UseStorage(new MySqlStorage(
+                             _hangfireOption.nameOrConnectionString,
+                            new MySqlStorageOptions
+                            {
+                                //TransactionIsolationLevel = IsolationLevel.ReadCommitted,
+                                //QueuePollInterval = TimeSpan.FromSeconds(15),
+                                //JobExpirationCheckInterval = TimeSpan.FromHours(1),
+                                //CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                                //PrepareSchemaIfNecessary = true,
+                                //DashboardJobListLimit = 50000,
+                                //TransactionTimeout = TimeSpan.FromMinutes(1),
+                                TablesPrefix = "Hangfire"
+                            }));
+                        break;
                     //case Settings.StorageType.PostgreSqlStorage:
                     //    break;
                     //case Settings.StorageType.RavenStorage:
