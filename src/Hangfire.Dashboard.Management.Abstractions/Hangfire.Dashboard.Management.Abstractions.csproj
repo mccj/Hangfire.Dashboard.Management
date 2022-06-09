@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2;NET461;NET45</TargetFrameworks>
+    <TargetFrameworks>netstandard2;NET461;</TargetFrameworks>
     <Version>1.7.9</Version>
     <PackageProjectUrl>https://github.com/mccj/Hangfire.Dashboard.Management</PackageProjectUrl>
     <PackageTags>Hangfire Dashboard Management</PackageTags>
@@ -11,6 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HangFire.Core" Version="1.7.11" />
+    <PackageReference Include="HangFire.Core" Version="1.7.29" />
   </ItemGroup>
 </Project>

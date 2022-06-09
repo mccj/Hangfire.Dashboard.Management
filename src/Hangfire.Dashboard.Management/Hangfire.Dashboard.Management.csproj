@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2;NET461;NET45</TargetFrameworks>
+    <TargetFrameworks>netstandard2;NET461;</TargetFrameworks>
     <Version>1.7.9</Version>
     <!--<RazorViewsCodeGenDirectory>$(MsBuildProjectDirectory)\</RazorViewsCodeGenDirectory>-->
 
@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CronExpressionDescriptor" Version="2.15.0" />
+    <PackageReference Include="CronExpressionDescriptor" Version="2.16.0" />
     <!--<PackageReference Include="ncrontab" Version="3.3.1" />-->
-    <PackageReference Include="Cronos" Version="0.7.0" />
+    <PackageReference Include="Cronos" Version="0.7.1" />
     <PackageReference Include="RazorGenerator.MsBuild" Version="2.5.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
