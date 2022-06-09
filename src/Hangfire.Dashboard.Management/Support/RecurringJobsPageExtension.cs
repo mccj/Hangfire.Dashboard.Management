@@ -27,6 +27,7 @@ namespace Hangfire.Dashboard.Management.Pages
             var ids = connection.GetAllItemsFromSet("recurring-jobs");
             return GetRecurringJobDtos(connection, ids);
         }
+
         public static RecurringJobDto GetRecurringJob([NotNull] this IStorageConnection connection, string jobId)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
@@ -34,6 +35,7 @@ namespace Hangfire.Dashboard.Management.Pages
             var ids = new[] { jobId };
             return GetRecurringJobDtos(connection, ids)?.FirstOrDefault();
         }
+
         private static List<RecurringJobDto> GetRecurringJobDtos(IStorageConnection connection, IEnumerable<string> ids)
         {
             var result = new List<RecurringJobDto>();
@@ -115,11 +117,13 @@ namespace Hangfire.Dashboard.Management.Pages
 
             return result;
         }
+
         public static long GetRecurringJobCount([NotNull] this JobStorageConnection connection)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
             return connection.GetSetCount("recurring-jobs");
         }
+
         public static void SetPauseState([NotNull] this IStorageConnection connection, [NotNull] string jobId, [NotNull] bool value)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
@@ -143,7 +147,6 @@ namespace Hangfire.Dashboard.Management.Pages
                     new KeyValuePair<string, string>("NextExecution", nextExecution),
                     new KeyValuePair<string, string>("PauseNextExecution", string.Empty),
                 });
-
             }
 
             //Dictionary<string, string> dictionary = connection.GetAllEntriesFromHash("recurring-job:" + jobId);
@@ -196,15 +199,16 @@ namespace Hangfire.Dashboard.Management.Pages
 
             //    tran.Commit();
             //}
-
         }
     }
+
     public class RecurringJobDto : Hangfire.Storage.RecurringJobDto
     {
         public RecurringJobDto(Dictionary<string, string> hash = null)
         {
             Hash = hash;
         }
+
         public bool PauseState { get; set; }
         public Dictionary<string, string> Hash { get; }
     }

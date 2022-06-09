@@ -1,6 +1,6 @@
 ﻿namespace Hangfire.Dashboard.Management.Pages
 {
-    partial class ManagementPage : RazorPage
+    internal partial class ManagementPage : RazorPage
     {
         //public const string Title = "Management";
         //public const string UrlRoute = "/management";

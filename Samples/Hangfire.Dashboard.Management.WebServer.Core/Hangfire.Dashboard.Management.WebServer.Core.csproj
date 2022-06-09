@@ -16,6 +16,8 @@
 		<PackageReference Include="Hangfire.SqlServer" Version="*" />
 		<PackageReference Include="Hangfire.Heartbeat" Version="*" />
 		<PackageReference Include="Hangfire.Console" Version="*" />
+		<PackageReference Include="Hangfire.LiteDB" Version="*" />
+		<PackageReference Include="Hangfire.Storage.SQLite" Version="*" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6' ">

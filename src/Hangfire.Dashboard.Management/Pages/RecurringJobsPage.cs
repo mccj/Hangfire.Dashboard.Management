@@ -3,9 +3,10 @@ using System;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
-    partial class RecurringJobsPage
+    internal partial class RecurringJobsPage
     {
     }
+
     internal class RecurringJobEntity
     {
         public static void ParseCronExpression([NotNull] string cronExpression)
@@ -15,5 +16,4 @@ namespace Hangfire.Dashboard.Management.Pages
             var cc = render.Invoke(null, new[] { cronExpression });
         }
     }
-
 }

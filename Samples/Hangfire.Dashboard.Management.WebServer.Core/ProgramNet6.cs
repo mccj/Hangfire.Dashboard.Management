@@ -41,14 +41,6 @@ builder.Host.ConfigureAppConfiguration((context, builder) =>
 #endif
 });
 
-
-
-
-
-
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

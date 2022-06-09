@@ -1,6 +1,6 @@
 ﻿namespace Hangfire.Dashboard.Management.Pages
 {
-    partial class RetriesPage
+    internal partial class RetriesPage
     {
     }
 }

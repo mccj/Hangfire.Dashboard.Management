@@ -5,6 +5,7 @@ namespace Hangfire.Dashboard.Management.Metadata
     public class ManagementPageAttribute : Attribute
     {
         public string Title { get; }
+
         //public string MenuName { get; }
         public string Queue { get; }
 

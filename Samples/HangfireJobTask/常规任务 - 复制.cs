@@ -9,7 +9,6 @@ using System.Text;
 namespace HangfireJobTask
 {
     [Hangfire.Dashboard.Management.Metadata.ManagementPage("Http请求_B", "DEFAULT")]
-
     public class 常规任务1
     {
         [Hangfire.Dashboard.Management.Support.Job]
@@ -39,7 +38,6 @@ namespace HangfireJobTask
             return r;
         }
 
-
         [Hangfire.Dashboard.Management.Support.Job]
         [DisplayName("请求连接4")]
         [Description("请求外部连接,除非指定任务")]
@@ -66,12 +64,13 @@ namespace HangfireJobTask
 
             return r;
         }
-        /// <summary>  
-        /// 指定Post地址使用Get 方式获取全部字符串  
-        /// </summary>  
-        /// <param name="url">请求后台地址</param>  
-        /// <param name="content">Post提交数据内容(utf-8编码的)</param>  
-        /// <returns>结果</returns>  
+
+        /// <summary>
+        /// 指定Post地址使用Get 方式获取全部字符串
+        /// </summary>
+        /// <param name="url">请求后台地址</param>
+        /// <param name="content">Post提交数据内容(utf-8编码的)</param>
+        /// <returns>结果</returns>
         private string SendData(Uri url, HttpMethod method = HttpMethod.POST, string content = "", string contentType = "application/x-www-form-urlencoded", Encoding contentEncoding = null, Encoding responseEncoding = null)
         {
             //申明一个容器result接收数据
@@ -95,7 +94,7 @@ namespace HangfireJobTask
             //申明一个容器resp接收返回数据
             var resp = (HttpWebResponse)req.GetResponse();
             Stream stream = resp.GetResponseStream();
-            //获取响应内容  
+            //获取响应内容
             using (StreamReader reader = new StreamReader(stream, (responseEncoding ?? Encoding.UTF8)))
             {
                 result = reader.ReadToEnd();

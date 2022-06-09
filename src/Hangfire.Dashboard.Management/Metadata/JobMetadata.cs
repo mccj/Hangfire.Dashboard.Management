@@ -12,6 +12,7 @@ namespace Hangfire.Dashboard.Management.Metadata
         public Type Type { get; set; }
         public MethodInfo MethodInfo { get; set; }
         public JobParameter[] Parameters { get; set; }
+
         public string GetId()
         {
             if (string.IsNullOrWhiteSpace(_md5) && this.MethodInfo != null)
@@ -20,8 +21,10 @@ namespace Hangfire.Dashboard.Management.Metadata
             }
             return _md5;
         }
+
         private string _md5 = string.Empty;
     }
+
     public class JobParameter
     {
         public Type ParameterType { get; set; }

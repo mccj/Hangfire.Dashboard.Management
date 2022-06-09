@@ -1,20 +1,24 @@
 ﻿using Hangfire;
 using Hangfire.Annotations;
 using Hangfire.Console;
+using Hangfire.Dashboard.Management;
 using Hangfire.Dashboard.Management.Service;
 using Hangfire.Heartbeat;
-using Hangfire.Server;
 using Hangfire.MemoryStorage;
-using Hangfire.Dashboard.Management;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
+using Hangfire.Server;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Hangfire.LiteDB;
+using Hangfire.Storage.SQLite;
 
-public class Samples { }
+public class Samples
+{ }
+
 public static class SamplesExtensions
 {
     public static IServiceCollection AddSamples(this IServiceCollection services, IConfiguration configuration)
@@ -71,11 +75,9 @@ public static class SamplesExtensions
                 switch (_hangfireOption.StorageType)
                 {
                     case StorageType.SqlServerStorage:
-                        {
-                            //nameOrConnectionString="server=weberpdb.fd.com;database=Hangfire;uid=sa;pwd=`1q2w3e4r;Application Name=WebErpApp (Hangfire) Data Provider";
-                            UseSqlServerStorage(x, _hangfireOption.nameOrConnectionString, queues);
-                        }
+                        UseSqlServerStorage(x, _hangfireOption.nameOrConnectionString, queues);
                         break;
+
                     case StorageType.MemoryStorage:
                         x.UseMemoryStorage();
                         break;
@@ -94,8 +96,12 @@ public static class SamplesExtensions
                     //    break;
                     //case Settings.StorageType.RavenStorage:
                     //    break;
-                    //case Settings.StorageType.SQLiteStorage:
-                    //    break;
+                    case StorageType.LiteDbStorage:
+                        x.UseLiteDbStorage();
+                        break;
+                    case StorageType.SQLiteStorage:
+                        x.UseSQLiteStorage();
+                        break;
                     case StorageType.LocalStorage:
                     default:
                         {
@@ -169,7 +175,7 @@ public static class SamplesExtensions
                 app.UseHangfireDashboard(_hangfireOption.HangfireDashboardUrl,
                     new DashboardOptions
                     {
-                            //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter 
+                        //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter
                         Authorization = new[] { new DashboardAuthorizationFilter() },//授权
                                                                                      //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
                                                                                      //DisplayStorageConnectionString = false,
@@ -186,6 +192,7 @@ public static class SamplesExtensions
         //app.UseHangfireServer();//启动Hangfire服务
         //app.UseHangfireDashboard();//启动hangfire面板
     }
+
     public static Type[] GetModuleTypes()
     {
         //var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -205,11 +212,9 @@ public static class SamplesExtensions
         //    }
         //    catch (Exception)
         //    {
-
         //        return new Type[] { };
         //    }
         //}
-
 
         //).Where(f => f.IsClass && !f.IsAbstract && !f.IsInterface)
         //.Where(f => f.GetCustomAttributes(true).Any(ff => ff is Hangfire.Dashboard.Management.Support.JobAttribute))
@@ -218,6 +223,7 @@ public static class SamplesExtensions
 
         return moduleTypes;
     }
+
 #if NETCOREAPP2_2
         private static Type[] GetApplicationTypes()
         {
@@ -242,6 +248,7 @@ public static class SamplesExtensions
             return typeList.ToArray();
         }
 #else
+
     private static Type[] GetApplicationTypes()
     {
         //var assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(Assembly.Load);
@@ -250,6 +257,7 @@ public static class SamplesExtensions
         var types = assemblies.SelectMany(f => f.GetTypes()).ToArray();
         return types;
     }
+
 #endif
 
     private static void UseSqlServerStorage(IGlobalConfiguration config, string nameOrConnectionString, string[] queues)
@@ -302,6 +310,7 @@ public static class MyHangfireServiceCollectionExtensions
 
         return AddHangfireServerInner(services, null, null, optionsFun);
     }
+
     private static IServiceCollection AddHangfireServerInner([NotNull] IServiceCollection services, [CanBeNull] JobStorage storage, [CanBeNull] IEnumerable<IBackgroundProcess> additionalProcesses, [NotNull] Func<IServiceProvider, BackgroundJobServerOptions, bool> optionsFun)
     {
         services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, BackgroundJobServerHostedService>(provider =>
@@ -314,6 +323,7 @@ public static class MyHangfireServiceCollectionExtensions
         });
         return services;
     }
+
     private static BackgroundJobServerHostedService CreateBackgroundJobServerHostedService(IServiceProvider provider, JobStorage storage, IEnumerable<IBackgroundProcess> additionalProcesses, BackgroundJobServerOptions options)
     {
         var m = typeof(HangfireServiceCollectionExtensions).GetMethod("CreateBackgroundJobServerHostedService", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);

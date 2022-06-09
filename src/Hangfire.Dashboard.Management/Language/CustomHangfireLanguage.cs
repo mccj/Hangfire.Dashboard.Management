@@ -15,6 +15,7 @@ namespace Hangfire.Dashboard.Management
             this._translateFunc = translateFunc;
             this._culture = culture;
         }
+
         public override string GetString(string name, CultureInfo culture)
         {
             culture = culture ?? this._culture;
@@ -224,7 +225,7 @@ namespace Hangfire.Dashboard.Management
             //{
             //    return "显示名称";
             //}
-            //else 
+            //else
             //if (System.Text.RegularExpressions.Regex.IsMatch(name, "Reason_Background job has exceeded latency timeout of (?<timeoutInSeconds>\\d+) second(s)"))
             //{
             //    var timeoutInSeconds = System.Text.RegularExpressions.Regex.Match(name, "Reason_Background job has exceeded latency timeout of (?<timeoutInSeconds>\\d+) second(s)").Groups["timeoutInSeconds"].Value;
@@ -250,7 +251,6 @@ namespace Hangfire.Dashboard.Management
                 var str = _resourceManager.GetString(name, culture) ?? name;
                 if (IsHasEnglish(str))
                 {
-
                 }
                 return str;
             }
@@ -259,6 +259,7 @@ namespace Hangfire.Dashboard.Management
             //dddddd.GetOrAdd(name, sss);
             //return sss;
         }
+
         /// <summary>
         /// 是否包含中文
         /// </summary>
@@ -269,6 +270,7 @@ namespace Hangfire.Dashboard.Management
             return System.Text.RegularExpressions.Regex.IsMatch(value, @"^[\u4e00-\u9fa5]+$");
             //return System.Text.RegularExpressions.Regex.IsMatch(value, @"^[^\x00-\xFF]");
         }
+
         /// <summary>
         /// 是否包含中文
         /// </summary>
@@ -279,5 +281,4 @@ namespace Hangfire.Dashboard.Management
             return System.Text.RegularExpressions.Regex.IsMatch(value, @"^[a-zA-Z]");
         }
     }
-
 }

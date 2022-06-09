@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
-    partial class JobDetailsPage
+    internal partial class JobDetailsPage
     {
         public JobDetailsPage(string jobId)
         {
@@ -12,11 +12,13 @@ namespace Hangfire.Dashboard.Management.Pages
 
         public string JobId { get; }
     }
+
     internal struct Continuation
     {
         public string JobId { get; set; }
         public JobContinuationOptions Options { get; set; }
     }
+
     internal static class JobMethodCallRenderer
     {
         public static NonEscapedString Render(Common.Job job)
@@ -28,6 +30,7 @@ namespace Hangfire.Dashboard.Management.Pages
             return render.Invoke(null, new[] { job }) as NonEscapedString;
         }
     }
+
     internal static class ContinuationsSupportAttributeEx
     {
         internal static List<Continuation> DeserializeContinuations(string serialized)
@@ -35,7 +38,6 @@ namespace Hangfire.Dashboard.Management.Pages
             var type = Type.GetType("Hangfire.ContinuationsSupportAttribute,Hangfire.Core");
             var render = type.GetMethod("DeserializeContinuations", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static);
             return render.Invoke(null, new[] { serialized }) as List<Continuation>;
-
         }
     }
 }

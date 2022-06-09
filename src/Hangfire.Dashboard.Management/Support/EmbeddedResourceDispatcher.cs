@@ -119,7 +119,6 @@ namespace Hangfire.Dashboard.Management.Support
     //    {
     //        var builder = new StringBuilder();
 
-
     //        return context.Response.WriteAsync(builder.ToString());
     //    }
     //}

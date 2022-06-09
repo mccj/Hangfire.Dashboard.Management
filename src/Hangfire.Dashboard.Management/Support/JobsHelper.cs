@@ -34,7 +34,6 @@ namespace Hangfire.Dashboard.Management.Support
         //        })));
         //    });
 
-
         //    //Metadata = new List<JobMetadata>();
         //    //Pages = new List<ManagementPageAttribute>();
 
@@ -85,6 +84,7 @@ namespace Hangfire.Dashboard.Management.Support
         //    }
         //}
     }
+
     public class ManagePage
     {
         public ManagePage(string title, /*string menuName, string queue, */JobMetadata[] metadatas)
@@ -94,7 +94,9 @@ namespace Hangfire.Dashboard.Management.Support
             //Queue = queue;
             Metadatas = metadatas;
         }
+
         public string Title { get; }
+
         //public string MenuName { get; }
         //public string Queue { get; }
         public JobMetadata[] Metadatas { get; }

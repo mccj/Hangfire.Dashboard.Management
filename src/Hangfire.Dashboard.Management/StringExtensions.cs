@@ -9,10 +9,12 @@ namespace System.Linq
     /// <summary>
     /// 字符串<see cref="String"/>类型的扩展辅助操作类
     /// </summary>
-    static class StringExtensions
+    internal static class StringExtensions
     {
         #region 类型转换-提供用于将字符串值转换为其他数据类型的实用工具方法。
-        #region Is   
+
+        #region Is
+
         /// <summary>检查字符串值是否为 null 或空。</summary>
         /// <returns>如果 <paramref name="value" /> 为 null 或零长度字符串 ("")，则为 true；否则为 false。</returns>
         /// <param name="value">要测试的字符串值。</param>
@@ -89,8 +91,11 @@ namespace System.Linq
             }
             return false;
         }
+
         #endregion Is
+
         #region As
+
         /// <summary>将字符串转换为整数。</summary>
         /// <returns>转换后的值。</returns>
         /// <param name="value">要转换的值。</param>
@@ -98,7 +103,6 @@ namespace System.Linq
         {
             return value.AsInt(0);
         }
-
 
         /// <summary>将字符串转换为整数，并指定默认值。</summary>
         /// <returns>转换后的值。</returns>
@@ -175,7 +179,6 @@ namespace System.Linq
             return result;
         }
 
-
         /// <summary>将字符串转换为布尔值 (true/false)。</summary>
         /// <returns>转换后的值。</returns>
         /// <param name="value">要转换的值。</param>
@@ -206,6 +209,7 @@ namespace System.Linq
         {
             return value.As(default(TValue));
         }
+
         /// <summary>将字符串转换为指定的数据类型，并指定默认值。</summary>
         /// <returns>转换后的值。</returns>
         /// <param name="value">要转换的值。</param>
@@ -233,10 +237,13 @@ namespace System.Linq
             }
             return defaultValue;
         }
+
         #endregion As
+
         #endregion 类型转换-提供用于将字符串值转换为其他数据类型的实用工具方法。
 
         #region 正则表达式
+
         /// <summary>
         /// 指示所指定的正则表达式在指定的输入字符串中是否找到了匹配项
         /// </summary>
@@ -251,6 +258,7 @@ namespace System.Linq
             }
             return Regex.IsMatch(value, pattern);
         }
+
         /// <summary>
         /// 在指定的输入字符串中搜索指定的正则表达式的第一个匹配项
         /// </summary>
@@ -261,6 +269,7 @@ namespace System.Linq
         {
             return RegexMatch(value, pattern, options, new[] { name }).FirstOrDefault();
         }
+
         /// <summary>
         /// 在指定的输入字符串中搜索指定的正则表达式的第一个匹配项
         /// </summary>
@@ -295,6 +304,7 @@ namespace System.Linq
             }
             else { }
         }
+
         /// <summary>
         /// 在指定的输入字符串中搜索指定的正则表达式的所有匹配项的字符串集合
         /// </summary>
@@ -310,6 +320,7 @@ namespace System.Linq
             MatchCollection matches = Regex.Matches(value, pattern, options);
             return from Match match in matches select match.Value;
         }
+
         /// <summary>
         /// 在指定的输入字符串内，使用 System.Text.RegularExpressions.MatchEvaluator 委托返回的字符串替换与指定正则表达式匹配的所有字符串。指定的选项将修改匹配操作。
         /// </summary>
@@ -326,6 +337,7 @@ namespace System.Linq
             }
             return Regex.Replace(value, pattern, replacement, options);
         }
+
         /// <summary>
         /// 在指定的输入字符串内，使用 System.Text.RegularExpressions.MatchEvaluator 委托返回的字符串替换与指定正则表达式匹配的所有字符串。指定的选项将修改匹配操作。
         /// </summary>
@@ -342,6 +354,7 @@ namespace System.Linq
             }
             return Regex.Replace(value, pattern, new MatchEvaluator(evaluator), options);
         }
+
         /// <summary>
         /// 在由指定正则表达式模式定义的位置将输入字符串拆分为一个子字符串数组。指定的选项将修改匹配操作。
         /// </summary>
@@ -357,6 +370,7 @@ namespace System.Linq
             }
             return Regex.Split(value, pattern, options);
         }
+
         /// <summary>
         /// 是否电子邮件
         /// </summary>
@@ -365,6 +379,7 @@ namespace System.Linq
             const string pattern = @"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$";
             return value.RegexIsMatch(pattern);
         }
+
         /// <summary>
         /// 是否是IP地址
         /// </summary>
@@ -373,6 +388,7 @@ namespace System.Linq
             const string pattern = @"^(\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d\.){3}\d(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\d$";
             return value.RegexIsMatch(pattern);
         }
+
         /// <summary>
         /// 是否是整数
         /// </summary>
@@ -381,6 +397,7 @@ namespace System.Linq
             const string pattern = @"^\-?[0-9]+$";
             return value.RegexIsMatch(pattern);
         }
+
         /// <summary>
         /// 是否是Unicode字符串
         /// </summary>
@@ -389,6 +406,7 @@ namespace System.Linq
             const string pattern = @"^[\u4E00-\u9FA5\uE815-\uFA29]+$";
             return value.RegexIsMatch(pattern);
         }
+
         /// <summary>
         /// 是否Url字符串
         /// </summary>
@@ -397,6 +415,7 @@ namespace System.Linq
             const string pattern = @"^(http|https|ftp|rtsp|mms):(\/\/|\\\\)[A-Za-z0-9%\-_@]+\.[A-Za-z0-9%\-_@]+[A-Za-z0-9\.\/=\?%\-&_~`@:\+!;]*$";
             return value.RegexIsMatch(pattern);
         }
+
         /// <summary>
         /// 是否身份证号，验证如下3种情况：
         /// 1.身份证号码为15位数字；
@@ -408,6 +427,7 @@ namespace System.Linq
             const string pattern = @"^(^\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$";
             return value.RegexIsMatch(pattern);
         }
+
         /// <summary>
         /// 是否手机号码
         /// </summary>
@@ -418,6 +438,7 @@ namespace System.Linq
             string pattern = isRestrict ? @"^[1][3-8]\d{9}$" : @"^[1]\d{10}$";
             return value.RegexIsMatch(pattern);
         }
+
         /// <summary>
         /// 是否包含指定的单词
         /// </summary>
@@ -431,9 +452,11 @@ namespace System.Linq
             pattern = pattern.Replace(@"\[", "[").Replace(@"\]", "]").Replace(@"\^", "^");
             return Regex.IsMatch(source, pattern);
         }
-        #endregion
+
+        #endregion 正则表达式
 
         #region 其他操作
+
         /// <summary>
         /// 是否包含中文
         /// </summary>
@@ -507,6 +530,7 @@ namespace System.Linq
         {
             return ToBase64(value).Replace('+', '-').Replace('/', '_').TrimEnd('=');
         }
+
         public static string FromBase64Url(this string value)
         {
             value = value.Replace('-', '+').Replace('_', '/');
@@ -515,6 +539,7 @@ namespace System.Linq
                 case 2:
                     value += "==";
                     break;
+
                 case 3:
                     value += "=";
                     break;
@@ -527,6 +552,7 @@ namespace System.Linq
             if (string.IsNullOrWhiteSpace(value)) return string.Empty;
             return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(value));
         }
+
         public static string FromBase64(this string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return string.Empty;
@@ -537,6 +563,7 @@ namespace System.Linq
             catch (Exception) { }
             return value;
         }
+
         /// <summary>
         /// 支持汉字的字符串长度，汉字长度计为2
         /// </summary>
@@ -560,6 +587,7 @@ namespace System.Linq
             }
             return tempLen;
         }
+
         ///// <summary>
         ///// 将JSON字符串还原为对象
         ///// </summary>
@@ -649,12 +677,13 @@ namespace System.Linq
             return encoding.GetString(bytes);
         }
 
-        #endregion
+        #endregion 其他操作
 
         public static string ToHtmlId(this string name)
         {
             return name.Replace('.', '_');//.ToHtmlName();
         }
+
         /// <summary>
         /// 判断指定路径是否图片文件
         /// </summary>
@@ -677,6 +706,7 @@ namespace System.Linq
                 case 0x4947: //gif
                 case 0x5089: //png
                     return true;
+
                 default:
                     return false;
             }
@@ -853,7 +883,6 @@ namespace System.Linq
 
         //public static string Strip(this string subject, Func<char, bool> predicate)
         //{
-
         //    var result = new char[subject.Length];
 
         //    var cursor = 0;
@@ -869,7 +898,6 @@ namespace System.Linq
         //    return new string(result, 0, cursor);
         //}
         //#endregion 命名方法
-
 
         /// <summary>
         /// 获取字符串的MD5哈希值
@@ -900,6 +928,7 @@ namespace System.Linq
             }
             return sb.ToString();
         }
+
         /// <summary>
         /// 获取字节数组的MD5哈希值
         /// </summary>

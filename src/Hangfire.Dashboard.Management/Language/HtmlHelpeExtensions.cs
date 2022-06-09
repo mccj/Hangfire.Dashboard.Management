@@ -2,7 +2,7 @@
 
 namespace System.Linq
 {
-    static class HtmlHelpeExtensions
+    internal static class HtmlHelpeExtensions
     {
         public static string ToHumanDurationTr(this Hangfire.Dashboard.HtmlHelper htmlHelper, Resources.ResourceManager resource, TimeSpan? duration, bool displaySign = true)
         {
@@ -61,7 +61,5 @@ namespace System.Linq
 
             return builder.ToString();
         }
-
     }
-
 }

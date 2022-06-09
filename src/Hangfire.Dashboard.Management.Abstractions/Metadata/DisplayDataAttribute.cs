@@ -14,6 +14,7 @@ namespace Hangfire.Dashboard.Management.Metadata
         //public bool IsDisabled { get; set; } = false;
 
         public Type ConvertType { get; set; }
+
         public DisplayDataAttribute(string labelText = null, string placeholderText = null, string descriptionText = null, string defaultValue = null, string cssClasses = null/*, bool isDisabled = false*/)
         {
             this.LabelText = labelText;
@@ -28,6 +29,7 @@ namespace Hangfire.Dashboard.Management.Metadata
     public interface IInputDataList
     {
         System.Collections.Generic.Dictionary<string, string> GetData();
+
         string GetDefaultValue();
     }
 }

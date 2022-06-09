@@ -23,6 +23,7 @@ namespace Hangfire.Dashboard.Management
     public class JobHistoryRendererInfo
     {
         private ResourceManager resource;
+
         private static readonly IDictionary<string, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString>>
            _renderers = new Dictionary<string, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString>>();
 
@@ -30,6 +31,7 @@ namespace Hangfire.Dashboard.Management
         {
             this.resource = resource;
         }
+
         public void Register(string state, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString> renderer)
         {
             var type = Type.GetType("Hangfire.Dashboard.JobHistoryRenderer,Hangfire.Core");
@@ -44,6 +46,7 @@ namespace Hangfire.Dashboard.Management
             }
             Hangfire.Dashboard.JobHistoryRenderer.Register(state, renderer);
         }
+
         private void _register(string state, Func<HtmlHelper, IDictionary<string, string>, NonEscapedString> renderer)
         {
             if (!_renderers.ContainsKey(state))
@@ -55,6 +58,7 @@ namespace Hangfire.Dashboard.Management
                 _renderers[state] = renderer;
             }
         }
+
         //private bool _exists(string state)
         //{
         //    return _renderers.ContainsKey(state);
@@ -69,6 +73,7 @@ namespace Hangfire.Dashboard.Management
 
             return renderer?.Invoke(helper, properties);
         }
+
         public NonEscapedString ScheduledRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
             var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData)?.ToString();
@@ -77,6 +82,7 @@ namespace Hangfire.Dashboard.Management
                      ;
             return new NonEscapedString(builder.ToString());
         }
+
         public NonEscapedString SucceededRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
             var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData).ToString();
@@ -92,6 +98,7 @@ namespace Hangfire.Dashboard.Management
                      ;
             return new NonEscapedString(builder.ToString());
         }
+
         public NonEscapedString ProcessingRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
             var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData)?.ToString();
@@ -118,6 +125,7 @@ namespace Hangfire.Dashboard.Management
                      ;
             return new NonEscapedString(builder.ToString());
         }
+
         public NonEscapedString AwaitingRenderer(HtmlHelper helper, IDictionary<string, string> stateData)
         {
             var rendered = _renderHistory(helper, System.Reflection.MethodBase.GetCurrentMethod().Name, stateData)?.ToString();
@@ -128,6 +136,5 @@ namespace Hangfire.Dashboard.Management
                     ;
             return new NonEscapedString(builder.ToString());
         }
-
     }
 }

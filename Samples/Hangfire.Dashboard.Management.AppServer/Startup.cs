@@ -22,6 +22,7 @@ namespace Hangfire.Dashboard.Management.Test
             app.UseHangfireDashboard();
             app.UseHangfireServer();
         }
+
         public static Type[] GetModuleTypes()
         {
             //var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -40,11 +41,9 @@ namespace Hangfire.Dashboard.Management.Test
                 }
                 catch (Exception)
                 {
-
                     return new Type[] { };
                 }
             }
-
 
             )/*.Where(f => f.IsClass && typeof(IClientModule).IsAssignableFrom(f))*/.ToArray();
 

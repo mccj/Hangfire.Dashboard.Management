@@ -2,7 +2,6 @@
  * 可配置的数据类型内容封装
  */
 var Type = {
-
     /**
      * 匹配 *
      */
@@ -28,7 +27,6 @@ var Type = {
         "name": "Cyclic",
         "keyword": "-",
         "set": function (name, value) {
-
             var vr = value.split(this.keyword);
             var b = vr.length === 2;
 
@@ -310,7 +308,6 @@ var setChecked = function (name, value) {
     $("input[name='" + name + "'][value='" + value + "']").prop("checked", true);
 };
 
-
 //init
 $(function () {
     var $result = $("#result");
@@ -329,7 +326,6 @@ $(function () {
         if (r) {
             $result.val(r.trim());
         }
-
     };
 
     /**
@@ -348,7 +344,7 @@ $(function () {
         vr.forEach(function (v, i) {
             var timeObject = TimeObject[i];
             var radioName = timeObject.radioName;
-            for (var o in  Type) {
+            for (var o in Type) {
                 var b = Type[o].set(radioName, v);
                 if (b) {
                     break;
@@ -356,7 +352,6 @@ $(function () {
             }
         });
     };
-
 
     /**
      * 下拉框填充
@@ -376,7 +371,6 @@ $(function () {
                 try {
                     reset();
                 } catch (e) {
-
                 }
             });
             //$currChosen.chosen({
@@ -386,9 +380,7 @@ $(function () {
         }
     });
 
-
     //绑定事件
-
 
     var $tabContentInput = $(".tab-content");
 
@@ -396,14 +388,12 @@ $(function () {
         try {
             reset();
         } catch (e) {
-
         }
     });
     $tabContentInput.find("input[type=number]").keyup(function () {
         try {
             reset();
         } catch (e) {
-
         }
     });
 
@@ -418,6 +408,5 @@ $(function () {
     try {
         reset();
     } catch (e) {
-
     }
 });

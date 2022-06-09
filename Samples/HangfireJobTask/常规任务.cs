@@ -10,7 +10,6 @@ using System.Text;
 namespace HangfireJobTask
 {
     [Hangfire.Dashboard.Management.Metadata.ManagementPage("Http请求", "DEFAULT")]
-
     public class 常规任务
     {
         //[Queue("tttttttttt")]
@@ -41,7 +40,6 @@ namespace HangfireJobTask
             return r;
         }
 
-
         [Hangfire.Dashboard.Management.Support.Job]
         [DisplayName("Ping 测试")]
         //[Description("Ping 测试 任务")]
@@ -65,12 +63,13 @@ namespace HangfireJobTask
             //}
             return $"状态={reply.Status} Ip={reply.Address} 时间={reply.RoundtripTime} TTL={reply.Options.Ttl}";
         }
-        /// <summary>  
-        /// 指定Post地址使用Get 方式获取全部字符串  
-        /// </summary>  
-        /// <param name="url">请求后台地址</param>  
-        /// <param name="content">Post提交数据内容(utf-8编码的)</param>  
-        /// <returns>结果</returns>  
+
+        /// <summary>
+        /// 指定Post地址使用Get 方式获取全部字符串
+        /// </summary>
+        /// <param name="url">请求后台地址</param>
+        /// <param name="content">Post提交数据内容(utf-8编码的)</param>
+        /// <returns>结果</returns>
         private string SendData(Uri url, HttpMethod method = HttpMethod.POST, string content = "", string contentType = "application/x-www-form-urlencoded", Encoding contentEncoding = null, Encoding responseEncoding = null)
         {
             //申明一个容器result接收数据
@@ -94,7 +93,7 @@ namespace HangfireJobTask
             //申明一个容器resp接收返回数据
             var resp = (HttpWebResponse)req.GetResponse();
             Stream stream = resp.GetResponseStream();
-            //获取响应内容  
+            //获取响应内容
             using (StreamReader reader = new StreamReader(stream, (responseEncoding ?? Encoding.UTF8)))
             {
                 result = reader.ReadToEnd();
@@ -102,10 +101,12 @@ namespace HangfireJobTask
             return result;
         }
     }
+
     public enum HttpMethod
     {
         GET, POST, PUT, HEAD, TRACE, DELETE, SEARCH, CONNECT, PROPFIND, PROPPATCH, PATCH, MKCOL, COPY, MOVE, LOCK, UNLOCK, OPTIONS
     }
+
     public class EncodingsInputDataList : Hangfire.Dashboard.Management.Metadata.IInputDataList
     {
         public System.Collections.Generic.Dictionary<string, string> GetData()

@@ -243,7 +243,6 @@
 //                        par.Add(item);
 //                    }
 
-
 //                    var job = new Common.Job(jobMetadata.Type, jobMetadata.MethodInfo, par.ToArray());
 //                    var client = new BackgroundJobClient(context.Storage);
 //                    switch (jobtype)
@@ -332,8 +331,6 @@
 //                    parentId
 //                    jobContinuationOptions
 //                 */
-
-
 
 //                    //if (!string.IsNullOrEmpty(schedule))
 //                    //{

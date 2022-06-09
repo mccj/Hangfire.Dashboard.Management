@@ -5,9 +5,9 @@ using Topshelf;
 
 namespace Hangfire.Dashboard.Management.Test
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var a = HostFactory.Run(x =>
              {
@@ -32,14 +32,14 @@ namespace Hangfire.Dashboard.Management.Test
                  x.RunAsLocalSystem();
                  x.OnException(ex =>
                  {
-
                      System.Console.WriteLine("Exception thrown - " + ex.Message);
                      //使用异常的东西
                  });
              });
         }
     }
-    class WebAppService : ServiceControl
+
+    internal class WebAppService : ServiceControl
     {
         public bool Start(HostControl hostControl)
         {

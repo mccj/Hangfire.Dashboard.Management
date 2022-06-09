@@ -29,6 +29,7 @@ namespace Hangfire.Dashboard.Management
             UseManagementPages(config, cc => cc.AddJobs(assembly));
             return config;
         }
+
         /// <summary>
         /// 加载可管理任务
         /// </summary>
@@ -40,6 +41,7 @@ namespace Hangfire.Dashboard.Management
             UseManagementPages(config, cc => cc.AddJobs(types));
             return config;
         }
+
         /// <summary>
         /// 加载可管理任务
         /// </summary>
@@ -52,9 +54,11 @@ namespace Hangfire.Dashboard.Management
             CreateManagement(options);
             return config;
         }
+
         private static void CreateManagement(ManagementPagesOptions options = null)
         {
             #region 翻译
+
             var resourceManager = Hangfire.Dashboard.Resources.Strings.ResourceManager;
             var resourceManField = typeof(Hangfire.Dashboard.Resources.Strings).GetField("resourceMan", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
             var customHangfireLanguage = new CustomHangfireLanguage(resourceManager, options.translateFunc, options.culture);
@@ -65,7 +69,9 @@ namespace Hangfire.Dashboard.Management
             //DashboardRoutes.Routes.Append(jsPath, new DynamicJsDispatcher());
             DashboardRoutes.Routes.Append(jsPath, new EmbeddedResourceDispatcher("application/javascript", Assembly.GetExecutingAssembly(), $"{typeof(GlobalConfigurationExtension).Namespace}.Content.momentLocale.js"));
             //
+
             #endregion 翻译
+
             //Cron最近5次运行时间
             //cron?cron=0+0+0+*+*+%3F+
             DashboardRoutes.Routes.Add("/cron", new CommandDispatcher(async context =>
@@ -93,7 +99,9 @@ namespace Hangfire.Dashboard.Management
                 return true;
             }));
             var pages = options.GetPages();
+
             #region 任务
+
             ManagementSidebarMenu.Items.Clear();
             foreach (var pageInfo in pages)
             {
@@ -116,6 +124,7 @@ namespace Hangfire.Dashboard.Management
                 ////添加页面
                 DashboardRoutes.Routes.AddRazorPage(path, x => new ManagementBasePage(pageInfo.Title, pageInfo.Title, pageInfo.Metadatas));
             }
+
             #endregion 任务
 
             //暂停取消功能
@@ -233,7 +242,6 @@ namespace Hangfire.Dashboard.Management
                         par.Add(item);
                     }
 
-
                     var job = new Common.Job(jobMetadata.Type, jobMetadata.MethodInfo, par.ToArray());
                     var client = new BackgroundJobClient(context.Storage);
                     switch (jobtype)
@@ -323,8 +331,6 @@ namespace Hangfire.Dashboard.Management
                     jobContinuationOptions
                  */
 
-
-
                     //if (!string.IsNullOrEmpty(schedule))
                     //{
                     //    var minutes = int.Parse(schedule);
@@ -347,8 +353,8 @@ namespace Hangfire.Dashboard.Management
                 return false;
             });
             //替换页面
-            if(options.OverrideDefaultHangfirePages)
-            { 
+            if (options.OverrideDefaultHangfirePages)
+            {
                 var type = Type.GetType("Hangfire.Dashboard.RazorPageDispatcher," + typeof(IGlobalConfiguration).Assembly.FullName);
                 if (type != null)
                 {
@@ -377,16 +383,20 @@ namespace Hangfire.Dashboard.Management
         public ManagementPagesOptions()
         {
         }
+
         protected internal Func<string, System.Globalization.CultureInfo, string> translateFunc { get; private set; } = new Func<string, System.Globalization.CultureInfo, string>((name, culture) =>
         {
             return JsonHangfireLanguage.TranslatLanguage(culture, name);
         });
+
         private List<ManagePage> Pages { get; /*set; */} = new List<ManagePage>();
         protected internal System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentUICulture;
+
         protected internal ManagePage[] GetPages()
         {
             return Pages.GroupBy(f => f.Title.IsNullOrWhiteSpace() ? string.Empty : f.Title.Trim()).Select(f => new ManagePage(f.Key, f.SelectMany(ff => ff.Metadatas).ToArray())).ToArray();
         }
+
         //protected internal class PageInfo
         //{
         //    public string Title { get; set; }
@@ -405,6 +415,7 @@ namespace Hangfire.Dashboard.Management
             this.translateFunc = func;
             return this;
         }
+
         /// <summary>
         /// 添加翻译对象
         /// </summary>
@@ -415,6 +426,7 @@ namespace Hangfire.Dashboard.Management
             JsonHangfireLanguage.AddCultureLanguages(culture);
             return this;
         }
+
         /// <summary>
         /// 添加翻译json文件
         /// </summary>
@@ -426,17 +438,20 @@ namespace Hangfire.Dashboard.Management
             TranslateCulture(culture);
             return this;
         }
+
         public ManagementPagesOptions TranslateStream(System.IO.Stream stream)
         {
             var json = new System.IO.StreamReader(stream).ReadToEnd();
             TranslateJson(json);
             return this;
         }
+
         public ManagementPagesOptions SetCulture(System.Globalization.CultureInfo culture)
         {
             this.culture = culture;
             return this;
         }
+
         /// <summary>
         /// 加载可管理任务
         /// </summary>
@@ -447,10 +462,12 @@ namespace Hangfire.Dashboard.Management
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             return this.AddJobs(assembly.SelectMany(f => f.GetTypes()).ToArray());
         }
+
         public ManagementPagesOptions AddJobs(Func<Type[]> func)
         {
             return AddJobs(func());
         }
+
         /// <summary>
         /// 加载可管理任务
         /// </summary>
@@ -475,17 +492,20 @@ namespace Hangfire.Dashboard.Management
                         .Where(f => f.Metadatas.Length > 0);
              });
         }
+
         public ManagementPagesOptions AddJobs(Func<IEnumerable<ManagePage>> typesProvider)
         {
             if (typesProvider == null) throw new ArgumentNullException(nameof(typesProvider));
             Pages.AddRange(typesProvider());
             return this;
         }
+
         public ManagementPagesOptions AddJobs(Func<Metadata.JobMetadata> methodCall, string title = null)
         {
             Pages.Add(new ManagePage(title, new[] { methodCall() }));
             return this;
         }
+
         private Metadata.JobMetadata toJobMetadata(MethodInfo tm, object[] defaultValue = null, string recurringJobId = null, string queue = null)
         {
             var _defaultValue = new System.Collections.Queue(defaultValue ?? new object[] { });
@@ -519,21 +539,25 @@ namespace Hangfire.Dashboard.Management
                 DisplayName = tm.GetCustomAttribute<System.ComponentModel.DisplayNameAttribute>()?.DisplayName ?? recurringJobId
             };
         }
+
         public ManagementPagesOptions AddJobs(MethodInfo methodInfo, object[] defaultValue = null, string title = null, string recurringJobId = null, string queue = "default")
         {
             return AddJobs(() => toJobMetadata(methodInfo, defaultValue: defaultValue, recurringJobId: recurringJobId ?? methodInfo.Name, queue: queue), title);
         }
+
         public ManagementPagesOptions AddJobs(Expression<Action> methodCall, string title = null, string recurringJobId = null, string queue = "default")
         {
             var expression = methodCall.Body as System.Linq.Expressions.MethodCallExpression;
             var parameters = expression.Arguments.OfType<ConstantExpression>().Select(f => f.Value).ToArray();
             return AddJobs(expression.Method, title: title, defaultValue: parameters, recurringJobId: recurringJobId, queue: queue);
         }
+
         public ManagementPagesOptions AddJobs<T>(Expression<Func<T, Task>> methodCall, string title = null, string recurringJobId = null, string queue = "default")
         {
             var expression = methodCall.Body as System.Linq.Expressions.MethodCallExpression;
             return AddJobs(expression.Method, title: title, recurringJobId: recurringJobId, queue: queue);
         }
+
         public ManagementPagesOptions AddJobs(Expression<Func<Task>> methodCall, string title = null, string recurringJobId = null, string queue = "default")
         {
             var expression = methodCall.Body as System.Linq.Expressions.MethodCallExpression;
@@ -554,6 +578,7 @@ namespace Hangfire.Dashboard.Management
         //    return this;
         //}
     }
+
     ///// <summary>
     ///// Hangfire官方在Owin模式获取参数会有问题，只能获取一次，第二次会是空值
     ///// </summary>

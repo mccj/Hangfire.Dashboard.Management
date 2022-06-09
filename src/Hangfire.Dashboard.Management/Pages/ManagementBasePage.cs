@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Hangfire.Dashboard.Management.Pages
 {
-    partial class ManagementBasePage : RazorPage
+    internal partial class ManagementBasePage : RazorPage
     {
         private readonly string pageTitle;
         private readonly string pageHeader;
@@ -16,11 +16,13 @@ namespace Hangfire.Dashboard.Management.Pages
             this.pageHeader = pageHeader;
             this.managePages = managePages;
         }
+
         public void WriteLiteralTo(System.IO.TextWriter writer, string value)
         {
             if (!string.IsNullOrEmpty(value))
                 writer.Write(value);
         }
+
         public void WriteTo(System.IO.TextWriter writer, object value)
         {
             if (value == null)
@@ -28,14 +30,17 @@ namespace Hangfire.Dashboard.Management.Pages
             var html = value as NonEscapedString;
             WriteLiteralTo(writer, html?.ToString() ?? Encode(value.ToString()));
         }
+
         private string Encode(string text)
         {
             return string.IsNullOrEmpty(text) ? string.Empty : System.Net.WebUtility.HtmlEncode(text);
         }
+
         public NonEscapedString Raw(string text)
         {
             return new NonEscapedString(text);
         }
+
         protected virtual void Content()
         {
             //var jobs = JobsHelper.Metadata.Where(j => j.Queue.Contains(queue));
@@ -241,14 +246,14 @@ namespace Hangfire.Dashboard.Management.Pages
 
         //    if (!string.IsNullOrEmpty(content))
         //    {
-        //        WriteLiteral($@"<div class=""well""> 
+        //        WriteLiteral($@"<div class=""well"">
         //                            { content}
-        //                        </div>      
+        //                        </div>
 
         //                      ");
         //    }
 
-        //    WriteLiteral($@"<div id=""{id}_error"" ></div>  
+        //    WriteLiteral($@"<div id=""{id}_error"" ></div>
         //                    </div>
         //                    <div class=""panel-footer clearfix "">
         //                        <div class=""pull-right"">
@@ -260,11 +265,11 @@ namespace Hangfire.Dashboard.Management.Pages
 
         //protected string CreateButtons(string url, string text, string loadingText, string id)
         //{
-        //    return $@" 
+        //    return $@"
 
         //                <div class=""col-sm-2 pull-right"">
-        //                    <button class=""js-management-input-commands btn btn-sm btn-success"" 
-        //                            data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"" input-id=""{id}""> 
+        //                    <button class=""js-management-input-commands btn btn-sm btn-success""
+        //                            data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"" input-id=""{id}"">
         //                        <span class=""glyphicon glyphicon-play-circle""></span>
         //                        &nbsp;列队
         //                    </button>
@@ -276,7 +281,7 @@ namespace Hangfire.Dashboard.Management.Pages
         //                    </button>
 
         //                    <ul class=""dropdown-menu"">
-        //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""5""  
+        //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""5""
         //                            data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">5 秒</a></li>
         //                        <li><a href=""#"" class=""js-management-input-commands"" input-id=""{id}"" schedule=""10""
         //                             data-url=""{Url.To(url)}"" data-loading-text=""{loadingText}"">10 秒</a></li>
@@ -345,16 +350,16 @@ namespace Hangfire.Dashboard.Management.Pages
         //                      <label>
         //                        <input type=""checkbox"" id=""{id}"">
         //                        {labelText}
-        //                      </label>                             
+        //                      </label>
         //                    </div>
         //                </div>
         //    ";
         //}
     }
 }
+
 namespace System.Web.WebPages
 {
-
     internal class HelperResult //: IHtmlString
     {
         private readonly Action<IO.TextWriter> _action;

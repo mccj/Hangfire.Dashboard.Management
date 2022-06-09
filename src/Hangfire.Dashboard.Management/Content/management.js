@@ -8,7 +8,6 @@
                 var container = this;
 
                 var showCommandsPanelOptions = function (commandsType) {
-
                     $(".commands-panel", container).hide();
                     $(".commands-panel." + commandsType, container).show();
 
@@ -41,7 +40,6 @@
                         e.preventDefault();
                     });
                 $("#connExpressionOk").click(function () {
-
                     var id = $("#result").data("cronId");
                     var cron = $("#result").val();
                     $("#" + id + "_sys_cron").val(cron);
@@ -105,7 +103,6 @@
         }
 
         return Management;
-
     })();
 })(window.Hangfire = window.Hangfire || {});
 
@@ -126,7 +123,6 @@ function loadManagement() {
                 //$('input.time').datetimepicker({ pickDate: false });
             });
         });
-
 
     //var link2 = document.createElement('link');
     //link2.setAttribute("rel", "stylesheet");
@@ -155,7 +151,6 @@ function loadManagement() {
                 //$('input.date').datepicker();
                 $('input.time').inputmask();            });
         });
-
 
     //var link3 = document.createElement('link');
     //link3.setAttribute("rel", "stylesheet");

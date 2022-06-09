@@ -9,6 +9,7 @@ namespace Hangfire.Dashboard.Management
     public static class JsonHangfireLanguage
     {
         private static System.Collections.Concurrent.ConcurrentDictionary<string, string> keyValuesaa = new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
+
         public static string TranslatLanguage(System.Globalization.CultureInfo culture, string name)
         {
             return keyValuesaa.GetOrAdd(culture?.Name + "$$$" + name, f =>
@@ -24,6 +25,7 @@ namespace Hangfire.Dashboard.Management
                  return getTranslat(name, defaultCulture);
              });
         }
+
         private static string getTranslat(string name, CultureLanguages culture)
         {
             string translat = null;
@@ -47,7 +49,9 @@ namespace Hangfire.Dashboard.Management
             }
             return null;
         }
+
         private static CultureLanguages defaultCulture = loadCultureLanguage("en");
+
         private static CultureLanguages loadCultureLanguage(string name)
         {
             var assembly = typeof(JsonHangfireLanguage).Assembly;
@@ -63,7 +67,9 @@ namespace Hangfire.Dashboard.Management
             }
             return null;
         }
+
         private static System.Collections.Concurrent.ConcurrentDictionary<string, CultureLanguages> keyValues = new System.Collections.Concurrent.ConcurrentDictionary<string, CultureLanguages>();
+
         private static CultureLanguages loadCultureLanguages(System.Globalization.CultureInfo culture)
         {
             return keyValues.GetOrAdd(culture.Name, ff =>
@@ -71,6 +77,7 @@ namespace Hangfire.Dashboard.Management
                  return loadCultureLanguage(culture.Name);
              });
         }
+
         public static void AddCultureLanguages(CultureLanguages culture)
         {
             keyValues.AddOrUpdate(culture.Culture, culture, (name, oldCulture) => culture);
@@ -83,11 +90,11 @@ namespace Hangfire.Dashboard.Management
         public System.Collections.Generic.Dictionary<string, string> Translates { get; set; }
         public TranslateRegexs[] TranslateRegexs { get; set; }
     }
+
     public class TranslateRegexs
     {
         public string[] Names { get; set; }
         public string Pattern { get; set; }
         public string Translate { get; set; }
-
     }
 }

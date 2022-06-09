@@ -1,5 +1,4 @@
 ﻿(function (hangfire) {
-
     //hangfire.HttpJob = (function () {
     //    function HttpJob() {
     //        this._initialize();
@@ -24,7 +23,6 @@
     //            }
     //        });
 
-
     //        if (!config) return;
 
     //        if (config.DashboardName) {
@@ -37,7 +35,6 @@
     //            $("#footer ul li:first-child").html('<a href="https://github.com/yuzd/Hangfire.HttpJob" target="_blank">' + config.DashboardFooter + '</a>');
 
     //        }
-
 
     //        if (config.DashboardTitle) {
     //            //更改标题
@@ -53,10 +50,8 @@
     //            !config.NeedAddRecurringHttpJobButton &&
     //            !config.NeedAddCronButton &&
     //            !config.NeedEditRecurringJobButton) {
-
     //            return;
     //        }
-
 
     //        var button = '';
     //        var AddCronButton = '';
@@ -118,7 +113,6 @@
     //            ' </div>' +
     //            ' </div>';
 
-
     //        //如果需要注入新增周期性任务
     //        if (config.NeedAddRecurringHttpJobButton) {
     //            button =
@@ -143,7 +137,6 @@
     //                ' </div>' +
     //                ' </div>';
     //        }
-
 
     //        //如果需要注入编辑任务
 
@@ -171,7 +164,6 @@
     //                ' </div>';
     //        }
 
-
     //        if (config.NeedAddCronButton) {
     //            AddCronButton = '<button type="button" class="js-jobs-list-command btn btn-sm btn-primary" style="float:inherit;margin-left:10px" id="AddCron">' +
     //                '<span class="glyphicon glyphicon-time"> ' + config.AddCronButtonName + '</span>' +
@@ -194,11 +186,9 @@
     //        $('.page-header').append(EditRecurringJobutton);
     //        $('.page-header').append(AddCronButton);
 
-
     //        $(document.body).append(divModel);
     //        $(document.body).append(jobDetailModel);
     //        if (config.NeedEditRecurringJobButton) {
-
     //            //启动或暂停
     //            $('.btn-toolbar-top').append(PauseButton);
 
@@ -208,7 +198,6 @@
     //                '</button>';
 
     //            $('.btn-toolbar-top').append(PauseAgentButton);
-
 
     //            //停止
     //            var StopButton = '<button type="button" class="js-jobs-list-command btn btn-sm btn-primary" style="float:inherit;margin-left:10px" data-loading-text="stop agent job..." disabled id="StopJob">' +
@@ -245,7 +234,6 @@
 
     //        //JobAgent停止
     //        $('#StopJob').click(function (e) {
-
     //            if ($("input[type=checkbox]:checked").length > 2) {
     //                swal({
     //                    title: "",
@@ -313,7 +301,6 @@
 
     //        //获取agentJob的执行情况
     //        $("#JobDetail").click(function (e) {
-
     //            if ($("input[type=checkbox]:checked").length > 2) {
     //                swal({
     //                    title: "",
@@ -386,7 +373,6 @@
     //        });
 
     //        $('#StartAgentJob').click(function (e) {
-
     //            if ($("input[type=checkbox]:checked").length > 2) {
     //                swal({
     //                    title: "",
@@ -430,7 +416,6 @@
     //                    data: JSON.stringify({ "JobName": jobId, "URL": "baseurl", "Data": inputValue, "ContentType": "application/json" }),
     //                    async: true,
     //                    success: function (returndata) {
-
     //                        $.post($($('.btn-toolbar button')[0]).data('url'), { 'jobs[]': [jobId] }, function () {
     //                            swal({
     //                                title: "Success",
@@ -449,7 +434,6 @@
 
     //        //暂停任务
     //        $("#PauseJob").click(function (e) {
-
     //            if ($("input[type=checkbox]:checked").length > 2) {
     //                swal({
     //                    title: "",
@@ -496,7 +480,6 @@
     //                        if (!returndata) return;
     //                        if (returndata.length < 1) return;
 
-
     //                        $(".table tbody").find('tr').each(function () {
     //                            var tdArr = $(this).children();
     //                            var ss = tdArr.eq(1).text();
@@ -512,8 +495,6 @@
     //                }
     //            });
     //        }
-
-
 
     //        //编辑任务
     //        $("#EditJob").click(function () {
@@ -587,7 +568,6 @@
     //                "data": JSON.stringify(obj)
     //            }
     //            $.ajax(settings).done(function (response) {
-
     //                swal({
     //                    title: "Success",
     //                    type: "success",
@@ -616,7 +596,6 @@
     //    return HttpJob;
 
     //})();
-
 })(window.Hangfire = window.Hangfire || {});
 
 ////找出已经暂停的job
@@ -628,7 +607,6 @@
 //}
 ////搜索框拓展,在查找的记录中查询，无需查库
 //var jobSearcher = new function () {
-
 //    var createSearchBox = function () {
 //        $('#search-box').closest('div').remove();
 //        $('.js-jobs-list').prepend('<div class="search-box-div">' +
