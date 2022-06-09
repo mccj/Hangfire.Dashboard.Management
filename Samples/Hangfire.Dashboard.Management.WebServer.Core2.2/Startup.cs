@@ -44,15 +44,17 @@ namespace Hangfire.Dashboard.Management.Service
             });
 
 
-#if NETCOREAPP2_2
+#if NETCOREAPP2_2 || NETFRAMEWORK
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 #else
             services.AddControllersWithViews();
 #endif
 
             services.AddHealthChecks()
+#if !NETFRAMEWORK
             .AddSqlServer(Configuration["HangfireTask:nameOrConnectionString"]);
             //.AddDbContextCheck<Data.ApplicationDbContext>()
+#endif
             ;
 
             //System.Globalization.CultureInfo cultureInfo = new System.Globalization.CultureInfo("en-us");
@@ -177,7 +179,7 @@ namespace Hangfire.Dashboard.Management.Service
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
-#if NETCOREAPP2_2
+#if NETCOREAPP2_2 || NETFRAMEWORK
             IHostingEnvironment env
 #else
             IWebHostEnvironment env
@@ -193,7 +195,7 @@ namespace Hangfire.Dashboard.Management.Service
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
-#if NETCOREAPP2_2
+#if NETCOREAPP2_2 || NETFRAMEWORK
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
@@ -203,7 +205,7 @@ namespace Hangfire.Dashboard.Management.Service
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 #else
-app.UseRouting();
+            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
