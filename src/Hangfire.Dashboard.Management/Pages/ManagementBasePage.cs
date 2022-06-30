@@ -63,33 +63,39 @@ namespace Hangfire.Dashboard.Management.Pages
 
                         //DisplayDataAttribute displayInfo = parameterInfo.GetCustomAttribute<DisplayDataAttribute>(true);
 
+                        var parameterType = parameterInfo.ParameterType;
+                        if (parameterType.IsGenericType&& parameterType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            parameterType=parameterType.GetGenericArguments()[0];
+                        }
+
                         var myId = $"{id}_{parameterInfo.Name}";
-                        if (parameterInfo.ParameterType == typeof(string) && parameterInfo.ConvertType == null)
+                        if (parameterType == typeof(string) && parameterInfo.ConvertType == null)
                         {
                             //inputs += InputTextbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
                             inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue).ToHtmlString();
                         }
-                        else if (parameterInfo.ParameterType == typeof(int))
+                        else if (parameterType == typeof(int))
                         {
                             //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
                             inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "number", parameterInfo.DefaultValue).ToHtmlString();
                         }
-                        else if (parameterInfo.ParameterType == typeof(Uri))
+                        else if (parameterType == typeof(Uri))
                         {
                             //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
                             inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "url", parameterInfo.DefaultValue).ToHtmlString();
                         }
-                        else if (parameterInfo.ParameterType == typeof(DateTime))
+                        else if (parameterType == typeof(DateTime))
                         {
                             inputs += InputDatebox(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo.DefaultValue).ToHtmlString();
                         }
-                        else if (parameterInfo.ParameterType == typeof(bool))
+                        else if (parameterType == typeof(bool))
                         {
                             inputs += "<br/>" + InputCheckbox(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name).ToHtmlString();
                         }
-                        else if (parameterInfo.ParameterType.IsEnum)
+                        else if (parameterType.IsEnum)
                         {
-                            var data = Enum.GetNames(parameterInfo.ParameterType).ToDictionary(f => f, f => f).ToArray();
+                            var data = Enum.GetNames(parameterType).ToDictionary(f => f, f => f).ToArray();
                             inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString()).ToHtmlString();
                         }
                         else if (parameterInfo.ConvertType != null && typeof(Metadata.IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))

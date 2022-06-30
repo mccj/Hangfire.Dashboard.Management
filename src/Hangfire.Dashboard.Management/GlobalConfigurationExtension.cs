@@ -208,8 +208,17 @@ namespace Hangfire.Dashboard.Management
                             continue;
                         };
 
+                        var parameterType = parameterInfo.ParameterType;
+                        //var isGenericType = false;
+                        if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            //isGenericType = true;
+                            parameterType = parameterType.GetGenericArguments()[0];
+                        }
+
+
                         var variable = $"{id}_{parameterInfo.Name}";
-                        if (parameterInfo.ParameterType == typeof(DateTime))
+                        if (parameterType == typeof(DateTime))
                         {
                             variable = $"{variable}_datetimepicker";
                         }
@@ -218,19 +227,19 @@ namespace Hangfire.Dashboard.Management
 
                         object item = null;
                         var formInput = t?.FirstOrDefault();
-                        if (parameterInfo.ParameterType == typeof(string) || parameterInfo.ParameterType == typeof(Uri) || parameterInfo.ParameterType.IsEnum)
+                        if (parameterType == typeof(string) || parameterType == typeof(Uri) || parameterType.IsEnum)
                         {
                             item = formInput;
                         }
-                        else if (parameterInfo.ParameterType == typeof(int))
+                        else if (parameterType == typeof(int))
                         {
                             if (formInput != null) item = int.Parse(formInput);
                         }
-                        else if (parameterInfo.ParameterType == typeof(DateTime))
+                        else if (parameterType == typeof(DateTime))
                         {
-                            item = formInput == null ? DateTime.MinValue : DateTime.Parse(formInput);
+                            if (formInput != null) item = DateTime.Parse(formInput);
                         }
-                        else if (parameterInfo.ParameterType == typeof(bool))
+                        else if (parameterType == typeof(bool))
                         {
                             item = formInput == "on";
                         }
