@@ -176,17 +176,17 @@
     </div>
 </div>
 }
-@helper Input(string id, string css, string labelText, string placeholderText,string descriptionText, string inputtype, object defaultValue = null)
+@helper Input(string id, string css, string labelText, string placeholderText,string descriptionText, string inputtype, object defaultValue = null, bool disabled = false)
     {
 <div class="form-group @css">
     <label for="@(id)" class="control-label">@(labelText)</label>
     @if (inputtype != "textarea")
     {
-        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" />
+        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" @(disabled?"disabled=\"disabled\"":"") />
     }
     else
     {
-        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)">@(defaultValue)</textarea>
+        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)" @(disabled?"disabled=\"disabled\"":"")>@(defaultValue)</textarea>
     }
     @if (!string.IsNullOrWhiteSpace(descriptionText))
     {
@@ -194,35 +194,35 @@
     }
 </div>
 }
-@helper InputDatebox(string id, string css, string labelText, string placeholderText, object defaultValue = null)
+@helper InputDatebox(string id, string css, string labelText, string placeholderText, object defaultValue = null, bool disabled = false)
     {
 <div class="form-group @css">
     <label for="@(id)" class="control-label">@(labelText)</label>
     <div class='input-group date' id='@(id)_datetimepicker'>
-        <input type='text' class="form-control" placeholder="@(placeholderText)" value="@(defaultValue)" />
+        <input type='text' class="form-control" placeholder="@(placeholderText)" value="@(defaultValue)" @(disabled?"disabled=\"disabled\"":"") />
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
     </div>
 </div>
 }
-@helper InputCheckbox(string id, string css, string labelText, string placeholderText)
+@helper InputCheckbox(string id, string css, string labelText, string placeholderText, bool disabled = false)
     {
 <div class="form-group @css">
     <div class="checkbox">
         <label>
-            <input type="checkbox" id="@(id)">
+            <input type="checkbox" id="@(id)" @(disabled?"disabled=\"disabled\"":"")>
             @(labelText)
         </label>
     </div>
 </div>
 }
 @helper InputDataList(string id, string css, string labelText, string placeholderText, KeyValuePair<string, string>
-    [] data, string defaultValue = null)
+    [] data, string defaultValue = null, bool disabled = false)
     {
     <div class="form-group @css">
         <label for="@(id)" class="control-label">@(labelText)</label>
-        <select id="@(id)" class="form-control" placeholder="@(placeholderText)">
+        <select id="@(id)" class="form-control" placeholder="@(placeholderText)" @(disabled?"disabled=\"disabled\"":"")>
             @foreach (var item in data)
             {
                 <option value="@item.Key" @(item.Key == defaultValue ? "selected=\"selected\"" : "")>@item.Value</option>

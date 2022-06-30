@@ -518,11 +518,12 @@ namespace Hangfire.Dashboard.Management
         private Metadata.JobMetadata toJobMetadata(MethodInfo tm, object[] defaultValue = null, string recurringJobId = null, string queue = null)
         {
             var _defaultValue = new System.Collections.Queue(defaultValue ?? new object[] { });
+            var job = tm.GetCustomAttribute<JobAttribute>();
             var getQueue = new Func<string, string>(_queue => string.IsNullOrWhiteSpace(_queue) ? States.EnqueuedState.DefaultQueue : _queue);
             return new Metadata.JobMetadata
             {
                 Type = tm.ReflectedType,
-                Queue = getQueue(queue),
+                Queue = getQueue(string.IsNullOrWhiteSpace(job.Queue) ? queue : job.Queue),
                 MethodInfo = tm,
                 Parameters = tm.GetParameters()
                       //.Where(parameterInfo => parameterInfo.ParameterType != typeof(Server.PerformContext) && parameterInfo.ParameterType != typeof(IJobCancellationToken))
@@ -541,9 +542,11 @@ namespace Hangfire.Dashboard.Management
                           IsMultiLine = f?.DisplayData?.IsMultiLine,
                           ConvertType = f?.DisplayData?.ConvertType,
                           DefaultValue = f?.DisplayData?.DefaultValue,//_defaultValue.Count > 0 ? _defaultValue.Dequeue() : null
-                          //IsDisabled = f?.DisplayData?.IsDisabled,
+                          IsDisabled = f?.DisplayData?.IsDisabled,
                           CssClasses = f?.DisplayData?.CssClasses,
                       }).ToArray(),
+                HideJobSnippetCode = job?.HideJobSnippetCode,
+                DisabledQueueSetting = job?.DisabledQueueSetting,
                 Description = tm.GetCustomAttribute<System.ComponentModel.DescriptionAttribute>()?.Description ?? tm.Name,
                 DisplayName = tm.GetCustomAttribute<System.ComponentModel.DisplayNameAttribute>()?.DisplayName ?? recurringJobId
             };
