@@ -191,9 +191,12 @@ public static class SamplesExtensions
                     {
                         //默认授权远程无法访问 Hangfire.Dashboard.LocalRequestsOnlyAuthorizationFilter
                         Authorization = new[] { new DashboardAuthorizationFilter() },//授权
-                                                                                     //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
-                                                                                     //DisplayStorageConnectionString = false,
-                                                                                     //IsReadOnlyFunc = f => true
+
+                        //AppPath = System.Web.VirtualPathUtility.ToAbsolute("~/"),//返回站点链接URL
+                        //DisplayStorageConnectionString = false,
+                        //IsReadOnlyFunc = f => true,
+                        //DashboardTitle = "ASP.Net Core Hangfire Management",
+                        //StatsPollingInterval = 5000
                     }
                     );
             }
