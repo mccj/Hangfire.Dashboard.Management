@@ -73,21 +73,21 @@ namespace Hangfire.Dashboard.Management.Pages
                         if (parameterType == typeof(string) && parameterInfo.ConvertType == null)
                         {
                             //inputs += InputTextbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue, parameterInfo.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
+                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, parameterInfo?.IsMultiLine == true ? "textarea" : "text", parameterInfo.DefaultValue, parameterInfo?.InputMask, parameterInfo?.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
                         }
                         else if (parameterType == typeof(int))
                         {
                             //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "number", parameterInfo.DefaultValue, parameterInfo.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
+                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "number", parameterInfo.DefaultValue, parameterInfo?.InputMask, parameterInfo?.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
                         }
                         else if (parameterType == typeof(Uri))
                         {
                             //inputs += InputNumberbox(myId, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo.Name);
-                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "url", parameterInfo.DefaultValue, parameterInfo.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
+                            inputs += Input(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.DescriptionText, "url", parameterInfo.DefaultValue, parameterInfo?.InputMask, parameterInfo?.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
                         }
                         else if (parameterType == typeof(DateTime) || parameterType == typeof(DateTimeOffset))
                         {
-                            inputs += InputDatebox(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo.DefaultValue, parameterInfo.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
+                            inputs += InputDatebox(myId, parameterInfo?.CssClasses, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo.DefaultValue, parameterInfo?.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
                         }
                         else if (parameterType == typeof(bool))
                         {
@@ -96,14 +96,14 @@ namespace Hangfire.Dashboard.Management.Pages
                         else if (parameterType.IsEnum)
                         {
                             var data = Enum.GetNames(parameterType).ToDictionary(f => f, f => f).ToArray();
-                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsMultiLine == true, parameterInfo.Required==true, parameterInfo?.Readonly == true).ToHtmlString();
+                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsMultiLine == true, parameterInfo?.InputMask, parameterInfo?.Required == true, parameterInfo?.Readonly == true).ToHtmlString();
                         }
                         else if (parameterInfo.ConvertType != null && typeof(Metadata.IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))
                         {
                             var r = System.Activator.CreateInstance(parameterInfo.ConvertType) as Metadata.IInputDataList;
                             var data = r.GetData().ToArray();
                             var defaultValue = r.GetDefaultValue();
-                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsMultiLine == true, parameterInfo?.Readonly == true).ToHtmlString();
+                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsMultiLine == true, parameterInfo?.InputMask, parameterInfo?.Readonly == true).ToHtmlString();
                         }
                         else
                         {
@@ -118,7 +118,7 @@ namespace Hangfire.Dashboard.Management.Pages
                 }
                 var options = string.Empty;
 
-                options += Input($"{id}_sys_queue", "commands-options Enqueue CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), "", "text", jobMetadata.Queue, jobMetadata.DisabledQueueSetting == true).ToHtmlString();
+                options += Input($"{id}_sys_queue", "commands-options Enqueue CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Queue"), "", "text", jobMetadata.Queue, "", false, jobMetadata.DisabledQueueSetting == true).ToHtmlString();
                 options += InputDataList($"{id}_sys_timeZone", "commands-options CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("TimeZone"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("TimeZone"), TimeZoneInfo.GetSystemTimeZones().ToDictionary(f => f.Id, f => f.DisplayName).ToArray(), TimeZoneInfo.Local.Id).ToHtmlString();
                 options += Input($"{id}_sys_displayName", "commands-options CronExpression", Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Display Name"), Hangfire.Dashboard.Resources.Strings.ResourceManager.GetString("Display Name"), "", "text", "").ToHtmlString();
                 //options += Input($"{id}_sys_parentId", string.Empty, "Parent Job Id", "Parent Job Id", "text", "").ToHtmlString();

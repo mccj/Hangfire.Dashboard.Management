@@ -176,17 +176,17 @@
     </div>
 </div>
 }
-@helper Input(string id, string css, string labelText, string placeholderText,string descriptionText, string inputtype, object defaultValue = null,  bool required = false, bool disabled = false)
+@helper Input(string id, string css, string labelText, string placeholderText,string descriptionText, string inputtype, object defaultValue = null, string inputMask = "", bool required = false, bool disabled = false)
     {
 <div class="form-group @css">
     <label for="@(id)" class="control-label">@(labelText)</label>
     @if (inputtype != "textarea")
     {
-        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" @(required?"required":"") @(disabled?"readonly":"") />
+        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" @(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"") />
     }
     else
     {
-        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)" @(required?"required":"") @(disabled?"readonly":"")>@(defaultValue)</textarea>
+        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)" @(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"")>@(defaultValue)</textarea>
     }
     @if (!string.IsNullOrWhiteSpace(descriptionText))
     {
@@ -218,11 +218,11 @@
 </div>
 }
 @helper InputDataList(string id, string css, string labelText, string placeholderText, KeyValuePair<string, string>
-    [] data, string defaultValue = null, bool multiple = false, bool required = false, bool disabled = false)
+    [] data, string defaultValue = null, bool multiple = false, string inputMask = "", bool required = false, bool disabled = false)
     {
     <div class="form-group @css">
         <label for="@(id)" class="control-label">@(labelText)</label>
-        <select id="@(id)" class="form-control" placeholder="@(placeholderText)" @(multiple?"multiple":"") @(required?"required":"") @(disabled?"readonly":"")>
+        <select id="@(id)" class="form-control" placeholder="@(placeholderText)" @(multiple?"multiple":"") @(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"")>
             @foreach (var item in data)
             {
                 <option value="@item.Key" @(item.Key == defaultValue ? "selected=\"selected\"" : "")>@item.Value</option>
