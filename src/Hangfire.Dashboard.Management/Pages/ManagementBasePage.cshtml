@@ -182,11 +182,11 @@
     <label for="@(id)" class="control-label">@(labelText)</label>
     @if (inputtype != "textarea")
     {
-        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" @(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"") />
+        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" @Raw(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"") />
     }
     else
     {
-        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)" @(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"")>@(defaultValue)</textarea>
+        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)" @Raw(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"")>@(defaultValue)</textarea>
     }
     @if (!string.IsNullOrWhiteSpace(descriptionText))
     {
@@ -222,7 +222,7 @@
     {
     <div class="form-group @css">
         <label for="@(id)" class="control-label">@(labelText)</label>
-        <select id="@(id)" class="form-control" placeholder="@(placeholderText)" @(multiple?"multiple":"") @(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"")>
+        <select id="@(id)" class="form-control" placeholder="@(placeholderText)" @(multiple?"multiple":"") @Raw(string.IsNullOrWhiteSpace(inputMask)?"":$"data-inputmask=\"'mask':'{inputMask}'\"") @(required?"required":"") @(disabled?"readonly":"")>
             @foreach (var item in data)
             {
                 <option value="@item.Key" @(item.Key == defaultValue ? "selected=\"selected\"" : "")>@item.Value</option>
