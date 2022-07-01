@@ -96,14 +96,14 @@ namespace Hangfire.Dashboard.Management.Pages
                         else if (parameterType.IsEnum)
                         {
                             var data = Enum.GetNames(parameterType).ToDictionary(f => f, f => f).ToArray();
-                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsDisabled == true).ToHtmlString();
+                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsMultiLine == true, parameterInfo?.IsDisabled == true).ToHtmlString();
                         }
                         else if (parameterInfo.ConvertType != null && typeof(Metadata.IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))
                         {
                             var r = System.Activator.CreateInstance(parameterInfo.ConvertType) as Metadata.IInputDataList;
                             var data = r.GetData().ToArray();
                             var defaultValue = r.GetDefaultValue();
-                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsDisabled == true).ToHtmlString();
+                            inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsMultiLine == true, parameterInfo?.IsDisabled == true).ToHtmlString();
                         }
                         else
                         {
