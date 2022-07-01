@@ -542,8 +542,10 @@ namespace Hangfire.Dashboard.Management
                           IsMultiLine = f?.DisplayData?.IsMultiLine,
                           ConvertType = f?.DisplayData?.ConvertType,
                           DefaultValue = f?.DisplayData?.DefaultValue,//_defaultValue.Count > 0 ? _defaultValue.Dequeue() : null
-                          IsDisabled = f?.DisplayData?.IsDisabled,
+                          Readonly = f?.DisplayData?.Readonly,
                           CssClasses = f?.DisplayData?.CssClasses,
+                          InputMask = f?.DisplayData?.InputMask,
+                          Required = f?.DisplayData?.Required,
                       }).ToArray(),
                 HideJobSnippetCode = job?.HideJobSnippetCode,
                 DisabledQueueSetting = job?.DisabledQueueSetting,

@@ -38,7 +38,9 @@ namespace Hangfire.Dashboard.Management.Metadata
         public bool? IsMultiLine { get; set; }
         public Type ConvertType { get; set; }
         public object DefaultValue { get; set; }
-        public bool? IsDisabled { get; set; }
+        public bool? Readonly { get; set; }
         public string CssClasses { get; set; }
+        public string InputMask { get; set; }
+        public bool? Required { get; set; }
     }
 }

@@ -11,7 +11,9 @@ namespace Hangfire.Dashboard.Management.Metadata
         public string DefaultValue { get; set; }
         public bool IsMultiLine { get; set; }
         public string CssClasses { get; set; } = null;
-        public bool IsDisabled { get; set; } = false;
+        public string InputMask { get; set; } = null;
+        public bool Readonly { get; set; } = false;
+        public bool Required { get; set; } = false;
 
         public Type ConvertType { get; set; }
 
@@ -22,7 +24,7 @@ namespace Hangfire.Dashboard.Management.Metadata
             this.DescriptionText = descriptionText;
             this.DefaultValue = defaultValue;
             this.CssClasses = cssClasses;
-            this.IsDisabled = isDisabled;
+            this.Readonly = isDisabled;
         }
     }
 
