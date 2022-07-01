@@ -176,17 +176,17 @@
     </div>
 </div>
 }
-@helper Input(string id, string css, string labelText, string placeholderText,string descriptionText, string inputtype, object defaultValue = null, bool disabled = false)
+@helper Input(string id, string css, string labelText, string placeholderText,string descriptionText, string inputtype, object defaultValue = null,  bool required = false, bool disabled = false)
     {
 <div class="form-group @css">
     <label for="@(id)" class="control-label">@(labelText)</label>
     @if (inputtype != "textarea")
     {
-        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" @(disabled?"readonly":"") />
+        <input class="form-control" type="@(inputtype)" placeholder="@(placeholderText)" id="@(id)" value="@(defaultValue)" @(required?"required":"") @(disabled?"readonly":"") />
     }
     else
     {
-        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)" @(disabled?"readonly":"")>@(defaultValue)</textarea>
+        <textarea rows="10" class="form-control" placeholder="@(placeholderText)" id="@(id)" @(required?"required":"") @(disabled?"readonly":"")>@(defaultValue)</textarea>
     }
     @if (!string.IsNullOrWhiteSpace(descriptionText))
     {
@@ -194,12 +194,12 @@
     }
 </div>
 }
-@helper InputDatebox(string id, string css, string labelText, string placeholderText, object defaultValue = null, bool disabled = false)
+@helper InputDatebox(string id, string css, string labelText, string placeholderText, object defaultValue = null, bool required = false, bool disabled = false)
     {
 <div class="form-group @css">
     <label for="@(id)" class="control-label">@(labelText)</label>
     <div class='input-group date' id='@(id)_datetimepicker'>
-        <input type='text' class="form-control" placeholder="@(placeholderText)" value="@(defaultValue)" @(disabled?"readonly":"") />
+        <input type='text' class="form-control" placeholder="@(placeholderText)" data-inputmask="'mask':'9999-99-99 99:99:99'" value="@(defaultValue)" @(required?"required":"") @(disabled?"readonly":"") />
         <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -218,11 +218,11 @@
 </div>
 }
 @helper InputDataList(string id, string css, string labelText, string placeholderText, KeyValuePair<string, string>
-    [] data, string defaultValue = null, bool multiple = false, bool disabled = false)
+    [] data, string defaultValue = null, bool multiple = false, bool required = false, bool disabled = false)
     {
     <div class="form-group @css">
         <label for="@(id)" class="control-label">@(labelText)</label>
-        <select id="@(id)" class="form-control" placeholder="@(placeholderText)" @(multiple?"multiple":"") @(disabled?"readonly":"")>
+        <select id="@(id)" class="form-control" placeholder="@(placeholderText)" @(multiple?"multiple":"") @(required?"required":"") @(disabled?"readonly":"")>
             @foreach (var item in data)
             {
                 <option value="@item.Key" @(item.Key == defaultValue ? "selected=\"selected\"" : "")>@item.Value</option>
