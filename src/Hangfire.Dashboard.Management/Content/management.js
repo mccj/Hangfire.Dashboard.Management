@@ -112,14 +112,15 @@ function loadManagement() {
     var link = document.createElement('link');
     link.setAttribute("rel", "stylesheet");
     link.setAttribute("type", "text/css");
-    link.setAttribute("href", 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.4/css/bootstrap-datetimepicker.min.css');
+    link.setAttribute("href", 'https://cdn.bootcdn.net/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css');
     document.getElementsByTagName("head")[0].appendChild(link);
-    var url = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.4/js/bootstrap-datetimepicker.min.js";
+    var url = "https://cdn.bootcdn.net/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js";
     $.getScript(url,
         function () {
             $(function () {
-                $("div[id$='_datetimepicker']").datetimepicker({ format: "YYYY-MM-DD HH:mm:ss" });
+                //$("div[id$='_datetimepicker']").datetimepicker({ format: "YYYY-MM-DD HH:mm:ss" });
                 $("input.date").datetimepicker({ format: "YYYY-MM-DD HH:mm:ss" });
+                $("div.date").datetimepicker({ format: "YYYY-MM-DD HH:mm:ss" });
                 //$('input.time').datetimepicker({ pickDate: false });
             });
         });
@@ -133,23 +134,21 @@ function loadManagement() {
     //$.getScript(url2,
     //    function () {
     //        $(function () {
-    //            //$("div[id$='_datetimepicker']").datepicker();
-    //            //$('input.date').datepicker();
     //            $('input.time').timepicker();    //        });
     //    });
 
-    var link2 = document.createElement('link');
-    link2.setAttribute("rel", "stylesheet");
-    link2.setAttribute("type", "text/css");
-    link2.setAttribute("href", 'https://cdn.bootcss.com/jquery.inputmask/3.3.4/css/inputmask.min.css');
-    document.getElementsByTagName("head")[0].appendChild(link2);
-    var url2 = "https://cdn.bootcss.com/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js";
+    //var link2 = document.createElement('link');
+    //link2.setAttribute("rel", "stylesheet");
+    //link2.setAttribute("type", "text/css");
+    //link2.setAttribute("href", 'https://cdn.bootcss.com/jquery.inputmask/3.3.4/css/inputmask.min.css');
+    //document.getElementsByTagName("head")[0].appendChild(link2);
+    var url2 = "https://cdn.bootcdn.net/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.js";
     $.getScript(url2,
         function () {
             $(function () {
                 //$("div[id$='_datetimepicker']").datepicker();
                 //$('input.date').datepicker();
-                $('input.time').inputmask();            });
+                //$('input.time').inputmask();                $('input[data-inputmask]').inputmask();                $('textarea[data-inputmask]').inputmask();            });
         });
 
     //var link3 = document.createElement('link');
@@ -166,9 +165,9 @@ function loadManagement() {
     var link3 = document.createElement('link');
     link3.setAttribute("rel", "stylesheet");
     link3.setAttribute("type", "text/css");
-    link3.setAttribute("href", 'https://cdn.bootcss.com/chosen/1.8.2/chosen.css');
+    link3.setAttribute("href", 'https://cdn.bootcdn.net/ajax/libs/chosen/1.8.7/chosen.css');
     document.getElementsByTagName("head")[0].appendChild(link3);
-    var url3 = "https://cdn.bootcss.com/chosen/1.8.2/chosen.jquery.js";
+    var url3 = "https://cdn.bootcdn.net/ajax/libs/chosen/1.8.7/chosen.jquery.js";
     $.getScript(url3,
         function () {
             $(function () {
