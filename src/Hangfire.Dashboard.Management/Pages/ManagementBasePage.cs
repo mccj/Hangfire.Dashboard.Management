@@ -100,7 +100,7 @@ namespace Hangfire.Dashboard.Management.Pages
                         }
                         else if (parameterInfo.ConvertType != null && typeof(Metadata.IInputDataList).IsAssignableFrom(parameterInfo.ConvertType))
                         {
-                            var r = System.Activator.CreateInstance(parameterInfo.ConvertType) as Metadata.IInputDataList;
+                            var r = (JobActivator.Current.BeginScope().Resolve(parameterInfo.ConvertType) ?? JobActivator.Current.ActivateJob(parameterInfo.ConvertType)) as Metadata.IInputDataList;
                             var data = r.GetData().ToArray();
                             var defaultValue = r.GetDefaultValue();
                             inputs += InputDataList(myId, string.Empty, parameterInfo?.LabelText ?? parameterInfo.Name, parameterInfo?.PlaceholderText ?? parameterInfo?.LabelText ?? parameterInfo.Name, data, defaultValue ?? parameterInfo.DefaultValue?.ToString(), parameterInfo?.IsMultiLine == true, parameterInfo?.InputMask, parameterInfo?.Readonly == true).ToHtmlString();
