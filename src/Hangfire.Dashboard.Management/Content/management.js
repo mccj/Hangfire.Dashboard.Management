@@ -96,7 +96,7 @@
         };
 
         Management.alert = function (id, message) {
-            $('#' + id + '_error')
+            $('.' + id + '_error')
                 .html('<div class="alert alert-danger"><a class="close" data-dismiss="alert">×</a><strong>Error! </strong><span>' +
                     message +
                     '</span></div>');

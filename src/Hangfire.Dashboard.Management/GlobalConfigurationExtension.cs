@@ -216,7 +216,6 @@ namespace Hangfire.Dashboard.Management
                             parameterType = parameterType.GetGenericArguments()[0];
                         }
 
-
                         var variable = $"{id}_{parameterInfo.Name}";
                         if (parameterType == typeof(DateTime))
                         {

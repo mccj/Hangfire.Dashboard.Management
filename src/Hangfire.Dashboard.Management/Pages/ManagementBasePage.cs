@@ -260,7 +260,7 @@ namespace Hangfire.Dashboard.Management.Pages
         //                      ");
         //    }
 
-        //    WriteLiteral($@"<div id=""{id}_error"" ></div>
+        //    WriteLiteral($@"<div class=""{id}_error"" ></div>
         //                    </div>
         //                    <div class=""panel-footer clearfix "">
         //                        <div class=""pull-right"">
