@@ -55,8 +55,15 @@
                         var send = { id: id, type: type };
 
                         $("input[id^='" + id + "']", container).each(function () {
-                            send[$(this).attr('id')] = $(this).val();
+                            if ($(this).is('[type=checkbox]')) {
+                                if ($(this).is(':checked')) {
+                                    send[$(this).attr('id')] = "on";
+                                }
+                            } else {
+                                send[$(this).attr('id')] = $(this).val();
+                            }
                         });
+                        
                         $("textarea[id^='" + id + "']", container).each(function () {
                             send[$(this).attr('id')] = $(this).val();
                         });
@@ -134,7 +141,8 @@ function loadManagement() {
     //$.getScript(url2,
     //    function () {
     //        $(function () {
-    //            $('input.time').timepicker();    //        });
+    //            $('input.time').timepicker();
+    //        });
     //    });
 
     //var link2 = document.createElement('link');
@@ -148,7 +156,10 @@ function loadManagement() {
             $(function () {
                 //$("div[id$='_datetimepicker']").datepicker();
                 //$('input.date').datepicker();
-                //$('input.time').inputmask();                $('input[data-inputmask]').inputmask();                $('textarea[data-inputmask]').inputmask();            });
+                //$('input.time').inputmask();
+                $('input[data-inputmask]').inputmask();
+                $('textarea[data-inputmask]').inputmask();
+            });
         });
 
     //var link3 = document.createElement('link');
@@ -160,7 +171,8 @@ function loadManagement() {
     //$.getScript(url3,
     //    function () {
     //        $(function () {
-    //            $('input[type=number]').addClass("spinbox-input").spinbox();    //        });
+    //            $('input[type=number]').addClass("spinbox-input").spinbox();
+    //        });
     //    });
     var link3 = document.createElement('link');
     link3.setAttribute("rel", "stylesheet");
@@ -174,7 +186,8 @@ function loadManagement() {
                 $('select').chosen({
                     no_results_text: "未找到此选项",
                     width: "100%"
-                });            });
+                });
+            });
         });
 }
 
